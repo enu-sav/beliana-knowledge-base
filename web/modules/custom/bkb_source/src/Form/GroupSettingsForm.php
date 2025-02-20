@@ -8,15 +8,15 @@ use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
 
 /**
- * Configuration form for a source entity type.
+ * Configuration form for a group entity type.
  */
-final class SourceSettingsForm extends FormBase {
+final class GroupSettingsForm extends FormBase {
 
   /**
    * {@inheritdoc}
    */
   public function getFormId(): string {
-    return 'source_settings';
+    return 'source_group_settings';
   }
 
   /**
@@ -25,7 +25,7 @@ final class SourceSettingsForm extends FormBase {
   public function buildForm(array $form, FormStateInterface $form_state): array {
 
     $form['settings'] = [
-      '#markup' => $this->t('Settings form for a source entity type.'),
+      '#markup' => $this->t('Settings form for a group entity type.'),
     ];
 
     $form['actions'] = [

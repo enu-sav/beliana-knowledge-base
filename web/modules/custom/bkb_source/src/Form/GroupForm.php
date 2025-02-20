@@ -8,9 +8,9 @@ use Drupal\Core\Entity\ContentEntityForm;
 use Drupal\Core\Form\FormStateInterface;
 
 /**
- * Form controller for the source entity edit forms.
+ * Form controller for the group entity edit forms.
  */
-final class SourceForm extends ContentEntityForm {
+final class GroupForm extends ContentEntityForm {
 
   /**
    * {@inheritdoc}
@@ -26,13 +26,13 @@ final class SourceForm extends ContentEntityForm {
 
     switch ($result) {
       case SAVED_NEW:
-        $this->messenger()->addStatus($this->t('New source %label has been created.', $message_args));
-        $this->logger('bkb_source')->notice('New source %label has been created.', $logger_args);
+        $this->messenger()->addStatus($this->t('New group %label has been created.', $message_args));
+        $this->logger('bkb_source')->notice('New group %label has been created.', $logger_args);
         break;
 
       case SAVED_UPDATED:
-        $this->messenger()->addStatus($this->t('The source %label has been updated.', $message_args));
-        $this->logger('bkb_source')->notice('The source %label has been updated.', $logger_args);
+        $this->messenger()->addStatus($this->t('The group %label has been updated.', $message_args));
+        $this->logger('bkb_source')->notice('The group %label has been updated.', $logger_args);
         break;
 
       default:

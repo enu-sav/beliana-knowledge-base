@@ -1,0 +1,41 @@
+uuid: 9b45f2cf-f487-47e3-ba61-617eb2fd50cd
+langcode: en
+status: true
+dependencies:
+  module:
+    - bkb_source
+id: source_group.source_group.default
+targetEntityType: source_group
+bundle: source_group
+mode: default
+content:
+  published:
+    type: boolean
+    label: above
+    settings:
+      format: default
+      format_custom_false: ''
+      format_custom_true: ''
+    third_party_settings: {  }
+    weight: 2
+    region: content
+  sources:
+    type: entity_reference_label
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  used:
+    type: boolean
+    label: above
+    settings:
+      format: default
+      format_custom_false: ''
+      format_custom_true: ''
+    third_party_settings: {  }
+    weight: 1
+    region: content
+hidden:
+  uid: true

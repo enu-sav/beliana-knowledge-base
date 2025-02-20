@@ -2,6 +2,14 @@ entity.source.settings:
   path: 'admin/structure/source'
   defaults:
     _form: '\Drupal\bkb_source\Form\SourceSettingsForm'
-    _title: 'Zdroj'
+    _title: 'Source'
   requirements:
     _permission: 'administer source'
+
+entity.source_group.settings:
+  path: 'admin/structure/source-group'
+  defaults:
+    _form: '\Drupal\bkb_source\Form\GroupSettingsForm'
+    _title: 'Group'
+  requirements:
+    _permission: 'administer source_group'

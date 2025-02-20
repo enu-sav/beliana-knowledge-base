@@ -8,16 +8,15 @@ use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityListBuilder;
 
 /**
- * Provides a list controller for the source entity type.
+ * Provides a list controller for the group entity type.
  */
-final class SourceListBuilder extends EntityListBuilder {
+final class GroupListBuilder extends EntityListBuilder {
 
   /**
    * {@inheritdoc}
    */
   public function buildHeader(): array {
     $header['id'] = $this->t('ID');
-    $header['label'] = $this->t('Label');
     $header['uid'] = $this->t('Author');
     return $header + parent::buildHeader();
   }
@@ -26,9 +25,8 @@ final class SourceListBuilder extends EntityListBuilder {
    * {@inheritdoc}
    */
   public function buildRow(EntityInterface $entity): array {
-    /** @var \Drupal\bkb_source\SourceInterface $entity */
+    /** @var \Drupal\bkb_source\GroupInterface $entity */
     $row['id'] = $entity->id();
-    $row['label'] = $entity->label();
     $username_options = [
       'label' => 'hidden',
       'settings' => ['link' => $entity->get('uid')->entity->isAuthenticated()],

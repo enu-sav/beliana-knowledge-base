@@ -1,11 +1,23 @@
 administer source:
-  title: 'Administer zdrojs'
+  title: 'Administer sources'
   restrict access: true
 view source:
-  title: 'View zdroj'
+  title: 'View sources'
 edit source:
-  title: 'Edit zdroj'
+  title: 'Edit sources'
 delete source:
-  title: 'Delete zdroj'
+  title: 'Delete sources'
 create source:
-  title: 'Create zdroj'
+  title: 'Create sources'
+
+administer source_group:
+  title: 'Administer groups'
+  restrict access: true
+view source_group:
+  title: 'View groups'
+edit source_group:
+  title: 'Edit groups'
+delete source_group:
+  title: 'Delete groups'
+create source_group:
+  title: 'Create groups'

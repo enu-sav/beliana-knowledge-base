@@ -1,13 +1,13 @@
-uuid: 140cee75-753a-45ca-baec-0dea8c9149d3
+uuid: 52765760-24ff-4807-9ff8-1cc18c47fc9a
 langcode: en
 status: true
 dependencies:
   module:
     - bkb_source
-id: source--source
+id: source_group--source_group
 disabled: false
-path: source
-resourceType: source
+path: source/group
+resourceType: source--group
 resourceFields:
   id:
     disabled: false
@@ -21,22 +21,22 @@ resourceFields:
     publicName: uuid
     enhancer:
       id: ''
-  label:
+  sources:
     disabled: false
-    fieldName: label
-    publicName: label
+    fieldName: sources
+    publicName: sources
     enhancer:
       id: ''
-  data:
+  published:
     disabled: false
-    fieldName: data
-    publicName: data
+    fieldName: published
+    publicName: published
     enhancer:
       id: ''
-  attachment:
+  used:
     disabled: false
-    fieldName: attachment
-    publicName: attachment
+    fieldName: used
+    publicName: used
     enhancer:
       id: ''
   uid:

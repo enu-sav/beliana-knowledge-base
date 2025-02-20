@@ -8,8 +8,8 @@ use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\user\EntityOwnerInterface;
 
 /**
- * Provides an interface defining a source entity type.
+ * Provides an interface defining a group entity type.
  */
-interface SourceInterface extends ContentEntityInterface, EntityOwnerInterface {
+interface GroupInterface extends ContentEntityInterface, EntityOwnerInterface {
 
 }

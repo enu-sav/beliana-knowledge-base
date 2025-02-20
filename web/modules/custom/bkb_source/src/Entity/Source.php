@@ -12,17 +12,17 @@ use Drupal\Core\Field\BaseFieldDefinition;
 use Drupal\user\EntityOwnerTrait;
 
 /**
- * Defines the zdroj entity class.
+ * Defines the source entity class.
  *
  * @ContentEntityType(
  *   id = "source",
- *   label = @Translation("Zdroj"),
- *   label_collection = @Translation("Zdrojs"),
- *   label_singular = @Translation("zdroj"),
- *   label_plural = @Translation("zdrojs"),
+ *   label = @Translation("Source"),
+ *   label_collection = @Translation("Sources"),
+ *   label_singular = @Translation("source"),
+ *   label_plural = @Translation("sources"),
  *   label_count = @PluralTranslation(
- *     singular = "@count zdrojs",
- *     plural = "@count zdrojs",
+ *     singular = "@count sources",
+ *     plural = "@count sources",
  *   ),
  *   handlers = {
  *     "list_builder" = "Drupal\bkb_source\SourceListBuilder",

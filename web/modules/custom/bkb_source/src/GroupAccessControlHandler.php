@@ -10,13 +10,13 @@ use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Session\AccountInterface;
 
 /**
- * Defines the access control handler for the source entity type.
+ * Defines the access control handler for the group entity type.
  *
  * phpcs:disable Drupal.Arrays.Array.LongLineDeclaration
  *
  * @see https://www.drupal.org/project/coder/issues/3185082
  */
-final class SourceAccessControlHandler extends EntityAccessControlHandler {
+final class GroupAccessControlHandler extends EntityAccessControlHandler {
 
   /**
    * {@inheritdoc}
@@ -27,9 +27,9 @@ final class SourceAccessControlHandler extends EntityAccessControlHandler {
     }
 
     return match($operation) {
-      'view' => AccessResult::allowedIfHasPermission($account, 'view source'),
-      'update' => AccessResult::allowedIfHasPermission($account, 'edit source'),
-      'delete' => AccessResult::allowedIfHasPermission($account, 'delete source'),
+      'view' => AccessResult::allowedIfHasPermission($account, 'view source_group'),
+      'update' => AccessResult::allowedIfHasPermission($account, 'edit source_group'),
+      'delete' => AccessResult::allowedIfHasPermission($account, 'delete source_group'),
       default => AccessResult::neutral(),
     };
   }
@@ -38,7 +38,7 @@ final class SourceAccessControlHandler extends EntityAccessControlHandler {
    * {@inheritdoc}
    */
   protected function checkCreateAccess(AccountInterface $account, array $context, $entity_bundle = NULL): AccessResult {
-    return AccessResult::allowedIfHasPermissions($account, ['create source', 'administer source'], 'OR');
+    return AccessResult::allowedIfHasPermissions($account, ['create source_group', 'administer source_group'], 'OR');
   }
 
 }

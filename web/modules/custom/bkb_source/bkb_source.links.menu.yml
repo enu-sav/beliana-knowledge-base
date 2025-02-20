@@ -1,11 +1,23 @@
 entity.source.settings:
-  title: 'Zdroj'
-  description: 'Configure a Zdroj entity type.'
+  title: 'Source'
+  description: 'Configure a Source entity type.'
   route_name:  entity.source.settings
   parent: system.admin_structure
 
 entity.source.collection:
-  title: 'Zdrojs'
-  description: 'List of zdrojs.'
+  title: 'Sources'
+  description: 'List of sources.'
   route_name: entity.source.collection
+  parent: system.admin_content
+
+entity.source_group.settings:
+  title: 'Group'
+  description: 'Configure a Group entity type.'
+  route_name:  entity.source_group.settings
+  parent: system.admin_structure
+
+entity.source_group.collection:
+  title: 'Groups'
+  description: 'List of groups.'
+  route_name: entity.source_group.collection
   parent: system.admin_content
