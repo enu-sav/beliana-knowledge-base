@@ -1,0 +1,11 @@
+entity.source.settings:
+  title: 'Zdroj'
+  description: 'Configure a Zdroj entity type.'
+  route_name:  entity.source.settings
+  parent: system.admin_structure
+
+entity.source.collection:
+  title: 'Zdrojs'
+  description: 'List of zdrojs.'
+  route_name: entity.source.collection
+  parent: system.admin_content

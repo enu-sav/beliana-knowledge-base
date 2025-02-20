@@ -1,0 +1,13 @@
+uuid: e51b2c14-b873-4f1e-ae45-dcf1029f6383
+langcode: en
+status: true
+dependencies:
+  module:
+    - bkb_source
+_core:
+  default_config_hash: aFVGxnVhvU4A5EE9PbRwcIlYfiLMm8e9_NUikkumhGY
+id: source_delete_action
+label: 'Delete zdrojs'
+type: source
+plugin: 'entity:delete_action:source'
+configuration: {  }

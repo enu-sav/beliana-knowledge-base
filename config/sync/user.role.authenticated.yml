@@ -9,7 +9,6 @@ dependencies:
     - file
     - filter
     - search
-    - shortcut
     - system
 _core:
   default_config_hash: cFrlqjtkTfvY3RGccjJkPf1SGIfJ942IrxTLWAO4mgA
@@ -20,7 +19,6 @@ is_admin: false
 permissions:
   - 'access comments'
   - 'access content'
-  - 'access shortcuts'
   - 'delete own files'
   - 'post comments'
   - 'search content'

@@ -1,0 +1,7 @@
+entity.source.settings:
+  path: 'admin/structure/source'
+  defaults:
+    _form: '\Drupal\bkb_source\Form\SourceSettingsForm'
+    _title: 'Zdroj'
+  requirements:
+    _permission: 'administer source'

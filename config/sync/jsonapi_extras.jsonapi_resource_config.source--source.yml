@@ -1,0 +1,47 @@
+uuid: 2e62d2bf-55cf-4a0b-95e9-588fb93880fe
+langcode: en
+status: true
+dependencies:
+  module:
+    - bkb_source
+id: source--source
+disabled: false
+path: source
+resourceType: source
+resourceFields:
+  id:
+    disabled: true
+    fieldName: id
+    publicName: id
+    enhancer:
+      id: ''
+  uuid:
+    disabled: false
+    fieldName: uuid
+    publicName: uuid
+    enhancer:
+      id: ''
+  label:
+    disabled: true
+    fieldName: label
+    publicName: label
+    enhancer:
+      id: ''
+  data:
+    disabled: true
+    fieldName: data
+    publicName: data
+    enhancer:
+      id: ''
+  attachment:
+    disabled: false
+    fieldName: attachment
+    publicName: attachment
+    enhancer:
+      id: ''
+  uid:
+    disabled: false
+    fieldName: uid
+    publicName: uid
+    enhancer:
+      id: ''

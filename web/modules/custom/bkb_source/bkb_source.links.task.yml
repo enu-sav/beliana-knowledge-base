@@ -1,0 +1,9 @@
+entity.source.settings:
+  title: 'Settings'
+  route_name: entity.source.settings
+  base_route: entity.source.settings
+entity.source.collection:
+  title: 'Zdrojs'
+  route_name: entity.source.collection
+  base_route: system.admin_content
+  weight: 10

@@ -1,0 +1,11 @@
+administer source:
+  title: 'Administer zdrojs'
+  restrict access: true
+view source:
+  title: 'View zdroj'
+edit source:
+  title: 'Edit zdroj'
+delete source:
+  title: 'Delete zdroj'
+create source:
+  title: 'Create zdroj'

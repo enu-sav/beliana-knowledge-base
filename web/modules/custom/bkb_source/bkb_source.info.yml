@@ -1,0 +1,8 @@
+name: 'BKB - Zdroj'
+type: module
+description: 'TODO - Add description'
+package: 'BKB'
+core_version_requirement: ^10
+
+dependencies:
+  - drupal:jsonapi_extras

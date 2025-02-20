@@ -1,0 +1,5 @@
+source.add_form:
+  title: 'Add zdroj'
+  route_name: entity.source.add_form
+  appears_on:
+    - entity.source.collection
