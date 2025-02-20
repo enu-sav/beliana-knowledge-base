@@ -1,0 +1,7 @@
+entity.source_comment.settings:
+  path: 'admin/structure/source-comment'
+  defaults:
+    _form: '\Drupal\bkb_comment\Form\CommentSettingsForm'
+    _title: 'Comment'
+  requirements:
+    _permission: 'administer source_comment'

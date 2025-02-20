@@ -1,0 +1,11 @@
+entity.source_comment.settings:
+  title: 'Comment'
+  description: 'Configure a Comment entity type.'
+  route_name:  entity.source_comment.settings
+  parent: system.admin_structure
+
+entity.source_comment.collection:
+  title: 'Comments'
+  description: 'List of comments.'
+  route_name: entity.source_comment.collection
+  parent: system.admin_content

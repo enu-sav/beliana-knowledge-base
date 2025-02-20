@@ -1,0 +1,72 @@
+<?php
+
+declare(strict_types=1);
+
+/**
+ * @file
+ * Provides a comment entity type.
+ */
+
+use Drupal\Core\Render\Element;
+use Drupal\user\UserInterface;
+
+/**
+ * Implements hook_theme().
+ */
+function bkb_comment_theme(): array {
+  return [
+    'source_comment' => ['render element' => 'elements'],
+  ];
+}
+
+/**
+ * Prepares variables for comment templates.
+ *
+ * Default template: source-comment.html.twig.
+ *
+ * @param array $variables
+ *   An associative array containing:
+ *   - elements: An associative array containing the comment information and any
+ *     fields attached to the entity.
+ *   - attributes: HTML attributes for the containing element.
+ */
+function template_preprocess_source_comment(array &$variables): void {
+  $variables['view_mode'] = $variables['elements']['#view_mode'];
+  foreach (Element::children($variables['elements']) as $key) {
+    $variables['content'][$key] = $variables['elements'][$key];
+  }
+}
+
+/**
+ * Implements hook_user_cancel().
+ */
+function bkb_comment_user_cancel($edit, UserInterface $account, $method): void {
+  switch ($method) {
+    case 'user_cancel_reassign':
+      // Anonymize comments.
+      $storage = \Drupal::entityTypeManager()->getStorage('source_comment');
+      $source_comment_ids = $storage->getQuery()
+        ->condition('uid', $account->id())
+        ->accessCheck(FALSE)
+        ->execute();
+      foreach ($storage->loadMultiple($source_comment_ids) as $source_comment) {
+        $source_comment->setOwnerId(0)->save();
+      }
+      break;
+  }
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_predelete() for user entities.
+ */
+function bkb_comment_user_predelete(UserInterface $account): void {
+  // Delete comments that belong to this account.
+  $storage = \Drupal::entityTypeManager()->getStorage('source_comment');
+  $source_comment_ids = $storage->getQuery()
+    ->condition('uid', $account->id())
+    ->accessCheck(FALSE)
+    ->execute();
+  $storage->delete(
+    $storage->loadMultiple($source_comment_ids)
+  );
+}

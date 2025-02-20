@@ -1,0 +1,10 @@
+entity.source_comment.edit_form:
+  route_name: entity.source_comment.edit_form
+  group: source_comment
+  title: 'Edit'
+
+entity.source_comment.delete_form:
+  route_name: entity.source_comment.delete_form
+  group: source_comment
+  title: 'Delete'
+  weight: 10

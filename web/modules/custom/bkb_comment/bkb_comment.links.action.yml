@@ -1,0 +1,5 @@
+source_comment.add_form:
+  title: 'Add comment'
+  route_name: entity.source_comment.add_form
+  appears_on:
+    - entity.source_comment.collection

@@ -1,4 +1,4 @@
-uuid: ab0cef6a-e16c-46c5-be84-63eeb75f168d
+uuid: b182887f-6b43-482b-9eb5-5ee27ff3e28c
 langcode: en
 status: true
 dependencies:
@@ -16,7 +16,7 @@ content:
     settings:
       display_label: true
     third_party_settings: {  }
-  sources:
+  source:
     type: entity_reference_autocomplete
     weight: 0
     region: content

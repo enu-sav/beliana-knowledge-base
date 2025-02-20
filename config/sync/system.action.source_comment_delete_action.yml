@@ -1,0 +1,13 @@
+uuid: 96a5fc20-58ac-4269-8448-b02e59c55d68
+langcode: en
+status: true
+dependencies:
+  module:
+    - bkb_comment
+_core:
+  default_config_hash: OOOEdfiEASXcd4NmQfSkktW9IuWfiS2jt8hrsdlvl8g
+id: source_comment_delete_action
+label: 'Delete comments'
+type: source_comment
+plugin: 'entity:delete_action:source_comment'
+configuration: {  }

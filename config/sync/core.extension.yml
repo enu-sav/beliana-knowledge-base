@@ -4,12 +4,12 @@ module:
   automated_cron: 0
   basic_auth: 0
   big_pipe: 0
+  bkb_comment: 0
   bkb_source: 0
   block: 0
   block_content: 0
   breakpoint: 0
   ckeditor5: 0
-  comment: 0
   config: 0
   config_filter: 0
   config_ignore: 0
@@ -27,7 +27,6 @@ module:
   gin_toolbar: 0
   image: 0
   inline_entity_form: 0
-  inline_entity_form_preview: 0
   jsonapi: 0
   jsonapi_extras: 0
   layout_builder: 0
@@ -55,7 +54,6 @@ module:
   views: 10
   standard: 1000
 theme:
-  olivero: 0
   claro: 0
   gin: 0
 profile: standard

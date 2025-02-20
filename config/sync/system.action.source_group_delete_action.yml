@@ -1,13 +1,13 @@
-uuid: 25b0bc14-2f3f-466b-9989-b8030d4cc6c2
+uuid: 57e40cde-21c0-4708-974d-d1f9004be6da
 langcode: en
 status: true
 dependencies:
   module:
     - bkb_source
 _core:
-  default_config_hash: YYH9pAw8Ylxd4v_i4DBVCPF9y_wWZs5zNQVE4cTr-1Q
+  default_config_hash: y96UdtnnlFnw5bMbYgz7KR1MCd2QEphnJO3jzmYEtZQ
 id: source_group_delete_action
-label: 'Delete skupinas'
+label: 'Delete groups'
 type: source_group
 plugin: 'entity:delete_action:source_group'
 configuration: {  }

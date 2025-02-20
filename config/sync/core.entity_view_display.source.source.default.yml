@@ -1,0 +1,38 @@
+uuid: 5995d4bf-0769-4dd9-8425-5ed89497fe74
+langcode: en
+status: true
+dependencies:
+  module:
+    - bkb_source
+    - file
+    - text
+id: source.source.default
+targetEntityType: source
+bundle: source
+mode: default
+content:
+  attachment:
+    type: file_default
+    label: above
+    settings:
+      use_description_as_link_text: true
+    third_party_settings: {  }
+    weight: 2
+    region: content
+  data:
+    type: text_default
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    weight: 1
+    region: content
+  label:
+    type: string
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 0
+    region: content
+hidden:
+  uid: true

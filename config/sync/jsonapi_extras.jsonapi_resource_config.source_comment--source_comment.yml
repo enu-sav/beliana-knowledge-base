@@ -1,0 +1,41 @@
+uuid: 925f5b28-64a3-4cd9-9bcf-bbec9e91f8a3
+langcode: en
+status: true
+dependencies:
+  module:
+    - bkb_comment
+id: source_comment--source_comment
+disabled: false
+path: comment
+resourceType: comment
+resourceFields:
+  id:
+    disabled: false
+    fieldName: id
+    publicName: id
+    enhancer:
+      id: ''
+  uuid:
+    disabled: true
+    fieldName: uuid
+    publicName: uuid
+    enhancer:
+      id: ''
+  comment:
+    disabled: false
+    fieldName: comment
+    publicName: comment
+    enhancer:
+      id: ''
+  sources:
+    disabled: false
+    fieldName: sources
+    publicName: sources
+    enhancer:
+      id: ''
+  uid:
+    disabled: true
+    fieldName: uid
+    publicName: uid
+    enhancer:
+      id: ''

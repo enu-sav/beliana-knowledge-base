@@ -3,9 +3,3 @@ source.add_form:
   route_name: entity.source.add_form
   appears_on:
     - entity.source.collection
-
-source_group.add_form:
-  title: 'Add Group'
-  route_name: entity.source_group.add_form
-  appears_on:
-    - entity.source_group.collection

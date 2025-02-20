@@ -15,9 +15,3 @@ entity.source_group.settings:
   description: 'Configure a Group entity type.'
   route_name:  entity.source_group.settings
   parent: system.admin_structure
-
-entity.source_group.collection:
-  title: 'Groups'
-  description: 'List of groups.'
-  route_name: entity.source_group.collection
-  parent: system.admin_content

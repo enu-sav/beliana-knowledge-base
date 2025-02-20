@@ -79,15 +79,15 @@ final class Group extends ContentEntityBase implements GroupInterface {
 
     $fields = parent::baseFieldDefinitions($entity_type);
 
-    $fields['sources'] = BaseFieldDefinition::create('entity_reference')
-      ->setLabel(t('Sources'))
+    $fields['source'] = BaseFieldDefinition::create('entity_reference')
+      ->setLabel(t('Source'))
       ->setSetting('target_type', 'source')
       ->setSetting('handler', 'default')
       ->setSetting('handler_settings', [
         'auto_create' => TRUE,
       ])
-      ->setCardinality(BaseFieldDefinition::CARDINALITY_UNLIMITED)
-      ->setRequired(FALSE)
+      ->setCardinality(1)
+      ->setRequired(TRUE)
       ->setDisplayOptions('form', [
         'type' => 'entity_reference_autocomplete',
         'weight' => 5,

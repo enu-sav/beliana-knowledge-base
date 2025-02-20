@@ -1,4 +1,4 @@
-uuid: 9b45f2cf-f487-47e3-ba61-617eb2fd50cd
+uuid: 59255b5a-34e1-498c-b72b-656e1af9d2a9
 langcode: en
 status: true
 dependencies:
@@ -17,11 +17,11 @@ content:
       format_custom_false: ''
       format_custom_true: ''
     third_party_settings: {  }
-    weight: 2
+    weight: 1
     region: content
-  sources:
+  source:
     type: entity_reference_label
-    label: above
+    label: hidden
     settings:
       link: true
     third_party_settings: {  }
@@ -35,7 +35,7 @@ content:
       format_custom_false: ''
       format_custom_true: ''
     third_party_settings: {  }
-    weight: 1
+    weight: 2
     region: content
 hidden:
   uid: true

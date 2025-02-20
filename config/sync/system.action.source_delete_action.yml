@@ -1,13 +1,13 @@
-uuid: ec3601e2-507b-4342-a055-4aabf714e22d
+uuid: 5c64aaa1-e66a-4848-bb31-08b2f505c647
 langcode: en
 status: true
 dependencies:
   module:
     - bkb_source
 _core:
-  default_config_hash: aFVGxnVhvU4A5EE9PbRwcIlYfiLMm8e9_NUikkumhGY
+  default_config_hash: loQulT_6t9QlriAyvYHD5RFBlt3lohbOaeu10prxu5A
 id: source_delete_action
-label: 'Delete zdrojs'
+label: 'Delete sources'
 type: source
 plugin: 'entity:delete_action:source'
 configuration: {  }

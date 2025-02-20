@@ -1,0 +1,11 @@
+administer source_comment:
+  title: 'Administer comments'
+  restrict access: true
+view source_comment:
+  title: 'View comment'
+edit source_comment:
+  title: 'Edit comment'
+delete source_comment:
+  title: 'Delete comment'
+create source_comment:
+  title: 'Create comment'

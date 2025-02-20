@@ -12,8 +12,3 @@ entity.source_group.settings:
   title: 'Settings'
   route_name: entity.source_group.settings
   base_route: entity.source_group.settings
-entity.source_group.collection:
-  title: 'Groups'
-  route_name: entity.source_group.collection
-  base_route: system.admin_content
-  weight: 90
