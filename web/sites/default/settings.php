@@ -88,7 +88,19 @@
  * ];
  * @endcode
  */
-$databases = [];
+$databases['default']['default'] = [
+  'database' => getenv('DB_DATABASE'),
+  'username' => getenv('DB_USERNAME'),
+  'password' => getenv('DB_PASSWORD'),
+  'host' => getenv('DB_HOST'),
+  'port' => getenv('DB_PORT'),
+  'driver' => getenv('DB_CONNECTION'),
+  'prefix' => getenv('DB_PREFIX'),
+  'collation' => 'utf8mb4_general_ci',
+  'init_commands' => [
+    'isolation_level' => 'SET SESSION TRANSACTION ISOLATION LEVEL READ COMMITTED',
+  ],
+];
 
 /**
  * Customizing database settings.
@@ -286,7 +298,7 @@ $databases = [];
  *   $settings['hash_salt'] = file_get_contents('/home/example/salt.txt');
  * @endcode
  */
-$settings['hash_salt'] = 'Nbelyv3Rb22Bfj35O2VzKMxQevSAwOC-MFX4fHnbfHRa7gbeVuJHf1QtIlb6zJ_2MXEYXVzI3g';
+$settings['hash_salt'] = getenv('HASH_SALT') ?? '';
 
 /**
  * Deployment identifier.
@@ -892,3 +904,56 @@ $settings['migrate_node_migrate_type_classic'] = FALSE;
  if (file_exists($app_root . '/' . $site_path . '/settings.local.php')) {
    include $app_root . '/' . $site_path . '/settings.local.php';
  }
+
+$trusted_host = getenv('TRUSTED_HOST');
+if (!empty($trusted_host)) {
+  foreach (explode(',', $trusted_host) as $host) {
+    $settings['trusted_host_patterns'][] = '^' . $host . '$';
+  }
+}
+
+/**
+ *  Error level
+ */
+$config['system.logging']['error_level'] = getenv('ERROR_LEVEL') ?? 'verbose';
+
+/**
+ *  TMP folder
+ */
+$settings['file_temp_path'] = getenv('FILE_TEMP_PATH') ?? '/tmp';
+
+/**
+ *  Private files folder
+ */
+$settings['file_private_path'] = getenv('FILE_PRIVATE_PATH') ?? '/private';
+
+/**
+ *  Translation files folder
+ */
+$settings['translation_path'] = getenv('TRANSLATION_PATH') ?? '/translations';
+
+/**
+ * Reroute emails
+ */
+$config['reroute_email.settings']['enable'] = getenv('REROUTE_EMAIL') ?? FALSE;
+if (getenv('REROUTE_EMAIL')) {
+  $config['reroute_email.settings']['address'] = getenv('REROUTE_EMAIL_ADDRESS') ?? 'webmaster@improve.sk';
+}
+
+/**
+ *  Environment indicator
+ */
+$config['environment_indicator.indicator']['bg_color'] = getenv('ENVIRONMENT_INDICATOR') ?? '#000';
+$config['environment_indicator.indicator']['name'] = getenv('ENVIRONMENT_INDICATOR_NAME') ?? 'Development';
+
+$settings['config_sync_directory'] = '../config/sync';
+$settings['config_exclude_modules'] = explode(',', getenv('EXCLUDE_MODULES'));
+
+$config['file.settings']['make_unused_managed_files_temporary'] = TRUE;
+
+$settings['state_cache'] = getenv('STATE_CACHE') ?? FALSE;
+
+/**
+ * Stage file proxy
+ */
+$config['stage_file_proxy.settings']['origin'] = getenv('STAGE_FILE_PROXY_URL') ?? '';

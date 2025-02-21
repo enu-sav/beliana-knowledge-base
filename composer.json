@@ -21,11 +21,13 @@
         "drupal/core-composer-scaffold": "^10.4",
         "drupal/core-project-message": "^10.4",
         "drupal/core-recommended": "^10.4",
+        "drupal/environment_indicator": "^4.0",
         "drupal/gin": "^4.0",
         "drupal/gin_toolbar": "^2.0",
         "drupal/inline_entity_form": "^3.0@RC",
         "drupal/jsonapi_extras": "^3.26",
-        "drush/drush": "^12.5"
+        "drush/drush": "^12.5",
+        "vlucas/phpdotenv": "^5.6"
     },
     "conflict": {
         "drupal/drupal": "*"
@@ -42,6 +44,9 @@
             "php-http/discovery": true
         },
         "sort-packages": true
+    },
+    "autoload": {
+        "files": ["load.environment.php"]
     },
     "extra": {
         "drupal-scaffold": {

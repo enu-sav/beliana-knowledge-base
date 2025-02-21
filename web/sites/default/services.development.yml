@@ -1,0 +1,30 @@
+### amazee.io Drupal 8 development environment services file.
+#
+# This file should contain service definitions that are needed on development environments
+#
+# It contains some defaults that the amazee.io team suggests, please edit them as required.
+#
+parameters:
+  http.response.debug_cacheability_headers: true
+  cors.config:
+    enabled: true
+    # Specify allowed headers, like 'x-allowed-header'.
+    allowedHeaders: [ 'x-csrf-token', 'authorization', 'content-type', 'accept', 'origin', 'x-requested-with', 'x-auth-token' ]
+    # Specify allowed request methods, specify ['*'] to allow all possible ones.
+    allowedMethods: [ 'GET', 'POST', 'OPTIONS' ]
+    # Configure requests allowed from specific origins.
+    allowedOrigins: [ '*', ]
+    # Sets the Access-Control-Expose-Headers header.
+    exposedHeaders: false
+    # Sets the Access-Control-Max-Age header.
+    maxAge: false
+    # Sets the Access-Control-Allow-Credentials header.
+    supportsCredentials: true
+  twig.config:
+    debug: true # displays twig debug messages, developers like them :)
+    auto_reload: true # reloads the twig files on every request, so no drush cache clear is required
+    cache: false # No twig internal cache, important: check the example.settings.loca.php to fully fully disable the twig cache
+
+services:
+  cache.backend.null: # Defines a Cache Backend Factory which is just empty, it is not used by default
+    class: Drupal\Core\Cache\NullBackendFactory
