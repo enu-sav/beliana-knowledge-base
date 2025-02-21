@@ -1,6 +1,6 @@
 {
-    "name": "drupal/recommended-project",
-    "description": "Beliana knowledge base",
+    "name": "drupal/beliana-knowledge-base",
+    "description": "Beliana Knowledge Base",
     "type": "project",
     "license": "GPL-2.0-or-later",
     "homepage": "https://www.drupal.org/project/drupal",
@@ -21,16 +21,10 @@
         "drupal/core-composer-scaffold": "^10.4",
         "drupal/core-project-message": "^10.4",
         "drupal/core-recommended": "^10.4",
-        "drupal/environment_indicator": "^4.0",
         "drupal/gin": "^4.0",
         "drupal/gin_toolbar": "^2.0",
         "drupal/inline_entity_form": "^3.0@RC",
-        "drupal/inline_entity_form_preview": "1.x-dev@dev",
         "drupal/jsonapi_extras": "^3.26",
-        "drupal/raven": "^6.0",
-        "drupal/reroute_email": "^2.2",
-        "drupal/restui": "^1.22",
-        "drupal/twig_tweak": "^3.4",
         "drush/drush": "^12.5"
     },
     "conflict": {
@@ -82,27 +76,6 @@
             ],
             "web/themes/custom/{$name}": [
                 "type:drupal-custom-theme"
-            ]
-        },
-        "drupal-core-project-message": {
-            "include-keys": [
-                "homepage",
-                "support"
-            ],
-            "post-create-project-cmd-message": [
-                "<bg=blue;fg=white>                                                         </>",
-                "<bg=blue;fg=white>  Congratulations, you’ve installed the Drupal codebase  </>",
-                "<bg=blue;fg=white>  from the drupal/recommended-project template!          </>",
-                "<bg=blue;fg=white>                                                         </>",
-                "",
-                "<bg=yellow;fg=black>Next steps</>:",
-                "  * Install the site: https://www.drupal.org/docs/installing-drupal",
-                "  * Read the user guide: https://www.drupal.org/docs/user_guide/en/index.html",
-                "  * Get support: https://www.drupal.org/support",
-                "  * Get involved with the Drupal community:",
-                "      https://www.drupal.org/getting-involved",
-                "  * Remove the plugin that prints this message:",
-                "      composer remove drupal/core-project-message"
             ]
         }
     }

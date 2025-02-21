@@ -19,7 +19,6 @@ module:
   dynamic_page_cache: 0
   editor: 0
   environment_indicator: 0
-  environment_indicator_ui: 0
   field: 0
   field_ui: 0
   file: 0
@@ -48,7 +47,6 @@ module:
   taxonomy: 0
   text: 0
   toolbar: 0
-  twig_tweak: 0
   user: 0
   views_ui: 0
   views: 10
