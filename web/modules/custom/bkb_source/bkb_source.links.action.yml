@@ -1,5 +1,5 @@
 source.add_form:
-  title: 'Add Source'
+  title: 'Add source'
   route_name: entity.source.add_form
   appears_on:
     - entity.source.collection

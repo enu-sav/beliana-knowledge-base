@@ -1,12 +1,12 @@
 uuid: d1d8aa36-50fc-4569-bc97-72c8280f0f89
-langcode: en
+langcode: sk
 status: true
 dependencies: {  }
 _core:
   default_config_hash: Fe3N1uqaAyyKJbVkqT-btXy3t98puW8GCRD822xjl10
-name: Article
+name: Článok
 type: article
-description: 'Use <em>articles</em> for time-sensitive content like news, press releases or blog posts.'
+description: 'Použite <em>články</em> pre časovo obmedzený obsah ako sú novinky, tlačové správy či blogové príspevky.'
 help: null
 new_revision: true
 preview_mode: 1

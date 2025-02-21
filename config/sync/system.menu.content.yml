@@ -1,5 +1,5 @@
-uuid: 993c920e-101f-4c96-a745-427f1651e9b3
-langcode: en
+uuid: 7c51eb83-dbca-4172-8ba9-c61603f42be8
+langcode: sk
 status: true
 dependencies:
   enforced:
@@ -8,6 +8,6 @@ dependencies:
 _core:
   default_config_hash: nqVwm91Uyib_rvFaNPF1MdYqHlmZ38w5rsOVVy4uWDw
 id: content
-label: Content
+label: Obsah
 description: 'Content task links'
 locked: true

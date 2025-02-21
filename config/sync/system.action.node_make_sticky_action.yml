@@ -1,5 +1,5 @@
 uuid: 2a86e37b-0bdd-4691-b172-76965704aee5
-langcode: en
+langcode: sk
 status: true
 dependencies:
   module:
@@ -7,7 +7,7 @@ dependencies:
 _core:
   default_config_hash: sOb26JSy3fGpWkvR0WYN6_hMqj_6d1rvbvrkzp1yya0
 id: node_make_sticky_action
-label: 'Make content sticky'
+label: 'Prilepiť obsah'
 type: node
 plugin: node_make_sticky_action
 configuration: {  }

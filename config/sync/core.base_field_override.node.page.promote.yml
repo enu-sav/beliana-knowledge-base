@@ -1,5 +1,5 @@
 uuid: 2424706f-b0ee-4202-b74b-10d22758c929
-langcode: en
+langcode: sk
 status: true
 dependencies:
   config:
@@ -10,7 +10,7 @@ id: node.page.promote
 field_name: promote
 entity_type: node
 bundle: page
-label: 'Promoted to front page'
+label: 'Zobrazené na titulnej strane'
 description: ''
 required: false
 translatable: false
@@ -19,6 +19,6 @@ default_value:
     value: 0
 default_value_callback: ''
 settings:
-  on_label: 'On'
-  off_label: 'Off'
+  on_label: Zapnúť
+  off_label: Vypnúť
 field_type: boolean

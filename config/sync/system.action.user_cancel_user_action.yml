@@ -1,5 +1,5 @@
 uuid: b23d433a-7f44-42d8-99cf-9f1a02144624
-langcode: en
+langcode: sk
 status: true
 dependencies:
   module:
@@ -7,7 +7,7 @@ dependencies:
 _core:
   default_config_hash: nvrL9bFilzBvm2bjO9rQnFDpBA7dBBUjShSSt6NS-DU
 id: user_cancel_user_action
-label: 'Cancel the selected user account(s)'
+label: 'Zrušiť vybraných používateľov'
 type: user
 plugin: user_cancel_user_action
 configuration: {  }

@@ -1,5 +1,5 @@
 uuid: 53e1fceb-79b2-46e0-9edd-0f81bfe9f86d
-langcode: en
+langcode: sk
 status: true
 dependencies:
   module:
@@ -7,7 +7,7 @@ dependencies:
 _core:
   default_config_hash: zji0_13MyVGK7Bn1lUMDeZyyOIZedWvqpYUeM_SioPI
 id: who_s_new
-label: "Who's new"
+label: 'Kto je nový'
 module: user
 description: 'Shows a list of the newest user accounts on the site.'
 tag: default
@@ -16,11 +16,11 @@ base_field: uid
 display:
   default:
     id: default
-    display_title: Default
+    display_title: Predvolené
     display_plugin: default
     position: 0
     display_options:
-      title: "Who's new"
+      title: 'Kto je nový'
       fields:
         name:
           id: name
@@ -64,13 +64,13 @@ display:
       exposed_form:
         type: basic
         options:
-          submit_button: Apply
+          submit_button: Použiť
           reset_button: false
           reset_button_label: Reset
-          exposed_sorts_label: 'Sort by'
+          exposed_sorts_label: 'Zoradiť podľa'
           expose_sort_order: true
-          sort_asc_label: Asc
-          sort_desc_label: Desc
+          sort_asc_label: Vzostupne
+          sort_desc_label: Zostupne
       access:
         type: perm
         options:
@@ -180,14 +180,14 @@ display:
       tags: {  }
   block_1:
     id: block_1
-    display_title: "Who's new"
+    display_title: 'Kto je nový'
     display_plugin: block
     position: 1
     display_options:
       display_description: 'A list of new users'
       display_extenders: {  }
-      block_description: "Who's new"
-      block_category: User
+      block_description: 'Kto je nový'
+      block_category: Používateľ
     cache_metadata:
       max-age: -1
       contexts:

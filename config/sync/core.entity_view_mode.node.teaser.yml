@@ -1,5 +1,5 @@
 uuid: 7b29178f-8bd3-4888-895e-4c84f2ec426a
-langcode: en
+langcode: sk
 status: true
 dependencies:
   module:
@@ -7,7 +7,7 @@ dependencies:
 _core:
   default_config_hash: KgGJDZFpMaz_8bTv6fN1bXS3Qi5LWmRJI9R53kEGsNQ
 id: node.teaser
-label: Teaser
+label: Upútavka
 description: ''
 targetEntityType: node
 cache: true

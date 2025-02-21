@@ -95,16 +95,16 @@ final class Source extends ContentEntityBase implements SourceInterface {
       ])
       ->setDisplayConfigurable('view', TRUE);
 
-    $fields['data'] = BaseFieldDefinition::create('text_long')
+    $fields['data'] = BaseFieldDefinition::create('string_long')
       ->setLabel(t('Data'))
       ->setDisplayOptions('form', [
-        'type' => 'text_textarea',
+        'type' => 'textarea',
         'weight' => 10,
       ])
       ->setDisplayConfigurable('form', TRUE)
       ->setDisplayOptions('view', [
         'label' => 'above',
-        'type' => 'text_default',
+        'type' => 'basic_string',
         'weight' => 10,
       ])
       ->setDisplayConfigurable('view', TRUE);

@@ -1,5 +1,5 @@
 uuid: 02b3be4f-2cb0-46a1-b354-add2497ebfe7
-langcode: en
+langcode: sk
 status: true
 dependencies:
   config:
@@ -7,16 +7,14 @@ dependencies:
   module:
     - file
     - filter
-    - search
     - system
 _core:
   default_config_hash: cFrlqjtkTfvY3RGccjJkPf1SGIfJ942IrxTLWAO4mgA
 id: authenticated
-label: 'Authenticated user'
+label: 'Prihlásený používateľ'
 weight: 1
 is_admin: false
 permissions:
   - 'access content'
   - 'delete own files'
-  - 'search content'
   - 'use text format basic_html'

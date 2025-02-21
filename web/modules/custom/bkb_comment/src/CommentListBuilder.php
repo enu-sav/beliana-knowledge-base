@@ -18,7 +18,7 @@ final class CommentListBuilder extends EntityListBuilder {
    */
   public function buildHeader(): array {
     $header['id'] = $this->t('ID');
-    $header['label'] = $this->t('Keyword');
+    $header['label'] = $this->t('Label');
     $header['uid'] = $this->t('Author');
     return $header + parent::buildHeader();
   }

@@ -1,5 +1,5 @@
 uuid: 7d105b5e-4765-4be8-98ba-88b9386016cd
-langcode: en
+langcode: sk
 status: true
 dependencies:
   module:
@@ -16,7 +16,7 @@ provider: null
 plugin: system_main_block
 settings:
   id: system_main_block
-  label: 'Main page content'
+  label: 'Hlavný obsah stránky'
   label_display: '0'
   provider: system
 visibility: {  }

@@ -1,5 +1,5 @@
 uuid: ad48cd50-8109-4f0d-bbd6-3e902f76a3b3
-langcode: en
+langcode: sk
 status: false
 dependencies:
   module:
@@ -7,7 +7,7 @@ dependencies:
 _core:
   default_config_hash: r_A0T3aTqGDwLyvoH7wLps-0PM--RHlS8UsiJe_Ac64
 id: node.search_index
-label: 'Search index'
+label: 'Index vyhľadávania'
 description: ''
 targetEntityType: node
 cache: true

@@ -1,20 +1,11 @@
 uuid: c81fea75-f107-4c7a-91ed-3127ae60d59c
-langcode: en
+langcode: sk
 status: true
-dependencies:
-  config:
-    - filter.format.restricted_html
-  module:
-    - filter
-    - search
-    - system
+dependencies: {  }
 _core:
   default_config_hash: 6WavjUYXIegP9AAg2zXGx54MWIVoomC3SZhNiqe-Dyk
 id: anonymous
-label: 'Anonymous user'
+label: 'Anonymný používateľ'
 weight: 0
 is_admin: false
-permissions:
-  - 'access content'
-  - 'search content'
-  - 'use text format restricted_html'
+permissions: {  }

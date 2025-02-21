@@ -1,6 +1,6 @@
 _core:
   default_config_hash: B2gUcxpkP0BpN-RESHLu0xt4RyveOhmBWqvgZHIv4e0
-langcode: en
+langcode: sk
 sections:
   -
     layout_id: navigation_layout
@@ -12,7 +12,7 @@ sections:
         region: content
         configuration:
           id: navigation_shortcuts
-          label: Shortcuts
+          label: Skratky
           label_display: '0'
           provider: navigation
           status: true
@@ -25,7 +25,7 @@ sections:
         region: content
         configuration:
           id: 'navigation_menu:content'
-          label: Content
+          label: Obsah
           label_display: '0'
           provider: navigation
           level: 1
@@ -37,7 +37,7 @@ sections:
         region: content
         configuration:
           id: 'navigation_menu:admin'
-          label: Administration
+          label: Administrácia
           label_display: '0'
           provider: navigation
           level: 2
@@ -49,7 +49,7 @@ sections:
         region: footer
         configuration:
           id: navigation_user
-          label: User
+          label: Používateľ
           label_display: '0'
           provider: navigation
           status: true
@@ -62,11 +62,11 @@ sections:
         region: footer
         configuration:
           id: navigation_link
-          label: Help
+          label: Pomoc
           label_display: '0'
           provider: navigation
           context_mapping: {  }
-          title: Help
+          title: Pomoc
           uri: 'internal:/admin/help'
           icon_class: help
         weight: -2

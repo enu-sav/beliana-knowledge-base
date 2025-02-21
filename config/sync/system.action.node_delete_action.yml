@@ -1,5 +1,5 @@
 uuid: 2da17dc7-554d-4851-acdb-639e3210386e
-langcode: en
+langcode: sk
 status: true
 dependencies:
   module:
@@ -7,7 +7,7 @@ dependencies:
 _core:
   default_config_hash: t43OqwzP3CTbcAagSsWKNy6KwMm_zShXo3c4-So6rQg
 id: node_delete_action
-label: 'Delete content'
+label: 'Odstrániť obsah'
 type: node
 plugin: 'entity:delete_action:node'
 configuration: {  }

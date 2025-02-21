@@ -1,5 +1,5 @@
 uuid: 0780d621-1540-4020-88da-6996ad05d8df
-langcode: en
+langcode: sk
 status: true
 dependencies:
   module:
@@ -7,7 +7,7 @@ dependencies:
 _core:
   default_config_hash: 5pE_4hurqtIlZN3XDi7eTo5RG13BMG0Rh9HYlRI3h8U
 id: user.register
-label: Register
+label: Registrovať
 description: ''
 targetEntityType: user
 cache: true

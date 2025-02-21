@@ -1,10 +1,10 @@
 uuid: f625ebc0-7ff0-4f39-93fa-079bc70efd04
-langcode: en
+langcode: sk
 status: true
 dependencies: {  }
 _core:
   default_config_hash: jxfClwZIRXIdcvMrE--WkcZxDGUVoOIE3Sm2NRZlFuE
 id: html_datetime
-label: 'HTML Datetime'
+label: 'HTML dátum a čas'
 locked: true
 pattern: 'Y-m-d\TH:i:sO'

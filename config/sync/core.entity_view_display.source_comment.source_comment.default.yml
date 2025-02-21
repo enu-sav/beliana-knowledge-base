@@ -5,14 +5,13 @@ dependencies:
   module:
     - bkb_comment
     - link
-    - text
 id: source_comment.source_comment.default
 targetEntityType: source_comment
 bundle: source_comment
 mode: default
 content:
   comment:
-    type: text_default
+    type: basic_string
     label: above
     settings: {  }
     third_party_settings: {  }

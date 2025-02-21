@@ -1,5 +1,5 @@
 uuid: ddc2225a-db20-4b3c-ace3-ee71c616ff0c
-langcode: en
+langcode: sk
 status: true
 dependencies:
   theme:
@@ -14,7 +14,7 @@ provider: null
 plugin: page_title_block
 settings:
   id: page_title_block
-  label: 'Page title'
+  label: 'Názov stránky'
   label_display: '0'
   provider: core
 visibility: {  }

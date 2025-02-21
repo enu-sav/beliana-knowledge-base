@@ -81,7 +81,7 @@ final class Comment extends ContentEntityBase implements CommentInterface {
     $fields = parent::baseFieldDefinitions($entity_type);
 
     $fields['label'] = BaseFieldDefinition::create('string')
-      ->setLabel(t('Keyword'))
+      ->setLabel(t('Label'))
       ->setRequired(TRUE)
       ->setSetting('max_length', 255)
       ->setDisplayOptions('form', [
@@ -116,15 +116,15 @@ final class Comment extends ContentEntityBase implements CommentInterface {
       ->setDisplayConfigurable('form', TRUE)
       ->setDisplayConfigurable('view', TRUE);
 
-    $fields['comment'] = BaseFieldDefinition::create('text_long')
+    $fields['comment'] = BaseFieldDefinition::create('string_long')
       ->setLabel(t('Comment'))
       ->setDisplayOptions('form', [
-        'type' => 'text_textarea',
+        'type' => 'textarea',
         'weight' => 10,
       ])
       ->setDisplayConfigurable('form', TRUE)
       ->setDisplayOptions('view', [
-        'type' => 'text_default',
+        'type' => 'basic_string',
         'label' => 'above',
         'weight' => 10,
       ])

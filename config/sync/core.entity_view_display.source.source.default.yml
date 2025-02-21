@@ -5,7 +5,6 @@ dependencies:
   module:
     - bkb_source
     - file
-    - text
 id: source.source.default
 targetEntityType: source
 bundle: source
@@ -20,7 +19,7 @@ content:
     weight: 2
     region: content
   data:
-    type: text_default
+    type: basic_string
     label: above
     settings: {  }
     third_party_settings: {  }

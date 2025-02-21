@@ -1,5 +1,5 @@
 uuid: 16af766c-718c-406d-9bab-2a2fe162b0bb
-langcode: en
+langcode: sk
 status: true
 dependencies:
   config:
@@ -11,7 +11,7 @@ dependencies:
 _core:
   default_config_hash: OEEnRQIjfIaCFRsz8U3VqDrE82ltQKlo8wNbQJRZXu0
 id: frontpage
-label: Frontpage
+label: 'Titulná strana'
 module: node
 description: 'All content promoted to the front page.'
 tag: default
@@ -20,7 +20,7 @@ base_field: nid
 display:
   default:
     id: default
-    display_title: Default
+    display_title: Predvolené
     display_plugin: default
     position: 0
     display_options:
@@ -35,29 +35,29 @@ display:
           total_pages: 0
           id: 0
           tags:
-            next: 'Next ›'
-            previous: '‹ Previous'
-            first: '« First'
-            last: 'Last »'
+            next: Ďalej
+            previous: '‹ Predchádzajúci'
+            first: «
+            last: »
           expose:
             items_per_page: false
-            items_per_page_label: 'Items per page'
+            items_per_page_label: 'Položky na stránku'
             items_per_page_options: '5, 10, 25, 50'
             items_per_page_options_all: false
-            items_per_page_options_all_label: '- All -'
+            items_per_page_options_all_label: '- Všetky -'
             offset: false
-            offset_label: Offset
+            offset_label: Ofset
           quantity: 9
       exposed_form:
         type: basic
         options:
-          submit_button: Apply
+          submit_button: Použiť
           reset_button: false
           reset_button_label: Reset
-          exposed_sorts_label: 'Sort by'
+          exposed_sorts_label: 'Zoradiť podľa'
           expose_sort_order: true
-          sort_asc_label: Asc
-          sort_desc_label: Desc
+          sort_asc_label: Vzostupne
+          sort_desc_label: Zostupne
       access:
         type: perm
         options:
@@ -76,7 +76,7 @@ display:
           plugin_id: text_custom
           label: ''
           empty: true
-          content: 'No front page content has been created yet.<br/>Follow the <a target="_blank" href="https://www.drupal.org/docs/user_guide/en/index.html">User Guide</a> to start building your site.'
+          content: 'Na titulnú stránku zatiaľ nebol pridaný žiadny obsah. Postupujte podľa <a target="_blank" href="https://www.drupal.org/docs/user_guide/en/index.html">Používateľskej príručky</a> a začnite budovať váš web.'
           tokenize: false
         node_listing_empty:
           id: node_listing_empty
@@ -99,7 +99,7 @@ display:
           plugin_id: title
           label: ''
           empty: true
-          title: Welcome!
+          title: Vitajte!
       sorts:
         sticky:
           id: sticky
@@ -262,7 +262,7 @@ display:
       tags: {  }
   page_1:
     id: page_1
-    display_title: Page
+    display_title: Strana
     display_plugin: page
     position: 1
     display_options:

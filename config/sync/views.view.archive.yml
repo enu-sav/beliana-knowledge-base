@@ -1,5 +1,5 @@
 uuid: e6f4dd1b-0c8f-45b1-8328-e8ffa02382aa
-langcode: en
+langcode: sk
 status: false
 dependencies:
   config:
@@ -19,11 +19,11 @@ base_field: nid
 display:
   default:
     id: default
-    display_title: Default
+    display_title: Predvolené
     display_plugin: default
     position: 0
     display_options:
-      title: 'Monthly archive'
+      title: 'Mesačný archív'
       fields: {  }
       pager:
         type: mini
@@ -38,22 +38,22 @@ display:
             previous: ‹‹
           expose:
             items_per_page: false
-            items_per_page_label: 'Items per page'
+            items_per_page_label: 'Položky na stránku'
             items_per_page_options: '5, 10, 25, 50'
             items_per_page_options_all: false
-            items_per_page_options_all_label: '- All -'
+            items_per_page_options_all_label: '- Všetky -'
             offset: false
-            offset_label: Offset
+            offset_label: Ofset
       exposed_form:
         type: basic
         options:
-          submit_button: Apply
+          submit_button: Použiť
           reset_button: false
           reset_button_label: Reset
-          exposed_sorts_label: 'Sort by'
+          exposed_sorts_label: 'Zoradiť podľa'
           expose_sort_order: true
-          sort_asc_label: Asc
-          sort_desc_label: Desc
+          sort_asc_label: Vzostupne
+          sort_desc_label: Zostupne
       access:
         type: perm
         options:
@@ -189,7 +189,7 @@ display:
       tags: {  }
   block_1:
     id: block_1
-    display_title: Block
+    display_title: Blok
     display_plugin: block
     position: 1
     display_options:
@@ -228,7 +228,7 @@ display:
       tags: {  }
   page_1:
     id: page_1
-    display_title: Page
+    display_title: Strana
     display_plugin: page
     position: 2
     display_options:

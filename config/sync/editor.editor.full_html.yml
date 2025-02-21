@@ -1,5 +1,5 @@
 uuid: dc5d307b-64af-414f-885a-27aaba5faa64
-langcode: en
+langcode: sk
 status: true
 dependencies:
   config:
@@ -38,7 +38,7 @@ settings:
     ckeditor5_codeBlock:
       languages:
         -
-          label: 'Plain text'
+          label: 'Obyčajný text'
           language: plaintext
         -
           label: C
@@ -50,10 +50,10 @@ settings:
           label: C++
           language: cpp
         -
-          label: CSS
+          label: 'CSS vzhľad'
           language: css
         -
-          label: Diff
+          label: Rozdiel
           language: diff
         -
           label: HTML

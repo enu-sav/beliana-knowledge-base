@@ -1,10 +1,10 @@
 uuid: cebf15aa-4060-4d7f-866c-9026ed43a8ca
-langcode: en
+langcode: sk
 status: true
 dependencies: {  }
 _core:
   default_config_hash: JLMwODO0epnA_H-jFlH9ezVfa5YBJniRv3MmLqYNl_Q
-name: 'Plain text'
+name: 'Obyčajný text'
 format: plain_text
 weight: 10
 filters:

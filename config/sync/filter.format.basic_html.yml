@@ -1,12 +1,12 @@
 uuid: 123ee248-fba0-402e-97d1-580f5135d06d
-langcode: en
+langcode: sk
 status: true
 dependencies:
   module:
     - editor
 _core:
   default_config_hash: mclCbTlJwWJORez4Y1eX2MqA0aGjSMAoJb3TaBABcK8
-name: 'Basic HTML'
+name: 'Základné HTML'
 format: basic_html
 weight: 0
 filters:
