@@ -5,6 +5,7 @@ config:
   via: apache
   webroot: web
   database: mariadb:10.6
+  xdebug: true
   config:
     php: .lando/php.ini
 
