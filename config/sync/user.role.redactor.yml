@@ -1,9 +1,25 @@
 uuid: e71754cd-dce6-4caf-b833-024c649f2a8b
 langcode: sk
 status: true
-dependencies: {  }
+dependencies:
+  module:
+    - bkb_comment
+    - bkb_source
+    - node
+    - toolbar
 id: redactor
 label: Redaktor
-weight: 4
+weight: -7
 is_admin: null
-permissions: {  }
+permissions:
+  - 'access toolbar'
+  - 'create source'
+  - 'create source_comment'
+  - 'create source_group'
+  - 'edit source'
+  - 'edit source_comment'
+  - 'edit source_group'
+  - 'view own unpublished content'
+  - 'view source'
+  - 'view source_comment'
+  - 'view source_group'

@@ -1,0 +1,30 @@
+uuid: 400d6b5e-3e23-4e33-a165-1778d1a92746
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.source_group.sources
+  module:
+    - bkb_source
+    - layout_builder
+third_party_settings:
+  layout_builder:
+    enabled: false
+    allow_custom: false
+id: source_group.source_group.sources
+targetEntityType: source_group
+bundle: source_group
+mode: sources
+content:
+  source:
+    type: entity_reference_label
+    label: hidden
+    settings:
+      link: true
+    third_party_settings: {  }
+    weight: 0
+    region: content
+hidden:
+  published: true
+  uid: true
+  used: true

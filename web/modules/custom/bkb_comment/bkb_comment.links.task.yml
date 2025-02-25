@@ -15,8 +15,8 @@ entity.source_comment.delete_form:
   route_name: entity.source_comment.delete_form
   base_route: entity.source_comment.canonical
   weight: 10
-entity.source_comment.collection:
-  title: 'Comments'
-  route_name: entity.source_comment.collection
-  base_route: system.admin_content
-  weight: 10
+#entity.source_comment.collection:
+#  title: 'Comments'
+#  route_name: entity.source_comment.collection
+#  base_route: system.admin_content
+#  weight: 10

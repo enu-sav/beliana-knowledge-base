@@ -1,0 +1,11 @@
+uuid: 556c8604-a870-47a9-814b-f4ccb58696d7
+langcode: sk
+status: true
+dependencies:
+  module:
+    - bkb_source
+id: source_group.sources
+label: Sources
+description: ''
+targetEntityType: source_group
+cache: true
