@@ -6,9 +6,9 @@ use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Logger\LoggerChannelFactoryInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
-use Symfony\Component\HttpFoundation\RequestStack;
 use GuzzleHttp\ClientInterface;
 use Drupal\user\Entity\User;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 
 /**
  * Event Subscriber for user authentication and sync.
@@ -118,6 +118,11 @@ class UserLoginSubscriber implements EventSubscriberInterface {
 
       user_login_finalize($user);
       $this->logger->info("User {$username} was synchronized and logged in.");
+
+      // Redirect to home page
+      $response = new RedirectResponse('/');
+      $response->send();
+      exit;
 
     } catch (\Exception $e) {
       $this->logger->error("Error during user synchronization: " . $e->getMessage());
