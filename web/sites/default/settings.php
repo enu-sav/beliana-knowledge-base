@@ -918,7 +918,7 @@ if (!empty($trusted_host)) {
 $config['system.logging']['error_level'] = getenv('ERROR_LEVEL') ?? 'verbose';
 
 /**
- *  TMP folder
+ *  Temp folder
  */
 $settings['file_temp_path'] = getenv('FILE_TEMP_PATH') ?? '/tmp';
 
@@ -933,27 +933,6 @@ $settings['file_private_path'] = getenv('FILE_PRIVATE_PATH') ?? '/private';
 $settings['translation_path'] = getenv('TRANSLATION_PATH') ?? '/translations';
 
 /**
- * Reroute emails
+ *  Config folder
  */
-$config['reroute_email.settings']['enable'] = getenv('REROUTE_EMAIL') ?? FALSE;
-if (getenv('REROUTE_EMAIL')) {
-  $config['reroute_email.settings']['address'] = getenv('REROUTE_EMAIL_ADDRESS') ?? 'webmaster@improve.sk';
-}
-
-/**
- *  Environment indicator
- */
-$config['environment_indicator.indicator']['bg_color'] = getenv('ENVIRONMENT_INDICATOR') ?? '#000';
-$config['environment_indicator.indicator']['name'] = getenv('ENVIRONMENT_INDICATOR_NAME') ?? 'Development';
-
 $settings['config_sync_directory'] = '../config/sync';
-$settings['config_exclude_modules'] = explode(',', getenv('EXCLUDE_MODULES'));
-
-$config['file.settings']['make_unused_managed_files_temporary'] = TRUE;
-
-$settings['state_cache'] = getenv('STATE_CACHE') ?? FALSE;
-
-/**
- * Stage file proxy
- */
-$config['stage_file_proxy.settings']['origin'] = getenv('STAGE_FILE_PROXY_URL') ?? '';

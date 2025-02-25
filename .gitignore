@@ -9,6 +9,7 @@
 /web/libraries/
 
 # Ignore sensitive information
+.env
 /web/sites/*/settings.local.php
 /web/sites/*/services.local.yml
 
