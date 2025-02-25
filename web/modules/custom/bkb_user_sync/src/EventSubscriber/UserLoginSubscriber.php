@@ -46,12 +46,14 @@ class UserLoginSubscriber implements EventSubscriberInterface {
     }
 
     try {
+      $webrs_site = getenv('WEBRS_SITE');
+
       // Get CSRF token from Drupal 7
-      $csrf_response = $this->httpClient->request('GET', 'https://webrs.beliana.lndo.site/services/session/token');
+      $csrf_response = $this->httpClient->request('GET', $webrs_site . '/services/session/token');
       $csrf_token = trim($csrf_response->getBody()->getContents());
 
       // Login to Drupal 7
-      $response = $this->httpClient->request('POST', 'https://webrs.beliana.lndo.site/api/users/user/login', [
+      $response = $this->httpClient->request('POST', $webrs_site . '/api/users/user/login', [
         'headers' => [
           'Content-Type' => 'application/json',
           'X-CSRF-Token' => $csrf_token,
@@ -64,12 +66,28 @@ class UserLoginSubscriber implements EventSubscriberInterface {
 
       $user_data = json_decode($response->getBody()->getContents(), TRUE);
 
-      if (!isset($user_data['name'])) {
+      if (!isset($user_data['user']['name'])) {
         return;
       }
 
-      $email = $user_data['mail'] ?? "";
-      $roles = $user_data['roles'] ?? [];
+      $email = $user_data['user']['mail'] ?? "";
+      $roles = $user_data['user']['roles'] ?? [];
+
+      // Map roles from Drupal 7 to Drupal 10
+      $role_map = [
+        'administrátor' => 'administrator',
+        'Redaktor' => 'redactor',
+      ];
+      $mapped_roles = [];
+      foreach ($roles as $role) {
+        if (isset($role_map[$role])) {
+          $mapped_roles[] = $role_map[$role];
+        }
+      }
+
+      // Ensure roles include 'administrator' and 'redactor'
+      $required_roles = ['administrator', 'redactor'];
+      $roles = array_unique(array_merge($mapped_roles, $required_roles));
 
       // Sync user to Drupal 10
       $user_storage = $this->entityTypeManager->getStorage('user');
@@ -80,9 +98,13 @@ class UserLoginSubscriber implements EventSubscriberInterface {
         // Update existing user
         $user->setEmail($email);
         $user->setPassword($password);
+        foreach ($required_roles as $role) {
+          if (!$user->hasRole($role)) {
+            $user->addRole($role);
+          }
+        }
         $user->save();
-      }
-      else {
+      } else {
         // Create new user
         $user = User::create([
           'name' => $username,
@@ -95,10 +117,10 @@ class UserLoginSubscriber implements EventSubscriberInterface {
       }
 
       user_login_finalize($user);
-      $this->logger->info("Používateľ {$username} bol zosynchronizovaný a prihlásený.");
+      $this->logger->info("User {$username} was synchronized and logged in.");
 
     } catch (\Exception $e) {
-      $this->logger->error("Chyba pri synchronizácii používateľa: " . $e->getMessage());
+      $this->logger->error("Error during user synchronization: " . $e->getMessage());
     }
   }
 }

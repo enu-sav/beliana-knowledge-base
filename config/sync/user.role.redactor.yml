@@ -1,0 +1,9 @@
+uuid: e71754cd-dce6-4caf-b833-024c649f2a8b
+langcode: sk
+status: true
+dependencies: {  }
+id: redactor
+label: Redaktor
+weight: 4
+is_admin: null
+permissions: {  }

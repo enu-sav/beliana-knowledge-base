@@ -1,0 +1,14 @@
+uuid: 5a4918ab-592c-45ee-97f4-5ec01693b993
+langcode: sk
+status: true
+dependencies:
+  config:
+    - user.role.redactor
+  module:
+    - user
+id: user_remove_role_action.redactor
+label: 'Odobrať rolu Redaktor vybraným používateľom'
+type: user
+plugin: user_remove_role_action
+configuration:
+  rid: redactor
