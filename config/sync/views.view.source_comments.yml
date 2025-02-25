@@ -372,22 +372,7 @@ display:
         type: tag
         options: {  }
       empty: {  }
-      sorts:
-        label:
-          id: label
-          table: source_comment
-          field: label
-          relationship: none
-          group_type: group
-          admin_label: ''
-          entity_type: source_comment
-          entity_field: label
-          plugin_id: standard
-          order: ASC
-          expose:
-            label: Označenie
-            field_identifier: label
-          exposed: true
+      sorts: {  }
       arguments: {  }
       filters:
         label:
@@ -406,7 +391,7 @@ display:
           exposed: true
           expose:
             operator_id: label_op
-            label: Označenie
+            label: Heslo
             description: ''
             use_operator: false
             operator: label_op
@@ -441,12 +426,40 @@ display:
           row_class: ''
           default_row_class: true
           columns:
+            url__uri: url__uri
             label: label
+            sources_target_id: sources_target_id
+            uid: uid
+            operations: operations
           default: '-1'
           info:
-            label:
+            url__uri:
               sortable: false
               default_sort_order: asc
+              align: ''
+              separator: ''
+              empty_column: false
+              responsive: ''
+            label:
+              sortable: true
+              default_sort_order: asc
+              align: ''
+              separator: ''
+              empty_column: false
+              responsive: ''
+            sources_target_id:
+              align: ''
+              separator: ''
+              empty_column: false
+              responsive: ''
+            uid:
+              sortable: true
+              default_sort_order: asc
+              align: ''
+              separator: ''
+              empty_column: false
+              responsive: ''
+            operations:
               align: ''
               separator: ''
               empty_column: false
@@ -479,11 +492,9 @@ display:
         - 'languages:language_interface'
         - url
         - url.query_args
-        - 'url.query_args:sort_by'
-        - 'url.query_args:sort_order'
       tags: {  }
-  page_1:
-    id: page_1
+  page:
+    id: page
     display_title: Page
     display_plugin: page
     position: 1
@@ -506,6 +517,4 @@ display:
         - 'languages:language_interface'
         - url
         - url.query_args
-        - 'url.query_args:sort_by'
-        - 'url.query_args:sort_order'
       tags: {  }
