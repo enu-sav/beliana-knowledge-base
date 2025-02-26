@@ -1,0 +1,8 @@
+name: 'BKB Base'
+type: module
+description: 'BKB module'
+package: 'Custom'
+core_version_requirement: ^10 || ^11
+dependencies:
+  - ai:ai
+  - key:key

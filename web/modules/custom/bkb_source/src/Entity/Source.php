@@ -4,12 +4,14 @@ declare(strict_types=1);
 
 namespace Drupal\bkb_source\Entity;
 
+use Drupal\bkb_base\BibTeXConverter;
 use Drupal\bkb_source\SourceInterface;
 use Drupal\Core\Entity\ContentEntityBase;
 use Drupal\Core\Entity\EntityStorageInterface;
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Field\BaseFieldDefinition;
 use Drupal\user\EntityOwnerTrait;
+use Drupal\Component\Utility\Html;
 
 /**
  * Defines the source entity class.
@@ -32,7 +34,8 @@ use Drupal\user\EntityOwnerTrait;
  *       "add" = "Drupal\bkb_source\Form\SourceForm",
  *       "edit" = "Drupal\bkb_source\Form\SourceForm",
  *       "delete" = "Drupal\Core\Entity\ContentEntityDeleteForm",
- *       "delete-multiple-confirm" = "Drupal\Core\Entity\Form\DeleteMultipleForm",
+ *       "delete-multiple-confirm" =
+ *   "Drupal\Core\Entity\Form\DeleteMultipleForm",
  *     },
  *     "route_provider" = {
  *       "html" = "Drupal\bkb_source\Routing\SourceHtmlRouteProvider",
@@ -70,13 +73,44 @@ final class Source extends ContentEntityBase implements SourceInterface {
       // If no owner has been set explicitly, make the anonymous user the owner.
       $this->setOwnerId(0);
     }
+
+    if ($this->isNew()) {
+      $config_factory = \Drupal::configFactory();
+      $config = $config_factory->get('bkb_base.settings');
+      $selectedAI = $config->get('api_key');
+      $prompt = $config->get('ai_prompt');
+
+      if (!in_array($selectedAI, ['perplexity', 'open_ai'])) {
+        $selectedAI = 'perplexity';
+      }
+
+      $response_text = match ($selectedAI) {
+        'perplexity' => \Drupal::service('bkb_base.ai_bibtex')->getBibtexPerplexity($this, $prompt),
+        'open_ai' => \Drupal::service('bkb_base.ai_bibtex')->getBibtexOpenAI($this, $prompt),
+      };
+
+      if ($response_text) {
+        $this->set('data', $response_text);
+      }
+    }
+
+    // Create citation form the bibtex value
+    $value = $this->get('data')->getValue();
+    $escapedValue = Html::escape($value[0]['value']);
+
+    // Create a new BibTeXConverter instance with the escaped value.
+    $converter = new BibTeXConverter($escapedValue);
+    $harvardCitations = $converter->convertToHarvard();
+    $citation = reset($harvardCitations);
+
+    // Set the 'citation' field with the first Harvard citation.
+    $this->set('citation', $citation);
   }
 
   /**
    * {@inheritdoc}
    */
   public static function baseFieldDefinitions(EntityTypeInterface $entity_type): array {
-
     $fields = parent::baseFieldDefinitions($entity_type);
 
     $fields['label'] = BaseFieldDefinition::create('string')
@@ -113,7 +147,7 @@ final class Source extends ContentEntityBase implements SourceInterface {
       ->setLabel(t('Attachment'))
       ->setSettings([
         'file_extensions' => 'pdf',
-        'uri_scheme' => 'private'
+        'uri_scheme' => 'private',
       ])
       ->setDisplayOptions('form', [
         'type' => 'file_generic',
@@ -148,6 +182,22 @@ final class Source extends ContentEntityBase implements SourceInterface {
         'label' => 'above',
         'type' => 'author',
         'weight' => 15,
+      ])
+      ->setDisplayConfigurable('view', TRUE);
+
+    $fields['citation'] = BaseFieldDefinition::create('string')
+      ->setLabel(t('Citation'))
+      ->setReadOnly(TRUE)
+      ->setSetting('max_length', 255)
+      ->setDisplayOptions('form', [
+        'type' => 'string_textfield',
+        'weight' => 11,
+      ])
+      ->setDisplayConfigurable('form', TRUE)
+      ->setDisplayOptions('view', [
+        'label' => 'above',
+        'type' => 'string',
+        'weight' => 11,
       ])
       ->setDisplayConfigurable('view', TRUE);
 

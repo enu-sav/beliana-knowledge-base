@@ -1,0 +1,11 @@
+# Schema for the configuration files of the BKB Base module.
+bkb_base.settings:
+  type: config_object
+  label: 'BKB Base settings'
+  mapping:
+    api_key:
+      type: string
+      label: 'Default AI'
+    ai_prompt:
+      type: string
+      label: 'Prompt for AI'

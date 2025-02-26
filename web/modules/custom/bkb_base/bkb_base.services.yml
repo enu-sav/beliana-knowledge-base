@@ -1,0 +1,4 @@
+services:
+  bkb_base.ai_bibtex:
+    class: Drupal\bkb_base\AiBibtex
+    arguments: ['@ai.provider', '@config.factory', '@key.repository']

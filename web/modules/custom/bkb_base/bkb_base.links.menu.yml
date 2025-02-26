@@ -1,0 +1,5 @@
+bkb_base.settings:
+  title: BKB Settings
+  parent: system.admin
+  route_name: bkb_base.settings
+  weight: -10

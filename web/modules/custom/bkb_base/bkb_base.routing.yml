@@ -1,0 +1,7 @@
+bkb_base.settings:
+  path: '/admin/config/system/settings'
+  defaults:
+    _title: 'BKB Settings'
+    _form: 'Drupal\bkb_base\Form\SettingsForm'
+  requirements:
+    _permission: 'administer site configuration'

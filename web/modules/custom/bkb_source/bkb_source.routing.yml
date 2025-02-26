@@ -13,3 +13,11 @@ entity.source_group.settings:
     _title: 'Group'
   requirements:
     _permission: 'administer source_group'
+
+entity.source.data.edit:
+  path: '/source/data-edit/{id}'
+  defaults:
+    _form: '\Drupal\bkb_source\Form\SourceDataFieldEditForm'
+    _title: 'Edit Referenced Entities'
+  requirements:
+    _permission: 'create source'

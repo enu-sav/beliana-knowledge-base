@@ -1,0 +1,2 @@
+api_key: perplexity
+ai_prompt: 'Give me bibtex record (no additional text, just the record, include ISBN) for [source:title]'

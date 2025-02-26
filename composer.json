@@ -16,6 +16,9 @@
     ],
     "require": {
         "composer/installers": "^2.0",
+        "drupal/ai": "^1.0",
+        "drupal/ai_provider_openai": "^1.0",
+        "drupal/ai_provider_perplexity": "^1.0@beta",
         "drupal/config_filter": "^2.7",
         "drupal/config_ignore": "^3.3",
         "drupal/core-composer-scaffold": "^10.4",
