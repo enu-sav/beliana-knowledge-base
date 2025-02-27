@@ -85,7 +85,8 @@ class BibTeXConverter {
           break;
         case '@online':
         case '@url':
-          $harvardCitations[] = $this->formatURL($entry);
+        case '@misc':
+        $harvardCitations[] = $this->formatURL($entry);
           break;
         default:
           echo "Unsupported type: " . $entry['type'] . "\n";
@@ -140,9 +141,12 @@ class BibTeXConverter {
   private function formatURL($entry) {
     $authors = isset($entry['author']) ? $this->formatAuthors($entry['author']) : '';
     $title = $entry['title'];
-    $url = $entry['url'];
+    $url = $entry['url'] ?? $entry['howpublished']; ;
     $year = $entry['year'];
     $accessed = isset($entry['urldate']) ? " (accessed " . $entry['urldate'] . ")" : '';
+    if ($entry['howpublished'] && empty($accessed)) {
+      $accessed = isset($entry['note']) ? " (accessed " . $entry['note'] . ")" : '';
+    }
 
     return "$authors ($year) $title. Available at: $url$accessed";
   }
