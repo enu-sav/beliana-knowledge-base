@@ -87,7 +87,7 @@ class SourceDataFieldEditForm extends FormBase {
       }
     }
 
-    $form_state->setRedirect('entity.source_comment.collection');
+    $form_state->setRedirect('view.source_comments.page');
   }
 
 }

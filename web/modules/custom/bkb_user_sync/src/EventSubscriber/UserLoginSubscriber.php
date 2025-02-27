@@ -70,24 +70,25 @@ class UserLoginSubscriber implements EventSubscriberInterface {
         return;
       }
 
-      $email = $user_data['user']['mail'] ?? "";
-      $roles = $user_data['user']['roles'] ?? [];
-
       // Map roles from Drupal 7 to Drupal 10
       $role_map = [
         'administrátor' => 'administrator',
         'Redaktor' => 'redactor',
       ];
-      $mapped_roles = [];
-      foreach ($roles as $role) {
-        if (isset($role_map[$role])) {
-          $mapped_roles[] = $role_map[$role];
-        }
+
+      $allowed_roles = array_filter($user_data['user']['roles'], function ($role) use ($role_map) {
+        return array_key_exists($role, $role_map);
+      });
+
+      // User from D7 has no allowed role assigned
+      if (empty($allowed_roles)) {
+        return;
       }
 
-      // Ensure roles include 'administrator' and 'redactor'
-      $required_roles = ['administrator', 'redactor'];
-      $roles = array_unique(array_merge($mapped_roles, $required_roles));
+      // Build D10 roles by mapping
+      $roles = array_unique(array_map(function ($role) use ($role_map) {
+        return $role_map[$role];
+      }, $allowed_roles));
 
       // Sync user to Drupal 10
       $user_storage = $this->entityTypeManager->getStorage('user');
@@ -95,29 +96,22 @@ class UserLoginSubscriber implements EventSubscriberInterface {
 
       if ($existing_users) {
         $user = reset($existing_users);
-        // Update existing user
-        $user->setEmail($email);
-        $user->setPassword($password);
-        foreach ($required_roles as $role) {
-          if (!$user->hasRole($role)) {
-            $user->addRole($role);
-          }
-        }
-        $user->save();
       } else {
         // Create new user
         $user = User::create([
           'name' => $username,
-          'mail' => $email,
-          'pass' => $password,
           'status' => 1,
-          'roles' => $roles,
         ]);
-        $user->save();
       }
 
+      // Update user data
+      $user->setEmail($user_data['user']['mail']);
+      $user->setPassword($password);
+      $user->set('roles', $roles);
+      $user->save();
+
       user_login_finalize($user);
-      $this->logger->info("User {$username} was synchronized and logged in.");
+      $this->logger->info(t('User @username was synchronized and logged in.'), ['@username' => $username]);
 
       // Redirect to home page
       $response = new RedirectResponse('/');
@@ -125,7 +119,7 @@ class UserLoginSubscriber implements EventSubscriberInterface {
       exit;
 
     } catch (\Exception $e) {
-      $this->logger->error("Error during user synchronization: " . $e->getMessage());
+      $this->logger->error('Error during user synchronization: ' . $e->getMessage());
     }
   }
 }

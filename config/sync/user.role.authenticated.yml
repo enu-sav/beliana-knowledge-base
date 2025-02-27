@@ -5,9 +5,14 @@ dependencies:
   config:
     - filter.format.basic_html
   module:
+    - bkb_comment
+    - bkb_source
     - file
     - filter
+    - navigation
+    - node
     - system
+    - toolbar
 _core:
   default_config_hash: cFrlqjtkTfvY3RGccjJkPf1SGIfJ942IrxTLWAO4mgA
 id: authenticated
@@ -15,6 +20,15 @@ label: 'Prihlásený používateľ'
 weight: -9
 is_admin: false
 permissions:
+  - 'access administration pages'
   - 'access content'
+  - 'access content overview'
+  - 'access navigation'
+  - 'access toolbar'
+  - 'access user profiles'
   - 'delete own files'
   - 'use text format basic_html'
+  - 'view source'
+  - 'view source_comment'
+  - 'view source_group'
+  - 'view the administration theme'
