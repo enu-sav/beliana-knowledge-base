@@ -5,6 +5,7 @@ dependencies:
   module:
     - bkb_comment
     - link
+    - user
 id: source_comments
 label: Komentáre
 module: views
@@ -366,8 +367,9 @@ display:
           sort_asc_label: Vzostupne
           sort_desc_label: Zostupne
       access:
-        type: none
-        options: {  }
+        type: perm
+        options:
+          perm: 'view source_comment'
       cache:
         type: tag
         options: {  }
@@ -492,6 +494,7 @@ display:
         - 'languages:language_interface'
         - url
         - url.query_args
+        - user.permissions
       tags: {  }
   page:
     id: page
@@ -517,4 +520,5 @@ display:
         - 'languages:language_interface'
         - url
         - url.query_args
+        - user.permissions
       tags: {  }

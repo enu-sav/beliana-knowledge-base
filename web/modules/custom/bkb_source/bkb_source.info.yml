@@ -2,7 +2,8 @@ name: 'BKB - Source'
 type: module
 description: 'TODO - Add description'
 package: 'BKB'
-core_version_requirement: ^10
+core_version_requirement: ^10 || ^11
 
 dependencies:
+  - drupal:bkb_base
   - drupal:jsonapi_extras

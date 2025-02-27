@@ -1,8 +1,8 @@
 name: 'BKB - User Sync'
 type: module
 description: 'User account login subscriber'
-core_version_requirement: ^10
 package: 'BKB'
+core_version_requirement: ^10 || ^11
 
 dependencies:
   - drupal:user

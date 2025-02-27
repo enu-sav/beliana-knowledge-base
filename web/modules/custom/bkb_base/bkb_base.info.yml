@@ -1,7 +1,7 @@
-name: 'BKB Base'
+name: 'BKB - Base'
 type: module
-description: 'BKB module'
-package: 'Custom'
+description: 'TODO - Add description'
+package: 'BKB'
 core_version_requirement: ^10 || ^11
 dependencies:
   - ai:ai
