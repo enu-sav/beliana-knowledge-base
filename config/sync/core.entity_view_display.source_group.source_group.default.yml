@@ -9,11 +9,19 @@ targetEntityType: source_group
 bundle: source_group
 mode: default
 content:
+  pages:
+    type: string
+    label: inline
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 6
+    region: content
   published:
     type: boolean
-    label: above
+    label: inline
     settings:
-      format: default
+      format: yes-no
       format_custom_false: ''
       format_custom_true: ''
     third_party_settings: {  }
@@ -29,9 +37,9 @@ content:
     region: content
   used:
     type: boolean
-    label: above
+    label: inline
     settings:
-      format: default
+      format: yes-no
       format_custom_false: ''
       format_custom_true: ''
     third_party_settings: {  }

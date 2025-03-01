@@ -1,0 +1,51 @@
+# $Id$
+#
+# Slovak translation of Drupal (general)
+# Copyright YEAR NAME <EMAIL@ADDRESS>
+# Generated from files:
+#  bkb_comment.info.yml: n/a
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PROJECT VERSION\n"
+"POT-Creation-Date: 2025-03-01 07:39+0100\n"
+"PO-Revision-Date: 2025-03-01 07:39+0100\n"
+"Last-Translator: NAME <EMAIL@ADDRESS>\n"
+"Language-Team: Slovak <EMAIL@ADDRESS>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+#: Comment.php:84
+msgid "comment-entity-label-label"
+msgstr "Názov hesla"
+
+#: Comment.php:85
+msgid "comment-entity-label-description"
+msgstr "Vložte názov hesla v RS"
+
+#: Comment.php:101
+msgid "comment-entity-url-label"
+msgstr "URL hesla"
+
+#: Comment.php:102
+msgid "comment-entity-url-description"
+msgstr "Vložte URL hesla skopírovaním z prehliadača"
+
+#: Comment.php:121
+msgid "comment-entity-comment-label"
+msgstr "Komentár"
+
+#: Comment.php:122
+msgid "comment-entity-comment-description"
+msgstr "V texte môžete uviesť odkaz na položku v zoznamueZdrojov, napr. [1]"
+
+#: Comment.php:136
+msgid "comment-entity-sources-label"
+msgstr "Zdroje"
+
+#: Comment.php:157
+msgid "comment-entity-uid-label"
+msgstr "Autor"

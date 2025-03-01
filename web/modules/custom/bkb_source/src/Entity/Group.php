@@ -80,7 +80,8 @@ final class Group extends ContentEntityBase implements GroupInterface {
     $fields = parent::baseFieldDefinitions($entity_type);
 
     $fields['source'] = BaseFieldDefinition::create('entity_reference')
-      ->setLabel(t('Source'))
+      ->setLabel(t('group-entity-source-label'))
+      ->setDescription(t('group-entity-source-description'))
       ->setSetting('target_type', 'source')
       ->setSetting('handler', 'default')
       ->setSetting('handler_settings', [
@@ -94,7 +95,6 @@ final class Group extends ContentEntityBase implements GroupInterface {
         'settings' => [
           'match_operator' => 'CONTAINS',
           'size' => 60,
-          'placeholder' => t('Search for a source...'),
         ],
       ])
       ->setDisplayOptions('view', [
@@ -105,9 +105,25 @@ final class Group extends ContentEntityBase implements GroupInterface {
       ->setDisplayConfigurable('form', TRUE)
       ->setDisplayConfigurable('view', TRUE);
 
+    $fields['pages'] = BaseFieldDefinition::create('string')
+      ->setLabel(t('group-entity-pages-label'))
+      ->setDescription(t('group-entity-pages-description'))
+      ->setSetting('max_length', 255)
+      ->setDisplayOptions('form', [
+        'type' => 'string_textfield',
+        'weight' => 6,
+      ])
+      ->setDisplayConfigurable('form', TRUE)
+      ->setDisplayOptions('view', [
+        'label' => 'above',
+        'type' => 'string',
+        'weight' => 6,
+      ])
+      ->setDisplayConfigurable('view', TRUE);
+
     $fields['published'] = BaseFieldDefinition::create('boolean')
-      ->setLabel(t('Published'))
-      ->setDescription(t('Indicates whether this entity is published.'))
+      ->setLabel(t('group-entity-published-label'))
+      ->setDescription(t('group-entity-published-description'))
       ->setDisplayOptions('form', [
         'type' => 'boolean_checkbox',
         'weight' => 10,
@@ -122,8 +138,8 @@ final class Group extends ContentEntityBase implements GroupInterface {
       ->setDisplayConfigurable('view', TRUE);
 
     $fields['used'] = BaseFieldDefinition::create('boolean')
-      ->setLabel(t('Used'))
-      ->setDescription(t('Indicates whether this entity has been used.'))
+      ->setLabel(t('group-entity-used-label'))
+      ->setDescription(t('group-entity-used-description'))
       ->setDefaultValue(FALSE)
       ->setDisplayOptions('form', [
         'type' => 'boolean_checkbox',
@@ -139,7 +155,7 @@ final class Group extends ContentEntityBase implements GroupInterface {
       ->setDisplayConfigurable('view', TRUE);
 
     $fields['uid'] = BaseFieldDefinition::create('entity_reference')
-      ->setLabel(t('Author'))
+      ->setLabel(t('group-entity-uid-label'))
       ->setSetting('target_type', 'user')
       ->setDefaultValueCallback(self::class . '::getDefaultEntityOwner')
       ->setDisplayOptions('form', [

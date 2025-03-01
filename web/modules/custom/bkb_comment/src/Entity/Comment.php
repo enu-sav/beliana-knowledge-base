@@ -81,7 +81,8 @@ final class Comment extends ContentEntityBase implements CommentInterface {
     $fields = parent::baseFieldDefinitions($entity_type);
 
     $fields['label'] = BaseFieldDefinition::create('string')
-      ->setLabel(t('Label'))
+      ->setLabel(t('comment-entity-label-label'))
+      ->setDescription(t('comment-entity-label-description'))
       ->setRequired(TRUE)
       ->setSetting('max_length', 255)
       ->setDisplayOptions('form', [
@@ -97,10 +98,10 @@ final class Comment extends ContentEntityBase implements CommentInterface {
       ->setDisplayConfigurable('view', TRUE);
 
     $fields['url'] = BaseFieldDefinition::create('link')
-      ->setLabel(t('URL'))
-      ->setDescription(t('Enter a valid URL.'))
+      ->setLabel(t('comment-entity-url-label'))
+      ->setDescription(t('comment-entity-url-description'))
       ->setSettings([
-        'link_type' => LinkItemInterface::LINK_GENERIC,
+        'link_type' => LinkItemInterface::LINK_EXTERNAL,
         'title' => DRUPAL_DISABLED,
       ])
       ->setRequired(TRUE)
@@ -117,7 +118,8 @@ final class Comment extends ContentEntityBase implements CommentInterface {
       ->setDisplayConfigurable('view', TRUE);
 
     $fields['comment'] = BaseFieldDefinition::create('string_long')
-      ->setLabel(t('Comment'))
+      ->setLabel(t('comment-entity-comment-label'))
+      ->setDescription(t('comment-entity-comment-description'))
       ->setDisplayOptions('form', [
         'type' => 'textarea',
         'weight' => 10,
@@ -131,7 +133,7 @@ final class Comment extends ContentEntityBase implements CommentInterface {
       ->setDisplayConfigurable('view', TRUE);
 
     $fields['sources'] = BaseFieldDefinition::create('entity_reference')
-      ->setLabel(t('Sources'))
+      ->setLabel(t('comment-entity-sources-label'))
       ->setSetting('target_type', 'source_group')
       ->setSetting('handler', 'default')
       ->setSetting('handler_settings', [
@@ -152,7 +154,7 @@ final class Comment extends ContentEntityBase implements CommentInterface {
       ->setDisplayConfigurable('view', TRUE);
 
     $fields['uid'] = BaseFieldDefinition::create('entity_reference')
-      ->setLabel(t('Author'))
+      ->setLabel(t('comment-entity-uid-label'))
       ->setSetting('target_type', 'user')
       ->setDefaultValueCallback(self::class . '::getDefaultEntityOwner')
       ->setDisplayOptions('form', [

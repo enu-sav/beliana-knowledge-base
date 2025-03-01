@@ -1,0 +1,55 @@
+# $Id$
+#
+# Slovak translation of Drupal (general)
+# Copyright YEAR NAME <EMAIL@ADDRESS>
+# Generated from files:
+#  bkb_source.info.yml: n/a
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PROJECT VERSION\n"
+"POT-Creation-Date: 2025-03-01 07:39+0100\n"
+"PO-Revision-Date: 2025-03-01 07:39+0100\n"
+"Last-Translator: NAME <EMAIL@ADDRESS>\n"
+"Language-Team: Slovak <EMAIL@ADDRESS>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+#: Group.php:83
+msgid "group-entity-source-label"
+msgstr "Zdroj"
+
+#: Group.php:84
+msgid "group-entity-source-description"
+msgstr "<p>Existujúci zdroj nájdete tak, že zadáte čať názvu, autora a pod. Ak zdroj ešte neexistuje, tak zadajte údaje, podľa ktorých možno údaje o zdroji získať, napr.</p><p>pre knihu:autor názov rok vydania, alebo autor isbn, alebo názov isbn<br>pre URL stránku alebo pdf súbor:názov, URL<br>pre odborný článok: autor, doi alebo názov, doi</p><p>V prípade uvedenia autora stačí 1. autor, názov môže byť  skrátený.Nájdený biblografický záznam následne skontrolujte</p>"
+
+#: Group.php:110
+msgid "group-entity-pages-label"
+msgstr "Strany"
+
+#: Group.php:111
+msgid "group-entity-pages-description"
+msgstr "V prípade knihy uveďte stranu alebo zoznam strán, napr 3 alebo 3, 7 alebo 3-5"
+
+#: Group.php:126
+msgid "group-entity-published-label"
+msgstr "Zverejniť"
+
+#: Group.php:127
+msgid "group-entity-published-description"
+msgstr "Zdroj uviesť v zozname referencií pri publikovaní na webe"
+
+#: Group.php:142
+msgid "group-entity-used-label"
+msgstr "Použité"
+
+#: Group.php:143
+msgid "group-entity-used-description"
+msgstr "Údaje z tohto zdroja boli použité v texte hesla"
+
+#: Group.php:159
+msgid "group-entity-uid-label"
+msgstr "Autor"

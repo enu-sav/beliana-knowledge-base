@@ -4,6 +4,9 @@ description: 'TODO - Add description'
 package: 'BKB'
 core_version_requirement: ^10 || ^11
 
+interface translation project: bkb_source
+interface translation server pattern: modules/custom/%project/translations/%project.%language.po
+
 dependencies:
   - drupal:bkb_base
   - drupal:jsonapi_extras
