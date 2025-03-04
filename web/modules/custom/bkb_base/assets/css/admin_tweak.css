@@ -1,22 +1,25 @@
 article.comment > .field {
   padding-bottom: 24px;
 }
-
 article.comment .field--name-sources > .field__items {
   counter-reset: esum;
 }
-
 article.comment .field--name-sources > .field__items > .field__item {
   counter-increment: esum;
   padding: 0 0 16px 16px;
 }
-
 article.comment .field--name-sources > .field__items > .field__item > .field:not(.field--name-source) {
   padding-left: 32px;
 }
-
 article.comment .field--name-sources > .field__items > .field__item .field--name-source:before {
   content: "[" counter(esum) "]:";
   display: inline-block;
   width: 32px;
+}
+
+.view-source-comments table {
+  table-layout: fixed;
+}
+.view-source-comments table tbody td {
+  vertical-align: top;
 }

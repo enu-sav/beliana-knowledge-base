@@ -9,3 +9,4 @@ interface translation server pattern: modules/custom/%project/translations/%proj
 
 dependencies:
   - drupal:bkb_source
+  - drupal:views

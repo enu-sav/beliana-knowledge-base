@@ -46,14 +46,14 @@ class UserLoginSubscriber implements EventSubscriberInterface {
     }
 
     try {
-      $webrs_site = getenv('WEBRS_SITE');
+      $api_url = getenv('WEBRS_SITE');
 
       // Get CSRF token from Drupal 7
-      $csrf_response = $this->httpClient->request('GET', $webrs_site . '/services/session/token');
+      $csrf_response = $this->httpClient->request('GET', $api_url . '/services/session/token');
       $csrf_token = trim($csrf_response->getBody()->getContents());
 
       // Login to Drupal 7
-      $response = $this->httpClient->request('POST', $webrs_site . '/api/users/user/login', [
+      $response = $this->httpClient->request('POST', $api_url . '/api/users/user/login', [
         'headers' => [
           'Content-Type' => 'application/json',
           'X-CSRF-Token' => $csrf_token,
