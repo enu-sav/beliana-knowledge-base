@@ -115,7 +115,7 @@ display:
             suffix: ''
             target: ''
             nl2br: false
-            max_length: 50
+            max_length: 200
             word_boundary: true
             ellipsis: true
             more_link: false
