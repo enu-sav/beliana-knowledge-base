@@ -1,0 +1,8 @@
+<?php
+
+/**
+ * Implements hook_page_attachments().
+ */
+function bkb_base_page_attachments(array &$attachments) {
+  $attachments['#attached']['library'][] = 'bkb_base/admin-overrides';
+}

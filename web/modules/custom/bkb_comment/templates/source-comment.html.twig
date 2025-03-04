@@ -13,6 +13,9 @@
  * @see template_preprocess_source_comment()
  */
 #}
+
+{% set attributes = attributes.addClass('comment') %}
+
 <article{{ attributes }}>
   {% if view_mode != 'full' %}
     {{ title_prefix }}

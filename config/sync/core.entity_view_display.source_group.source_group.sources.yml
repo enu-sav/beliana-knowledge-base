@@ -25,6 +25,7 @@ content:
     weight: 0
     region: content
 hidden:
+  pages: true
   published: true
   uid: true
   used: true

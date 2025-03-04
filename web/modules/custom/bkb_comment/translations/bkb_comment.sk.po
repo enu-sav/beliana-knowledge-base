@@ -36,7 +36,7 @@ msgstr "Vložte URL hesla skopírovaním z prehliadača"
 
 #: Comment.php:121
 msgid "comment-entity-comment-label"
-msgstr "Komentár"
+msgstr "Text komentára"
 
 #: Comment.php:122
 msgid "comment-entity-comment-description"

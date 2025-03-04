@@ -20,6 +20,14 @@ function bkb_comment_theme(): array {
 }
 
 /**
+ * Implements hook_theme_registry_alter
+ */
+function bkb_comment_theme_registry_alter(&$theme_registry) {
+  $path = \Drupal::service('extension.list.module')->getPath('bkb_comment');
+  $theme_registry['field__comment']['path'] = $path . '/templates';
+}
+
+/**
  * Prepares variables for comment templates.
  *
  * Default template: source-comment.html.twig.
