@@ -1,20 +1,8 @@
-article.comment > .field {
+article.bkb-comment > .field {
   padding-bottom: 24px;
 }
-article.comment .field--name-sources > .field__items {
-  counter-reset: esum;
-}
-article.comment .field--name-sources > .field__items > .field__item {
-  counter-increment: esum;
-  padding: 0 0 16px 16px;
-}
-article.comment .field--name-sources > .field__items > .field__item > .field:not(.field--name-source) {
-  padding-left: 32px;
-}
-article.comment .field--name-sources > .field__items > .field__item .field--name-source:before {
-  content: "[" counter(esum) "]:";
-  display: inline-block;
-  width: 32px;
+article.bkb-group {
+  padding: 0 0 16px 32px;
 }
 
 .view-source-comments table {
@@ -22,4 +10,16 @@ article.comment .field--name-sources > .field__items > .field__item .field--name
 }
 .view-source-comments table tbody td {
   vertical-align: top;
+}
+.view-source-comments article.bkb-group {
+  padding: 0;
+}
+
+form.source-comment-form .field--name-index {
+  display: none;
+}
+
+#edit-sources--description {
+  max-width: max-content;
+  margin-bottom: 16px;
 }

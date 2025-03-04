@@ -79,9 +79,25 @@ final class Group extends ContentEntityBase implements GroupInterface {
 
     $fields = parent::baseFieldDefinitions($entity_type);
 
+    $fields['index'] = BaseFieldDefinition::create('integer')
+      ->setLabel(t('Index'))
+      ->setReadOnly(TRUE)
+      ->setRequired(TRUE)
+      ->setSetting('unsigned', TRUE)
+      ->setDisplayOptions('view', [
+        'label' => 'above',
+        'type' => 'number_integer',
+        'weight' => 0,
+      ])
+      ->setDisplayOptions('form', [
+        'type' => 'number',
+        'weight' => 0,
+      ])
+      ->setDisplayConfigurable('form', TRUE)
+      ->setDisplayConfigurable('view', TRUE);
+
     $fields['source'] = BaseFieldDefinition::create('entity_reference')
       ->setLabel(t('group-entity-source-label'))
-      ->setDescription(t('group-entity-source-description'))
       ->setSetting('target_type', 'source')
       ->setSetting('handler', 'default')
       ->setSetting('handler_settings', [

@@ -16,13 +16,20 @@ targetEntityType: source_group
 bundle: source_group
 mode: sources
 content:
+  index:
+    type: number_unformatted
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 0
+    region: content
   source:
     type: entity_reference_label
     label: hidden
     settings:
       link: true
     third_party_settings: {  }
-    weight: 0
+    weight: 1
     region: content
 hidden:
   pages: true

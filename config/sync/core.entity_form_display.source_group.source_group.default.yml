@@ -9,9 +9,16 @@ targetEntityType: source_group
 bundle: source_group
 mode: default
 content:
+  index:
+    type: number
+    weight: 0
+    region: content
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
   pages:
     type: string_textfield
-    weight: 1
+    weight: 2
     region: content
     settings:
       size: 60
@@ -19,14 +26,14 @@ content:
     third_party_settings: {  }
   published:
     type: boolean_checkbox
-    weight: 2
+    weight: 3
     region: content
     settings:
       display_label: true
     third_party_settings: {  }
   source:
     type: entity_reference_autocomplete
-    weight: 0
+    weight: 1
     region: content
     settings:
       match_operator: CONTAINS
@@ -36,7 +43,7 @@ content:
     third_party_settings: {  }
   used:
     type: boolean_checkbox
-    weight: 3
+    weight: 4
     region: content
     settings:
       display_label: true

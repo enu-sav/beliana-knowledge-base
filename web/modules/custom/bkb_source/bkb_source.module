@@ -1,0 +1,55 @@
+<?php
+
+use Drupal\Core\Render\Element;
+use Drupal\Core\Form\FormStateInterface;
+
+/**
+ * Implements hook_theme().
+ */
+function bkb_source_theme(): array {
+  return [
+    'source_group' => ['render element' => 'elements'],
+  ];
+}
+
+/**
+ * Prepares variables for group templates.
+ *
+ * Default template: source-group.html.twig.
+ *
+ * @param array $variables
+ *   An associative array containing:
+ *   - elements: An associative array containing the group information and any
+ *     fields attached to the entity.
+ *   - attributes: HTML attributes for the containing element.
+ */
+function template_preprocess_source_group(array &$variables): void {
+  $variables['view_mode'] = $variables['elements']['#view_mode'];
+  foreach (Element::children($variables['elements']) as $key) {
+    $variables['content'][$key] = $variables['elements'][$key];
+  }
+}
+
+/**
+ * Implements hook_field_widget_WIDGET_TYPE_form_alter().
+ */
+function bkb_source_inline_entity_form_entity_form_alter(array &$entity_form, FormStateInterface &$form_state) {
+  $index = 1;
+  $input = $form_state->getUserInput();
+
+  // Calculate index when added new item in inline form
+  if (!empty($input['sources'])) {
+    $last = end($input['sources']);
+    $index = $last['inline_entity_form']['index'][0]['value'] + 1;
+  }
+
+  if (empty($entity_form['index']['widget'][0]['value']['#default_value'])) {
+    $entity_form['index']['widget'][0]['value']['#default_value'] = $index;
+  }
+  else {
+    // Set index for existing entities reference
+    $index = $entity_form['index']['widget'][0]['value']['#default_value'];
+  }
+
+  $entity_form['source']['widget'][0]['target_id']['#title'] = t('group-entity-source-label-index', ['@index' => $index]);
+}

@@ -14,14 +14,22 @@
  */
 #}
 
-{% set attributes = attributes.addClass('bkb-comment') %}
+{% set attributes = attributes.addClass('bkb-group') %}
 
 <article{{ attributes }}>
   {% if view_mode != 'full' %}
     {{ title_prefix }}
     {{ title_suffix }}
   {% endif %}
+
   {% if content %}
-    {{- content -}}
+    <div class="source field--label-inline ">
+      <div class="field__label">
+        {{ 'group-entity-source-label-index'|t({'@index': content.index|render|striptags|trim}) }}
+      </div>
+      {{ content.source }}
+    </div>
+
+    {{ content|without('source', 'index') }}
   {% endif %}
 </article>

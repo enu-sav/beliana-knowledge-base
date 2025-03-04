@@ -9,13 +9,20 @@ targetEntityType: source_group
 bundle: source_group
 mode: default
 content:
+  index:
+    type: number_unformatted
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 0
+    region: content
   pages:
     type: string
     label: inline
     settings:
       link_to_entity: false
     third_party_settings: {  }
-    weight: 1
+    weight: 2
     region: content
   published:
     type: boolean
@@ -25,7 +32,7 @@ content:
       format_custom_false: ''
       format_custom_true: ''
     third_party_settings: {  }
-    weight: 2
+    weight: 3
     region: content
   source:
     type: entity_reference_label
@@ -33,7 +40,7 @@ content:
     settings:
       link: true
     third_party_settings: {  }
-    weight: 0
+    weight: 1
     region: content
   used:
     type: boolean
@@ -43,7 +50,7 @@ content:
       format_custom_false: ''
       format_custom_true: ''
     third_party_settings: {  }
-    weight: 3
+    weight: 4
     region: content
 hidden:
   uid: true

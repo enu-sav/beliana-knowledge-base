@@ -134,6 +134,7 @@ final class Comment extends ContentEntityBase implements CommentInterface {
 
     $fields['sources'] = BaseFieldDefinition::create('entity_reference')
       ->setLabel(t('comment-entity-sources-label'))
+      ->setDescription(t('comment-entity-source-description'))
       ->setSetting('target_type', 'source_group')
       ->setSetting('handler', 'default')
       ->setSetting('handler_settings', [
