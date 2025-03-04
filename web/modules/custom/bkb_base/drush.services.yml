@@ -1,0 +1,5 @@
+services:
+  bkb_base.commands:
+    class: Drupal\bkb_base\Commands\BkbBaseCommands
+    tags:
+      - { name: drush.command }
