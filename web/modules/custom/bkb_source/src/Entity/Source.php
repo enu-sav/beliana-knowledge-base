@@ -79,14 +79,15 @@ final class Source extends ContentEntityBase implements SourceInterface {
       $config = $config_factory->get('bkb_base.settings');
       $selectedAI = $config->get('api_key');
       $prompt = $config->get('ai_prompt');
+      $label = $this->get('label')->value;
 
       if (!in_array($selectedAI, ['perplexity', 'open_ai'])) {
         $selectedAI = 'perplexity';
       }
 
       $response_text = match ($selectedAI) {
-        'perplexity' => \Drupal::service('bkb_base.ai_bibtex')->getBibtexPerplexity($this, $prompt),
-        'open_ai' => \Drupal::service('bkb_base.ai_bibtex')->getBibtexOpenAI($this, $prompt),
+        'perplexity' => \Drupal::service('bkb_base.ai_bibtex')->getBibtexPerplexity($label, $prompt),
+        'open_ai' => \Drupal::service('bkb_base.ai_bibtex')->getBibtexOpenAI($label, $prompt),
       };
 
       if ($response_text) {
