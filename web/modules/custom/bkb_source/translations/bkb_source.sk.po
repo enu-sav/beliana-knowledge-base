@@ -26,6 +26,10 @@ msgstr "Zdroj"
 msgid "group-entity-source-label-index"
 msgstr "Zdroj [@index]"
 
+#: Group.php:84
+msgid "group-entity-source-description"
+msgstr "<p>Existujúci zdroj nájdete tak, že zadáte časť názvu, autora a pod. Ak zdroj ešte neexistuje, tak zadajte údaje, podľa ktorých možno získať bibliografické údaje zdroja, napr.</p><p>pre knihu: autor názov rok vydania, alebo autor isbn, alebo názov isbn<br>pre URL stránku alebo pdf súbor: názov, URL<br>pre odborný článok: autor, doi alebo názov, doi</p><p>V prípade uvedenia autora stačí prvý autor, názov môže byť skrátený. Nájdený bibliografický záznam následne skontrolujte</p>"
+
 #: Group.php:110
 msgid "group-entity-pages-label"
 msgstr "Strany"

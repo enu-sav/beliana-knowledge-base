@@ -39,8 +39,7 @@ function bkb_source_inline_entity_form_entity_form_alter(array &$entity_form, Fo
 
   // Calculate index when added new item in inline form
   if (!empty($input['sources'])) {
-    $last = end($input['sources']);
-    $index = $last['inline_entity_form']['index'][0]['value'] + 1;
+    $index = $entity_form['#ief_row_delta'] + 1;
   }
 
   if (empty($entity_form['index']['widget'][0]['value']['#default_value'])) {

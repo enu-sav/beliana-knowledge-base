@@ -98,6 +98,7 @@ final class Group extends ContentEntityBase implements GroupInterface {
 
     $fields['source'] = BaseFieldDefinition::create('entity_reference')
       ->setLabel(t('group-entity-source-label'))
+      ->setDescription(t('group-entity-source-description'))
       ->setSetting('target_type', 'source')
       ->setSetting('handler', 'default')
       ->setSetting('handler_settings', [

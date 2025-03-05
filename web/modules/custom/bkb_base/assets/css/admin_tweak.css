@@ -15,11 +15,10 @@ article.bkb-group {
   padding: 0;
 }
 
-form.source-comment-form .field--name-index {
+form.source-comment-form .field--name-index,
+form.source-comment-form .field--name-source .form-item__description {
   display: none;
 }
-
-#edit-sources--description {
-  max-width: max-content;
-  margin-bottom: 16px;
+form.source-comment-form .ajax-new-content .field--name-source .form-item__description {
+  display: block;
 }
