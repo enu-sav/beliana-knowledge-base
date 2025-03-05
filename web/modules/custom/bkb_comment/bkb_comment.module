@@ -7,6 +7,8 @@ declare(strict_types=1);
  * Provides a comment entity type.
  */
 
+use Drupal\Core\Entity\ContentEntityForm;
+use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Render\Element;
 use Drupal\user\UserInterface;
 use Drupal\views\ViewExecutable;
@@ -27,6 +29,33 @@ function bkb_comment_theme(): array {
 function bkb_comment_theme_registry_alter(&$theme_registry) {
   $path = \Drupal::service('extension.list.module')->getPath('bkb_comment');
   $theme_registry['field__comment']['path'] = $path . '/templates';
+}
+
+/**
+ * Implements hook_form_alter().
+ */
+function bkb_comment_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  $object = $form_state->getFormObject();
+
+  if ($object instanceof ContentEntityForm && $object->getEntity()
+      ->getEntityTypeId() == 'source_comment' && $form['sources']) {
+    $form['sources']['widget']['add_more']['#value'] = t('comment-form-add-more-label');
+  }
+}
+
+/**
+ * Implements hook_views_query_alter().
+ */
+function bkb_comment_views_query_alter(ViewExecutable $view, QueryPluginBase $query) {
+  if ($view->id() == 'source_comments' && !empty($view->exposed_raw_input['comment'])) {
+    foreach ($query->where as &$condition_group) {
+      foreach ($condition_group['conditions'] as &$condition) {
+        if ($condition['field'] == 'source_comment.comment') {
+          $condition['field'] = 'source_comment.comment__value';
+        }
+      }
+    }
+  }
 }
 
 /**
@@ -79,19 +108,4 @@ function bkb_comment_user_predelete(UserInterface $account): void {
   $storage->delete(
     $storage->loadMultiple($source_comment_ids)
   );
-}
-
-/**
- * Implements hook_views_query_alter().
- */
-function bkb_comment_views_query_alter(ViewExecutable $view, QueryPluginBase $query) {
-  if ($view->id() == 'source_comments' && !empty($view->exposed_raw_input['comment'])) {
-    foreach ($query->where as &$condition_group) {
-      foreach ($condition_group['conditions'] as &$condition) {
-        if ($condition['field'] == 'source_comment.comment') {
-          $condition['field'] = 'source_comment.comment__value';
-        }
-      }
-    }
-  }
 }

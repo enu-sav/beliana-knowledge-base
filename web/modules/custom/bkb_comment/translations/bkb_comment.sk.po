@@ -53,3 +53,7 @@ msgstr "<p>Existujúci zdroj nájdete tak, že zadáte časť názvu, autora a p
 #: Comment.php:157
 msgid "comment-entity-uid-label"
 msgstr "Autor"
+
+#: bkb_comment.module:101
+msgid "comment-form-add-more-label"
+msgstr "Pridať ďalší zdroj"
