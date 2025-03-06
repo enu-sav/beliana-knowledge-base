@@ -9,6 +9,7 @@ dependencies:
     - bkb_source
     - file
     - filter
+    - jsonapi_permission_access
     - navigation
     - node
     - system
@@ -23,6 +24,7 @@ permissions:
   - 'access administration pages'
   - 'access content'
   - 'access content overview'
+  - 'access jsonapi routes'
   - 'access navigation'
   - 'access toolbar'
   - 'access user profiles'

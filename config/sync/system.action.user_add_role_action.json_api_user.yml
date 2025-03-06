@@ -1,0 +1,14 @@
+uuid: aa71c949-6682-40c8-b352-0f630caa4ed5
+langcode: sk
+status: true
+dependencies:
+  config:
+    - user.role.json_api_user
+  module:
+    - user
+id: user_add_role_action.json_api_user
+label: 'Pridať rolu JSON:API User vybraným používateľom'
+type: user
+plugin: user_add_role_action
+configuration:
+  rid: json_api_user

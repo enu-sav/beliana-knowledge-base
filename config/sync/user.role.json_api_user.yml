@@ -1,0 +1,14 @@
+uuid: 62d7aca3-51a2-4b96-92f4-79525e1721dc
+langcode: sk
+status: true
+dependencies:
+  module:
+    - jsonapi_permission_access
+_core:
+  default_config_hash: '-hvflIKEeOFozhnVu6Cl2f2-yHHsFgCFKt6bg__TkNQ'
+id: json_api_user
+label: 'JSON:API User'
+weight: 4
+is_admin: null
+permissions:
+  - 'access jsonapi routes'

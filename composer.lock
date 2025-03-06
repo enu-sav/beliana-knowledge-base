@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "7e5ded61a39f3b47ce2103f960f371eb",
+    "content-hash": "b054b70b17dd214491b2e8e53e8a3e65",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -2125,6 +2125,51 @@
             "homepage": "https://www.drupal.org/project/jsonapi_extras",
             "support": {
                 "source": "https://git.drupalcode.org/project/jsonapi_extras"
+            }
+        },
+        {
+            "name": "drupal/jsonapi_permission_access",
+            "version": "1.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://git.drupalcode.org/project/jsonapi_permission_access.git",
+                "reference": "1.0.1"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://ftp.drupal.org/files/projects/jsonapi_permission_access-1.0.1.zip",
+                "reference": "1.0.1",
+                "shasum": "586a5589c93a62aab0c32384e6bd362afb3780d1"
+            },
+            "require": {
+                "drupal/core": "^9 || ^10 || ^11"
+            },
+            "type": "drupal-module",
+            "extra": {
+                "drupal": {
+                    "version": "1.0.1",
+                    "datestamp": "1713726058",
+                    "security-coverage": {
+                        "status": "not-covered",
+                        "message": "Project has not opted into security advisory coverage!"
+                    }
+                }
+            },
+            "notification-url": "https://packages.drupal.org/8/downloads",
+            "license": [
+                "GPL-2.0-or-later"
+            ],
+            "authors": [
+                {
+                    "name": "Dan Chadwick",
+                    "homepage": "https://www.drupal.org/user/3331413",
+                    "email": "daniel.chadwick612@gmail.com"
+                }
+            ],
+            "description": "Provides a specific permission on JSON:API Routes.",
+            "homepage": "https://www.drupal.org/project/jsonapi_permission_access",
+            "support": {
+                "source": "https://git.drupalcode.org/project/jsonapi_permission_access"
             }
         },
         {

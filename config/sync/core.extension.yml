@@ -32,6 +32,7 @@ module:
   inline_entity_form: 0
   jsonapi: 0
   jsonapi_extras: 0
+  jsonapi_permission_access: 0
   key: 0
   language: 0
   layout_builder: 0

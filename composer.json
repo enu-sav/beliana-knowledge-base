@@ -29,6 +29,7 @@
         "drupal/gin_toolbar": "^2.0",
         "drupal/inline_entity_form": "^3.0@RC",
         "drupal/jsonapi_extras": "^3.26",
+        "drupal/jsonapi_permission_access": "^1.0",
         "drupal/r4032login": "^2.2",
         "drush/drush": "^12.5",
         "vlucas/phpdotenv": "^5.6"

@@ -1,0 +1,14 @@
+uuid: 8191df12-c7cb-4123-8f6b-144628469fbf
+langcode: sk
+status: true
+dependencies:
+  config:
+    - user.role.json_api_user
+  module:
+    - user
+id: user_remove_role_action.json_api_user
+label: 'Odobrať rolu JSON:API User vybraným používateľom'
+type: user
+plugin: user_remove_role_action
+configuration:
+  rid: json_api_user
