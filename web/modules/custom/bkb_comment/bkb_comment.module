@@ -7,6 +7,7 @@ declare(strict_types=1);
  * Provides a comment entity type.
  */
 
+use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Entity\ContentEntityForm;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Render\Element;
@@ -108,4 +109,13 @@ function bkb_comment_user_predelete(UserInterface $account): void {
   $storage->delete(
     $storage->loadMultiple($source_comment_ids)
   );
+}
+
+/**
+ * Implements hook_jsonapi_entity_filter_access.
+ */
+function bkb_comment_jsonapi_entity_filter_access($entity_type, $account): array {
+  return ([
+    JSONAPI_FILTER_AMONG_ALL => AccessResult::allowed(),
+  ]);
 }

@@ -3,6 +3,8 @@ langcode: sk
 status: true
 dependencies:
   module:
+    - bkb_comment
+    - bkb_source
     - jsonapi_permission_access
 _core:
   default_config_hash: 6WavjUYXIegP9AAg2zXGx54MWIVoomC3SZhNiqe-Dyk
@@ -12,3 +14,6 @@ weight: -10
 is_admin: false
 permissions:
   - 'access jsonapi routes'
+  - 'view source'
+  - 'view source_comment'
+  - 'view source_group'

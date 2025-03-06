@@ -382,7 +382,7 @@ display:
       access:
         type: perm
         options:
-          perm: 'view source_comment'
+          perm: 'create source_comment'
       cache:
         type: tag
         options: {  }
