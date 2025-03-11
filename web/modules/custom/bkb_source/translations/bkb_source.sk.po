@@ -57,3 +57,11 @@ msgstr "Údaje z tohto zdroja boli použité v texte hesla"
 #: Group.php:159
 msgid "group-entity-uid-label"
 msgstr "Autor"
+
+#: SourceDataFieldEditForm.php:45
+msgid "Edit data for @label"
+msgstr "Upraviť údaje pre @label"
+
+#: bkb_source.routing.yml:21
+msgid "Edit Referenced Entities"
+msgstr "Upraviť údaje zdroja"

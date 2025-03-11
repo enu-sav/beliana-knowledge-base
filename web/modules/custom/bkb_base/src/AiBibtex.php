@@ -61,7 +61,7 @@ final class AiBibtex {
     $messages[] = new ChatMessage('user', $promptReplaced);
     $input = new ChatInput($messages);
     // Get the response
-    $model = $model ?? $this->configFactory->get('ai_perplexity.settings')
+    $model = $model ?: $this->configFactory->get('ai_perplexity.settings')
       ->get('default_model');
     $output = $provider->chat($input, $model);
     $response_text = $output->getNormalized()->getText();

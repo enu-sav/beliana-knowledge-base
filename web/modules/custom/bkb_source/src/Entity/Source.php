@@ -96,16 +96,17 @@ final class Source extends ContentEntityBase implements SourceInterface {
     }
 
     // Create citation form the bibtex value
-    $value = $this->get('data')->getValue();
-    $escapedValue = Html::escape($value[0]['value']);
+    if (!$this->get('data')->isEmpty()) {
+      $escapedValue = Html::escape($this->get('data')->value);
 
-    // Create a new BibTeXConverter instance with the escaped value.
-    $converter = new BibTeXConverter($escapedValue);
-    $harvardCitations = $converter->convertToHarvard();
-    $citation = reset($harvardCitations);
+      // Create a new BibTeXConverter instance with the escaped value.
+      $converter = new BibTeXConverter($escapedValue);
+      $harvardCitations = $converter->convertToHarvard();
+      $citation = reset($harvardCitations);
 
-    // Set the 'citation' field with the first Harvard citation.
-    $this->set('citation', $citation);
+      // Set the 'citation' field with the first Harvard citation.
+      $this->set('citation', $citation);
+    }
   }
 
   /**

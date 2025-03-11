@@ -28,13 +28,21 @@ class SourceDataFieldEditForm extends FormBase {
    * {@inheritdoc}
    */
   public function buildForm(array $form, FormStateInterface $form_state, $id = NULL): array {
-    $comment = \Drupal::entityTypeManager()->getStorage('source_comment')->load($id);
+    $comment = \Drupal::entityTypeManager()
+      ->getStorage('source_comment')
+      ->load($id);
     $sourceGroups = $comment->get('sources')->referencedEntities();
+    $query = \Drupal::request()->query->get('excluded');
+    $excluded = $query ? explode(',', $query) : [];
 
     // Loop through each referenced entity and create a form element for it.
     foreach ($sourceGroups as $sourceGroup) {
       $referenced_entities = $sourceGroup->get('source')->referencedEntities();
       foreach ($referenced_entities as $referenced_entity) {
+        if (!empty($excluded) && in_array($referenced_entity->id(), $excluded)) {
+          continue;
+        }
+
         // Ensure the referenced entity has the desired field.
         if ($referenced_entity->hasField('data')) {
           // Get the current value of the field to edit.
@@ -44,7 +52,6 @@ class SourceDataFieldEditForm extends FormBase {
             '#type' => 'textarea',
             '#title' => $this->t('Edit data for @label', ['@label' => $referenced_entity->label()]),
             '#default_value' => $current_value,
-            '#description' => $this->t('Edit the value of the source data for the referenced entity: @label', ['@label' => $referenced_entity->label()]),
             '#attributes' => [
               'rows' => 10,
             ],
