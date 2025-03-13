@@ -75,20 +75,9 @@ final class Source extends ContentEntityBase implements SourceInterface {
     }
 
     if ($this->isNew()) {
-      $config_factory = \Drupal::configFactory();
-      $config = $config_factory->get('bkb_base.settings');
-      $selectedAI = $config->get('api_key');
-      $prompt = $config->get('ai_prompt');
-      $label = $this->get('label')->value;
-
-      if (!in_array($selectedAI, ['perplexity', 'open_ai'])) {
-        $selectedAI = 'perplexity';
-      }
-
-      $response_text = match ($selectedAI) {
-        'perplexity' => \Drupal::service('bkb_base.ai_bibtex')->getBibtexPerplexity($label, $prompt),
-        'open_ai' => \Drupal::service('bkb_base.ai_bibtex')->getBibtexOpenAI($label, $prompt),
-      };
+      $config = \Drupal::configFactory()->get('bkb_base.settings');
+      $response_text = \Drupal::service('bkb_base.ai_bibtex')
+        ->getBibtex($config->get('api_key'), $this->get('label')->value, $config->get('ai_prompt'));
 
       if ($response_text) {
         $this->set('data', $response_text);

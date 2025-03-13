@@ -22,3 +22,7 @@ form.source-comment-form .field--name-source .form-item__description {
 form.source-comment-form .ajax-new-content .field--name-source .form-item__description {
   display: block;
 }
+
+form.bkb-base-source-data-edit .label-wrapper > .form-type--textfield {
+  display: inline-block;
+}

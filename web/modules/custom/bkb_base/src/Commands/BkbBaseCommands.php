@@ -54,53 +54,42 @@ class BkbBaseCommands extends DrushCommands {
       // Read the first row (header) and add the new column.
       $header = fgetcsv($handle, 0, $separator);
       if ($header !== FALSE) {
-        $header = array_merge($header, [
-          'Perplexity - llama-3.1-sonar-small-128k-online',
-          'Perplexity - llama-3.1-sonar-large-128k-online',
-          'Perplexity - sonar-deep-research',
-          'Perplexity - sonar',
-          'OpenAI - gpt-4o-mini',
-          'OpenAI - gpt-4.5-preview',
-          'OpenAI - gpt-4o',
-          'OpenAI - chatgpt-4o-latest',
-          'OpenAI - o1-mini'
-        ]);
-        $rows[] = $header;
-
         // Define the models for perplexity and OpenAI.
-        $perplexityModels = [
-          'llama-3.1-sonar-small-128k-online',
-          'llama-3.1-sonar-large-128k-online',
-          'sonar-deep-research',
-          'sonar'
+        $models = [
+          'perplexity' => [
+            'llama-3.1-sonar-small-128k-online',
+            'llama-3.1-sonar-large-128k-online',
+            'sonar-deep-research',
+            'sonar',
+          ],
+          'open_ai' => [
+            'gpt-4o-mini',
+            'gpt-4.5-preview',
+            'gpt-4o',
+            'chatgpt-4o-latest',
+            'o1-mini',
+          ],
         ];
 
-        $openAIModels = [
-          'gpt-4o-mini',
-          'gpt-4.5-preview',
-          'gpt-4o',
-          'chatgpt-4o-latest',
-          'o1-mini'
-        ];
-
-        $aiBibtexService = \Drupal::service('bkb_base.ai_bibtex');
+        /** @var \Drupal\bkb_base\AiBibtex $bibtexService */
+        $bibtexService = \Drupal::service('bkb_base.ai_bibtex');
 
         // Process CSV data.
         while (($data = fgetcsv($handle, 0, $separator)) !== FALSE) {
-          // Get Perplexity data.
-          foreach ($perplexityModels as $model) {
-            $data[] = $aiBibtexService->getBibtexPerplexity($data[0], $prompt, $model);
-          }
-
-          // Get OpenAI data.
-          foreach ($openAIModels as $model) {
-            $data[] = $aiBibtexService->getBibtexOpenAI($data[0], $prompt, $model);
+          foreach ($models as $ai => $values) {
+            foreach ($values as $model) {
+              $header[] = $ai . ' -' . $model;
+              $this->output()->writeln("<info>Processing \"$data[0]\": $ai - $model</info>");
+              $data[] = $bibtexService->getBibtex($ai, $data[0], $prompt, $model);
+            }
           }
 
           // Add the processed data to rows.
+          $rows[] = $header;
           $rows[] = $data;
         }
       }
+
       fclose($handle);
     }
 
