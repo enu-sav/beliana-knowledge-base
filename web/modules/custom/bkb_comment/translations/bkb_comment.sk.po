@@ -20,19 +20,7 @@ msgstr ""
 
 #: Comment.php:84
 msgid "comment-entity-label-label"
-msgstr "Názov hesla"
-
-#: Comment.php:85
-msgid "comment-entity-label-description"
-msgstr "Vložte názov hesla v RS"
-
-#: Comment.php:101
-msgid "comment-entity-url-label"
-msgstr "URL hesla"
-
-#: Comment.php:102
-msgid "comment-entity-url-description"
-msgstr "Vložte URL hesla skopírovaním z prehliadača"
+msgstr "Komentár"
 
 #: Comment.php:121
 msgid "comment-entity-comment-label"
@@ -40,7 +28,7 @@ msgstr "Text komentára"
 
 #: Comment.php:122
 msgid "comment-entity-comment-description"
-msgstr "V texte môžete uviesť odkaz na položku v zoznamueZdrojov, napr. [1]"
+msgstr "V texte môžete uviesť odkaz na položku v zozname zdrojov, napr. [1]"
 
 #: Comment.php:136
 msgid "comment-entity-sources-label"
@@ -53,3 +41,35 @@ msgstr "Autor"
 #: bkb_comment.module:101
 msgid "comment-form-add-more-label"
 msgstr "Pridať ďalší zdroj"
+
+#: Word.php:84
+msgid "comment-node-entity-label-label"
+msgstr "Názov hesla"
+
+#: Word.php:85
+msgid "comment-node-entity-label-description"
+msgstr "Vložte názov hesla v RS"
+
+#: Word.php:101
+msgid "comment-node-entity-url-label"
+msgstr "URL hesla"
+
+#: Word.php:102
+msgid "comment-node-entity-url-description"
+msgstr "Vložte URL hesla skopírovaním z prehliadača"
+
+#: Word.php:121
+msgid "comment-node-entity-comments-label"
+msgstr "Komentáre"
+
+#: Word.php:142
+msgid "comment-node-entity-uid-label"
+msgstr "Autor"
+
+#: Word.php:142
+msgid "comment-node-entity-uid-label"
+msgstr "Autor"
+
+#: bkb_comment.links.action.yml:2
+msgid "comment-node-action-add"
+msgstr "Pridať Komentované heslo"

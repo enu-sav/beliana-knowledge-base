@@ -9,27 +9,6 @@ config:
   config:
     php: .lando/php.ini
 
-services:
-  appserver:
-    scanner: false
-    overrides:
-      environment:
-        XDEBUG_MODE:
-        PHP_SENDMAIL_PATH: '/usr/sbin/sendmail -S mailhog:1025'
-    build_as_root_internal:
-      # Remove after https://github.com/lando/cli/pull/53 is merged.
-      - apt-get update && apt-get install -y imagemagick
-  database:
-    overrides:
-      image: mariadb:10.6
-      command: docker-entrypoint.sh mariadbd
-      environment:
-        MARIADB_ALLOW_EMPTY_ROOT_PASSWORD: 1
-  mailhog:
-    type: mailhog
-    portforward: true
-    hogfrom:
-      - appserver
 proxy:
   appserver:
     - bkb.beliana.lndo.site

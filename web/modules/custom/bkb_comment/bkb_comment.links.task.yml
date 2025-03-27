@@ -15,8 +15,21 @@ entity.source_comment.delete_form:
   route_name: entity.source_comment.delete_form
   base_route: entity.source_comment.canonical
   weight: 10
-#entity.source_comment.collection:
-#  title: 'Comments'
-#  route_name: entity.source_comment.collection
-#  base_route: system.admin_content
-#  weight: 10
+
+entity.source_comment_node.settings:
+  title: 'Settings'
+  route_name: entity.source_comment_node.settings
+  base_route: entity.source_comment_node.settings
+entity.source_comment_node.view:
+  title: 'View'
+  route_name: entity.source_comment_node.canonical
+  base_route: entity.source_comment_node.canonical
+entity.source_comment_node.edit_form:
+  title: 'Edit'
+  route_name: entity.source_comment_node.edit_form
+  base_route: entity.source_comment_node.canonical
+entity.source_comment_node.delete_form:
+  title: 'Delete'
+  route_name: entity.source_comment_node.delete_form
+  base_route: entity.source_comment_node.canonical
+  weight: 10

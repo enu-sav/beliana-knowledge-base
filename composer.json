@@ -16,6 +16,7 @@
     ],
     "require": {
         "composer/installers": "^2.0",
+        "cweagans/composer-patches": "^1.7",
         "drupal/ai": "^1.0",
         "drupal/ai_provider_openai": "^1.0",
         "drupal/ai_provider_perplexity": "^1.0@beta",
@@ -27,7 +28,7 @@
         "drupal/environment_indicator": "^4.0",
         "drupal/gin": "^4.0",
         "drupal/gin_toolbar": "^2.0",
-        "drupal/inline_entity_form": "^3.0@RC",
+        "drupal/inline_entity_form": "3.0-RC19",
         "drupal/jsonapi_extras": "^3.26",
         "drupal/jsonapi_permission_access": "^1.0",
         "drupal/r4032login": "^2.2",
@@ -42,16 +43,19 @@
     "config": {
         "allow-plugins": {
             "composer/installers": true,
+            "cweagans/composer-patches": true,
+            "dealerdirect/phpcodesniffer-composer-installer": true,
             "drupal/core-composer-scaffold": true,
             "drupal/core-project-message": true,
-            "phpstan/extension-installer": true,
-            "dealerdirect/phpcodesniffer-composer-installer": true,
-            "php-http/discovery": true
+            "php-http/discovery": true,
+            "phpstan/extension-installer": true
         },
         "sort-packages": true
     },
     "autoload": {
-        "files": ["load.environment.php"]
+        "files": [
+            "load.environment.php"
+        ]
     },
     "extra": {
         "drupal-scaffold": {
@@ -87,6 +91,16 @@
             "web/themes/custom/{$name}": [
                 "type:drupal-custom-theme"
             ]
+        },
+        "composer-exit-on-patch-failure": true,
+        "patchLevel": {
+            "drupal/core": "-p2"
+        },
+        "enable-patching": true,
+        "patches": {
+            "drupal/inline_entity_form": {
+                "3088901 - Add more than two items with simple inline entity form widget": "https://www.drupal.org/files/issues/2023-03-27/3088901-16.patch"
+            }
         }
     }
 }

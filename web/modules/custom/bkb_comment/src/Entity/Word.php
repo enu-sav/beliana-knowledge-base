@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Drupal\bkb_comment\Entity;
 
-use Drupal\bkb_comment\CommentInterface;
+use Drupal\bkb_comment\WordInterface;
 use Drupal\Core\Entity\ContentEntityBase;
 use Drupal\Core\Entity\EntityStorageInterface;
 use Drupal\Core\Entity\EntityTypeInterface;
@@ -13,34 +13,35 @@ use Drupal\link\LinkItemInterface;
 use Drupal\user\EntityOwnerTrait;
 
 /**
- * Defines the comment entity class.
+ * Defines the word entity class.
  *
  * @ContentEntityType(
- *   id = "source_comment",
- *   label = @Translation("Comment"),
- *   label_collection = @Translation("Comments"),
- *   label_singular = @Translation("comment"),
- *   label_plural = @Translation("comments"),
+ *   id = "source_comment_node",
+ *   label = @Translation("Word"),
+ *   label_collection = @Translation("Words"),
+ *   label_singular = @Translation("word"),
+ *   label_plural = @Translation("words"),
  *   label_count = @PluralTranslation(
- *     singular = "@count comments",
- *     plural = "@count comments",
+ *     singular = "@count words",
+ *     plural = "@count words",
  *   ),
  *   handlers = {
- *     "list_builder" = "Drupal\bkb_comment\CommentListBuilder",
+ *     "list_builder" = "Drupal\bkb_comment\WordListBuilder",
  *     "views_data" = "Drupal\views\EntityViewsData",
- *     "access" = "Drupal\bkb_comment\CommentAccessControlHandler",
+ *     "access" = "Drupal\bkb_comment\WordAccessControlHandler",
  *     "form" = {
- *       "add" = "Drupal\bkb_comment\Form\CommentForm",
- *       "edit" = "Drupal\bkb_comment\Form\CommentForm",
+ *       "add" = "Drupal\bkb_comment\Form\WordForm",
+ *       "edit" = "Drupal\bkb_comment\Form\WordForm",
  *       "delete" = "Drupal\Core\Entity\ContentEntityDeleteForm",
- *       "delete-multiple-confirm" = "Drupal\Core\Entity\Form\DeleteMultipleForm",
+ *       "delete-multiple-confirm" =
+ *   "Drupal\Core\Entity\Form\DeleteMultipleForm",
  *     },
  *     "route_provider" = {
  *       "html" = "Drupal\Core\Entity\Routing\AdminHtmlRouteProvider",
  *     },
  *   },
- *   base_table = "source_comment",
- *   admin_permission = "administer source_comment",
+ *   base_table = "source_comment_node",
+ *   admin_permission = "administer source_comment_node",
  *   entity_keys = {
  *     "id" = "id",
  *     "label" = "label",
@@ -48,17 +49,17 @@ use Drupal\user\EntityOwnerTrait;
  *     "owner" = "uid",
  *   },
  *   links = {
- *     "collection" = "/admin/content/source-comment",
- *     "add-form" = "/source-comment/add",
- *     "canonical" = "/source-comment/{source_comment}",
- *     "edit-form" = "/source-comment/{source_comment}/edit",
- *     "delete-form" = "/source-comment/{source_comment}/delete",
- *     "delete-multiple-form" = "/admin/content/source-comment/delete-multiple",
+ *     "collection" = "/admin/content/word",
+ *     "add-form" = "/word/add",
+ *     "canonical" = "/word/{source_comment_node}",
+ *     "edit-form" = "/word/{source_comment_node}/edit",
+ *     "delete-form" = "/word/{source_comment_node}/delete",
+ *     "delete-multiple-form" = "/admin/content/word/delete-multiple",
  *   },
- *   field_ui_base_route = "entity.source_comment.settings",
+ *   field_ui_base_route = "entity.source_comment_node.settings",
  * )
  */
-final class Comment extends ContentEntityBase implements CommentInterface {
+final class Word extends ContentEntityBase implements WordInterface {
 
   use EntityOwnerTrait;
 
@@ -72,11 +73,16 @@ final class Comment extends ContentEntityBase implements CommentInterface {
       $this->setOwnerId(0);
     }
 
-    if (empty($this->get('label')->value)) {
-      $label = substr($this->get('comment')->value, 0, 60);
-      $label .= strlen($this->get('comment')->value) > 60 ? '...' : '';
+    $comments = $this->get('comments')->referencedEntities();
 
-      $this->set('label', $label);
+    if (empty($comments)) {
+      return;
+    }
+
+    // Copy url to Comment entity due to JSONAPI filter limitations
+    foreach ($comments as $comment) {
+      $comment->set('url', $this->get('url')->getValue());
+      $comment->save();
     }
   }
 
@@ -84,12 +90,12 @@ final class Comment extends ContentEntityBase implements CommentInterface {
    * {@inheritdoc}
    */
   public static function baseFieldDefinitions(EntityTypeInterface $entity_type): array {
-
     $fields = parent::baseFieldDefinitions($entity_type);
 
     $fields['label'] = BaseFieldDefinition::create('string')
-      ->setLabel(t('comment-entity-label-label'))
-      ->setDescription(t('comment-entity-label-description'))
+      ->setLabel(t('comment-node-entity-label-label'))
+      ->setDescription(t('comment-node-entity-label-description'))
+      ->setRequired(TRUE)
       ->setSetting('max_length', 255)
       ->setDisplayOptions('form', [
         'type' => 'string_textfield',
@@ -104,12 +110,13 @@ final class Comment extends ContentEntityBase implements CommentInterface {
       ->setDisplayConfigurable('view', TRUE);
 
     $fields['url'] = BaseFieldDefinition::create('link')
-      ->setLabel(t('comment-entity-url-label'))
-      ->setDescription(t('comment-entity-url-description'))
+      ->setLabel(t('comment-node-entity-url-label'))
+      ->setDescription(t('comment-node-entity-url-description'))
       ->setSettings([
         'link_type' => LinkItemInterface::LINK_EXTERNAL,
         'title' => DRUPAL_DISABLED,
       ])
+      ->setRequired(TRUE)
       ->setDisplayOptions('form', [
         'type' => 'link_default',
         'weight' => 30,
@@ -122,24 +129,9 @@ final class Comment extends ContentEntityBase implements CommentInterface {
       ->setDisplayConfigurable('form', TRUE)
       ->setDisplayConfigurable('view', TRUE);
 
-    $fields['comment'] = BaseFieldDefinition::create('string_long')
-      ->setLabel(t('comment-entity-comment-label'))
-      ->setDescription(t('comment-entity-comment-description'))
-      ->setDisplayOptions('form', [
-        'type' => 'textarea',
-        'weight' => 10,
-      ])
-      ->setDisplayConfigurable('form', TRUE)
-      ->setDisplayOptions('view', [
-        'type' => 'basic_string',
-        'label' => 'above',
-        'weight' => 10,
-      ])
-      ->setDisplayConfigurable('view', TRUE);
-
-    $fields['sources'] = BaseFieldDefinition::create('entity_reference')
-      ->setLabel(t('comment-entity-sources-label'))
-      ->setSetting('target_type', 'source_group')
+    $fields['comments'] = BaseFieldDefinition::create('entity_reference')
+      ->setLabel(t('comment-node-entity-comments-label'))
+      ->setSetting('target_type', 'source_comment')
       ->setSetting('handler', 'default')
       ->setSetting('handler_settings', [
         'auto_create' => TRUE,
@@ -159,7 +151,7 @@ final class Comment extends ContentEntityBase implements CommentInterface {
       ->setDisplayConfigurable('view', TRUE);
 
     $fields['uid'] = BaseFieldDefinition::create('entity_reference')
-      ->setLabel(t('comment-entity-uid-label'))
+      ->setLabel(t('comment-node-entity-uid-label'))
       ->setSetting('target_type', 'user')
       ->setDefaultValueCallback(self::class . '::getDefaultEntityOwner')
       ->setDisplayOptions('form', [

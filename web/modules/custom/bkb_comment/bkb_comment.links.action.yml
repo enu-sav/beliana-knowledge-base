@@ -1,5 +1,5 @@
-source_comment.add_form:
-  title: 'Add comment'
-  route_name: entity.source_comment.add_form
+source_comment_node.add_form:
+  title: 'comment-node-action-add'
+  route_name: entity.source_comment_node.add_form
   appears_on:
-    - view.source_comments.page
+    - view.comments_overview.page

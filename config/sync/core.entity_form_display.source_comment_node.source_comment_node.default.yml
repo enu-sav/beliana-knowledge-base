@@ -1,0 +1,44 @@
+uuid: 35d1f379-ab85-477a-9e41-3c1704b28c6e
+langcode: sk
+status: true
+dependencies:
+  module:
+    - bkb_comment
+    - inline_entity_form
+    - link
+id: source_comment_node.source_comment_node.default
+targetEntityType: source_comment_node
+bundle: source_comment_node
+mode: default
+content:
+  comments:
+    type: inline_entity_form_simple
+    weight: 2
+    region: content
+    settings:
+      form_mode: default
+      override_labels: false
+      label_singular: ''
+      label_plural: ''
+      collapsible: true
+      collapsed: true
+      revision: false
+    third_party_settings: {  }
+  label:
+    type: string_textfield
+    weight: 0
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  url:
+    type: link_default
+    weight: 1
+    region: content
+    settings:
+      placeholder_url: ''
+      placeholder_title: ''
+    third_party_settings: {  }
+hidden:
+  uid: true

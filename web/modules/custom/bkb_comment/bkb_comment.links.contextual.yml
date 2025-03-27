@@ -8,3 +8,14 @@ entity.source_comment.delete_form:
   group: source_comment
   title: 'Delete'
   weight: 10
+
+entity.source_comment_node.edit_form:
+  route_name: entity.source_comment_node.edit_form
+  group: source_comment_node
+  title: 'Edit'
+
+entity.source_comment_node.delete_form:
+  route_name: entity.source_comment_node.delete_form
+  group: source_comment_node
+  title: 'Delete'
+  weight: 10

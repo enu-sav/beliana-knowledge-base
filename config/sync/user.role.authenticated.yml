@@ -32,5 +32,6 @@ permissions:
   - 'use text format basic_html'
   - 'view source'
   - 'view source_comment'
+  - 'view source_comment_node'
   - 'view source_group'
   - 'view the administration theme'

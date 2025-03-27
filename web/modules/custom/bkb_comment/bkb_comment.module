@@ -8,7 +8,6 @@ declare(strict_types=1);
  */
 
 use Drupal\Core\Access\AccessResult;
-use Drupal\Core\Entity\ContentEntityForm;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Render\Element;
 use Drupal\user\UserInterface;
@@ -21,6 +20,7 @@ use Drupal\views\Plugin\views\query\QueryPluginBase;
 function bkb_comment_theme(): array {
   return [
     'source_comment' => ['render element' => 'elements'],
+    'source_comment_node' => ['render element' => 'elements'],
   ];
 }
 
@@ -35,12 +35,32 @@ function bkb_comment_theme_registry_alter(&$theme_registry) {
 /**
  * Implements hook_form_alter().
  */
-function bkb_comment_form_alter(&$form, FormStateInterface $form_state, $form_id) {
-  $object = $form_state->getFormObject();
-
-  if ($object instanceof ContentEntityForm && $object->getEntity()
-      ->getEntityTypeId() == 'source_comment' && $form['sources']) {
-    $form['sources']['widget']['add_more']['#value'] = t('comment-form-add-more-label');
+function bkb_comment_form_alter(array &$form, FormStateInterface &$form_state, $form_id) {
+  switch ($form_id) {
+    case 'source_comment_node_add_form':
+    case 'source_comment_node_edit_form':
+      foreach ($form['comments']['widget'] as $key => &$item) {
+        if (is_numeric($key)) {
+          if ($form_id == 'source_comment_node_add_form') {
+            $item['#field_title'] = t('comment-entity-label-label');
+          }
+          else {
+            $comment = $item['inline_entity_form']['#default_value'];
+            $item['#field_title'] = $comment->get('label')->value;
+          }
+        }
+      }
+      break;
+  }
+}
+/**
+ * Implements hook_field_widget_WIDGET_TYPE_form_alter().
+ */
+function bkb_comment_inline_entity_form_entity_form_alter(array &$entity_form, FormStateInterface &$form_state) {
+  switch ($entity_form['#entity_type']) {
+    case 'source_comment':
+      $entity_form['sources']['widget']['add_more']['#value'] = t('comment-form-add-more-label');
+      break;
   }
 }
 
@@ -48,11 +68,11 @@ function bkb_comment_form_alter(&$form, FormStateInterface $form_state, $form_id
  * Implements hook_views_query_alter().
  */
 function bkb_comment_views_query_alter(ViewExecutable $view, QueryPluginBase $query) {
-  if ($view->id() == 'source_comments' && !empty($view->exposed_raw_input['comment'])) {
+  if ($view->id() == 'comments_overview' && !empty($view->exposed_raw_input['comment'])) {
     foreach ($query->where as &$condition_group) {
       foreach ($condition_group['conditions'] as &$condition) {
-        if ($condition['field'] == 'source_comment.comment') {
-          $condition['field'] = 'source_comment.comment__value';
+        if ($condition['field'] == 'source_comment_source_comment_node__comments.comment') {
+          $condition['field'] .= '__value';
         }
       }
     }
@@ -78,19 +98,39 @@ function template_preprocess_source_comment(array &$variables): void {
 }
 
 /**
+ * Prepares variables for word templates.
+ *
+ * Default template: source-comment-node.html.twig.
+ *
+ * @param array $variables
+ *   An associative array containing:
+ *   - elements: An associative array containing the word information and any
+ *     fields attached to the entity.
+ *   - attributes: HTML attributes for the containing element.
+ */
+function template_preprocess_source_comment_node(array &$variables): void {
+  $variables['view_mode'] = $variables['elements']['#view_mode'];
+  foreach (Element::children($variables['elements']) as $key) {
+    $variables['content'][$key] = $variables['elements'][$key];
+  }
+}
+
+/**
  * Implements hook_user_cancel().
  */
 function bkb_comment_user_cancel($edit, UserInterface $account, $method): void {
   switch ($method) {
     case 'user_cancel_reassign':
-      // Anonymize comments.
-      $storage = \Drupal::entityTypeManager()->getStorage('source_comment');
-      $source_comment_ids = $storage->getQuery()
-        ->condition('uid', $account->id())
-        ->accessCheck(FALSE)
-        ->execute();
-      foreach ($storage->loadMultiple($source_comment_ids) as $source_comment) {
-        $source_comment->setOwnerId(0)->save();
+      // Anonymize entities.
+      foreach (['source_comment', 'source_comment_node'] as $entity_type) {
+        $storage = \Drupal::entityTypeManager()->getStorage($entity_type);
+        $ids = $storage->getQuery()
+          ->condition('uid', $account->id())
+          ->accessCheck(FALSE)
+          ->execute();
+        foreach ($storage->loadMultiple($ids) as $entity) {
+          $entity->setOwnerId(0)->save();
+        }
       }
       break;
   }
@@ -100,15 +140,17 @@ function bkb_comment_user_cancel($edit, UserInterface $account, $method): void {
  * Implements hook_ENTITY_TYPE_predelete() for user entities.
  */
 function bkb_comment_user_predelete(UserInterface $account): void {
-  // Delete comments that belong to this account.
-  $storage = \Drupal::entityTypeManager()->getStorage('source_comment');
-  $source_comment_ids = $storage->getQuery()
-    ->condition('uid', $account->id())
-    ->accessCheck(FALSE)
-    ->execute();
-  $storage->delete(
-    $storage->loadMultiple($source_comment_ids)
-  );
+  // Delete entity that belong to this account.
+  foreach (['source_comment', 'source_comment_node'] as $entity_type) {
+    $storage = \Drupal::entityTypeManager()->getStorage($entity_type);
+    $ids = $storage->getQuery()
+      ->condition('uid', $account->id())
+      ->accessCheck(FALSE)
+      ->execute();
+    $storage->delete(
+      $storage->loadMultiple($ids)
+    );
+  }
 }
 
 /**

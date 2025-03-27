@@ -16,4 +16,5 @@ permissions:
   - 'access jsonapi routes'
   - 'view source'
   - 'view source_comment'
+  - 'view source_comment_node'
   - 'view source_group'

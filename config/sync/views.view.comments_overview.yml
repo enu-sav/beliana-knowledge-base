@@ -1,4 +1,4 @@
-uuid: f6b04af5-c055-4ba7-864f-9bb0277859a5
+uuid: da5c0a07-5541-4ba2-a732-4d3df4c22513
 langcode: sk
 status: true
 dependencies:
@@ -6,12 +6,12 @@ dependencies:
     - bkb_comment
     - link
     - user
-id: source_comments
+id: comments_overview
 label: Komentáre
 module: views
 description: ''
 tag: ''
-base_table: source_comment
+base_table: source_comment_node
 base_field: id
 display:
   default:
@@ -24,7 +24,7 @@ display:
       fields:
         label:
           id: label
-          table: source_comment
+          table: source_comment_node
           field: label
           relationship: none
           group_type: group
@@ -38,9 +38,9 @@ display:
             alter_text: false
             text: ''
             make_link: false
-            path: '{{ url__uri }}'
+            path: ''
             absolute: false
-            external: true
+            external: false
             replace_spaces: false
             path_case: none
             trim_whitespace: false
@@ -49,7 +49,7 @@ display:
             link_class: ''
             prefix: ''
             suffix: ''
-            target: _blank
+            target: ''
             nl2br: false
             max_length: 0
             word_boundary: true
@@ -87,15 +87,15 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
-        comment:
-          id: comment
+        label_1:
+          id: label_1
           table: source_comment
-          field: comment
-          relationship: none
+          field: label
+          relationship: comments_target_id
           group_type: group
           admin_label: ''
           entity_type: source_comment
-          entity_field: comment
+          entity_field: label
           plugin_id: field
           label: 'Text komentára'
           exclude: false
@@ -116,21 +116,21 @@ display:
             suffix: ''
             target: ''
             nl2br: false
-            max_length: 200
+            max_length: 0
             word_boundary: true
             ellipsis: true
             more_link: false
             more_link_text: ''
             more_link_path: ''
             strip_tags: false
-            trim: true
+            trim: false
             preserve_tags: ''
             html: false
           element_type: ''
           element_class: ''
           element_label_type: ''
           element_label_class: ''
-          element_label_colon: false
+          element_label_colon: true
           element_wrapper_type: ''
           element_wrapper_class: ''
           element_default_classes: true
@@ -139,8 +139,9 @@ display:
           empty_zero: false
           hide_alter_empty: true
           click_sort_column: value
-          type: basic_string
-          settings: {  }
+          type: string
+          settings:
+            link_to_entity: false
           group_column: value
           group_columns: {  }
           group_rows: true
@@ -153,12 +154,12 @@ display:
           field_api_classes: false
         url__uri:
           id: url__uri
-          table: source_comment
+          table: source_comment_node
           field: url__uri
           relationship: none
           group_type: group
           admin_label: ''
-          entity_type: source_comment
+          entity_type: source_comment_node
           entity_field: url
           plugin_id: field
           label: 'URL hesla'
@@ -194,7 +195,7 @@ display:
           element_class: ''
           element_label_type: ''
           element_label_class: ''
-          element_label_colon: false
+          element_label_colon: true
           element_wrapper_type: ''
           element_wrapper_class: ''
           element_default_classes: true
@@ -224,7 +225,7 @@ display:
           id: sources_target_id
           table: source_comment__sources
           field: sources_target_id
-          relationship: none
+          relationship: comments_target_id
           group_type: group
           admin_label: ''
           entity_type: source_comment
@@ -289,7 +290,7 @@ display:
           id: uid
           table: source_comment
           field: uid
-          relationship: none
+          relationship: comments_target_id
           group_type: group
           admin_label: ''
           entity_type: source_comment
@@ -373,7 +374,7 @@ display:
         type: basic
         options:
           submit_button: Použiť
-          reset_button: true
+          reset_button: false
           reset_button_label: Reset
           exposed_sorts_label: 'Zoradiť podľa'
           expose_sort_order: true
@@ -394,7 +395,7 @@ display:
           id: comment
           table: source_comment
           field: comment
-          relationship: none
+          relationship: comments_target_id
           group_type: group
           admin_label: ''
           entity_type: source_comment
@@ -421,6 +422,7 @@ display:
               anonymous: '0'
               redactor: '0'
               administrator: '0'
+              json_api_user: '0'
             placeholder: ''
           is_grouped: false
           group_info:
@@ -436,12 +438,12 @@ display:
             group_items: {  }
         label:
           id: label
-          table: source_comment
+          table: source_comment_node
           field: label
           relationship: none
           group_type: group
           admin_label: ''
-          entity_type: source_comment
+          entity_type: source_comment_node
           entity_field: label
           plugin_id: string
           operator: contains
@@ -450,7 +452,7 @@ display:
           exposed: true
           expose:
             operator_id: label_op
-            label: Heslo
+            label: 'Komentované heslo'
             description: ''
             use_operator: false
             operator: label_op
@@ -465,6 +467,7 @@ display:
               anonymous: '0'
               redactor: '0'
               administrator: '0'
+              json_api_user: '0'
             placeholder: ''
           is_grouped: false
           group_info:
@@ -478,10 +481,6 @@ display:
             default_group: All
             default_group_multiple: {  }
             group_items: {  }
-      filter_groups:
-        operator: AND
-        groups:
-          1: AND
       style:
         type: table
         options:
@@ -489,29 +488,21 @@ display:
           row_class: ''
           default_row_class: true
           columns:
-            id: id
-            comment: comment
             label: label
+            label_1: label_1
             url__uri: url__uri
             sources_target_id: sources_target_id
             uid: uid
           default: '-1'
           info:
-            id:
-              sortable: false
-              default_sort_order: asc
-              align: ''
-              separator: ''
-              empty_column: false
-              responsive: ''
-            comment:
+            label:
               sortable: true
               default_sort_order: asc
               align: ''
               separator: ''
               empty_column: false
               responsive: ''
-            label:
+            label_1:
               sortable: true
               default_sort_order: asc
               align: ''
@@ -544,7 +535,7 @@ display:
           caption: ''
           description: ''
       row:
-        type: 'entity:source_comment'
+        type: fields
       query:
         type: views_query
         options:
@@ -553,8 +544,18 @@ display:
           distinct: false
           replica: false
           query_tags: {  }
-      relationships: {  }
-      group_by: false
+      relationships:
+        comments_target_id:
+          id: comments_target_id
+          table: source_comment_node__comments
+          field: comments_target_id
+          relationship: none
+          group_type: group
+          admin_label: Komentár
+          entity_type: source_comment_node
+          entity_field: comments
+          plugin_id: standard
+          required: true
       header: {  }
       footer: {  }
       display_extenders: {  }
@@ -579,7 +580,7 @@ display:
         type: tab
         title: Komentáre
         description: ''
-        weight: 0
+        weight: 99
         expanded: false
         menu_name: content
         parent: navigation.content

@@ -4,8 +4,8 @@ entity.source_comment.settings:
   route_name:  entity.source_comment.settings
   parent: system.admin_structure
 
-entity.source_comment.collection:
-  title: 'Comments'
-  description: 'List of comments.'
-  route_name: entity.source_comment.collection
-  parent: system.admin_content
+entity.source_comment_node.settings:
+  title: 'Word'
+  description: 'Configure a Word entity type.'
+  route_name:  entity.source_comment_node.settings
+  parent: system.admin_structure

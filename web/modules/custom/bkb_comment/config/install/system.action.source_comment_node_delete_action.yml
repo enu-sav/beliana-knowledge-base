@@ -1,0 +1,10 @@
+langcode: en
+status: true
+dependencies:
+  module:
+    - bkb_comment
+id: source_comment_node_delete_action
+label: 'Delete words'
+type: source_comment_node
+plugin: entity:delete_action:source_comment_node
+configuration: {  }

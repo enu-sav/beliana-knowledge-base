@@ -1,0 +1,82 @@
+<?php
+
+/**
+ * @file
+ * Install, update and uninstall functions.
+ */
+
+/**
+ * Install "word" entity
+ */
+function bkb_comment_update_10001() {
+  \Drupal::service('bkb_base.helper')
+    ->installEntityType('source_comment_node');
+}
+
+/**
+ * Create "url" for source_comment_node entity
+ */
+function bkb_comment_update_10002() {
+  \Drupal::service('bkb_base.helper')
+    ->installFieldStorageDefinition('bkb_comment', 'source_comment_node', [
+      'url',
+    ]);
+}
+
+/**
+ * Move comment node values to new entity
+ */
+function bkb_comment_update_10003() {
+  /** @var \Drupal\Core\Entity\EntityTypeManager $entity_manager */
+  $entity_manager = \Drupal::service('entity_type.manager');
+  $word_storage = $entity_manager->getStorage('source_comment_node');
+  $comments = $entity_manager->getStorage('source_comment')->loadMultiple();
+
+  if (empty($comments)) {
+    return;
+  }
+
+  foreach ($comments as $comment) {
+    $words = $word_storage->loadByProperties(['label' => $comment->get('label')->value]);
+
+    if (empty($words)) {
+      $word = $word_storage->create([
+        'label' => $comment->get('label')->value,
+        'url' => $comment->get('url')->getValue(),
+        'uid' => $comment->get('uid')->value,
+        'comments' => ['target_id' => $comment->id()],
+      ]);
+
+      $word->save();
+    }
+    else {
+      $word = reset($words);
+
+      $references = $word->get('comments')->getValue();
+      $references[] = ['target_id' => $word->id()];
+
+      $word->set('comments', $references);
+      $word->save();
+    }
+  }
+}
+
+/**
+ * Move comment node values to new entity
+ */
+function bkb_comment_update_10004() {
+  /** @var \Drupal\Core\Entity\EntityTypeManager $entity_manager */
+  $entity_manager = \Drupal::service('entity_type.manager');
+  $comments = $entity_manager->getStorage('source_comment')->loadMultiple();
+
+  if (empty($comments)) {
+    return;
+  }
+
+  foreach ($comments as $comment) {
+    $label = substr($comment->get('comment')->value, 0, 60);
+    $label .= strlen($comment->get('comment')->value) > 60 ? '...' : '';
+    $comment->set('label', $label);
+    $comment->save();
+  }
+}

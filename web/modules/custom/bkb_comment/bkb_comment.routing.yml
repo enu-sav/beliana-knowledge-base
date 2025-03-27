@@ -5,3 +5,11 @@ entity.source_comment.settings:
     _title: 'Comment'
   requirements:
     _permission: 'administer source_comment'
+
+entity.source_comment_node.settings:
+  path: 'admin/structure/source-comment-node'
+  defaults:
+    _form: '\Drupal\bkb_comment\Form\WordSettingsForm'
+    _title: 'Word'
+  requirements:
+    _permission: 'administer source_comment_node'

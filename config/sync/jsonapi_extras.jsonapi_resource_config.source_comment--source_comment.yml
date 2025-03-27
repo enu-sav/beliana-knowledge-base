@@ -21,6 +21,18 @@ resourceFields:
     publicName: uuid
     enhancer:
       id: ''
+  label:
+    disabled: true
+    fieldName: label
+    publicName: label
+    enhancer:
+      id: ''
+  url:
+    disabled: false
+    fieldName: url
+    publicName: url
+    enhancer:
+      id: ''
   comment:
     disabled: false
     fieldName: comment

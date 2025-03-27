@@ -1,0 +1,43 @@
+uuid: 5c3708d8-a91d-44ee-93ff-6951bc3e9373
+langcode: sk
+status: true
+dependencies:
+  module:
+    - bkb_comment
+    - link
+id: source_comment_node.source_comment_node.default
+targetEntityType: source_comment_node
+bundle: source_comment_node
+mode: default
+content:
+  comments:
+    type: entity_reference_entity_view
+    label: above
+    settings:
+      view_mode: default
+      link: true
+    third_party_settings: {  }
+    weight: 2
+    region: content
+  label:
+    type: string
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  url:
+    type: link
+    label: above
+    settings:
+      trim_length: null
+      url_only: false
+      url_plain: false
+      rel: '0'
+      target: _blank
+    third_party_settings: {  }
+    weight: 1
+    region: content
+hidden:
+  uid: true

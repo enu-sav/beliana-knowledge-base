@@ -34,21 +34,24 @@ function template_preprocess_source_group(array &$variables): void {
  * Implements hook_field_widget_WIDGET_TYPE_form_alter().
  */
 function bkb_source_inline_entity_form_entity_form_alter(array &$entity_form, FormStateInterface &$form_state) {
-  $index = 1;
-  $input = $form_state->getUserInput();
+  switch ($entity_form['#entity_type']) {
+    case 'source_group':
+      $index = 1;
+      $input = $form_state->getUserInput();
 
-  // Calculate index when added new item in inline form
-  if (!empty($input['sources'])) {
-    $index = $entity_form['#ief_row_delta'] + 1;
-  }
+      if (!empty($input)) {
+        $index = $entity_form['#ief_row_delta'] + 1;
+      }
 
-  if (empty($entity_form['index']['widget'][0]['value']['#default_value'])) {
-    $entity_form['index']['widget'][0]['value']['#default_value'] = $index;
-  }
-  else {
-    // Set index for existing entities reference
-    $index = $entity_form['index']['widget'][0]['value']['#default_value'];
-  }
+      if (empty($entity_form['index']['widget'][0]['value']['#default_value'])) {
+        $entity_form['index']['widget'][0]['value']['#default_value'] = $index;
+      }
+      else {
+        // Set index for existing entities reference
+        $index = intval($entity_form['index']['widget'][0]['value']['#default_value']);
+      }
 
-  $entity_form['source']['widget'][0]['target_id']['#title'] = t('group-entity-source-label-index', ['@index' => $index]);
+      $entity_form['source']['widget'][0]['target_id']['#title'] = t('group-entity-source-label-index', ['@index' => $index]);
+      break;
+  }
 }

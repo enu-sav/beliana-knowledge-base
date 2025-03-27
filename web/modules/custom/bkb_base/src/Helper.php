@@ -42,6 +42,19 @@ class Helper {
   }
 
   /**
+   * Function to install custom entity
+   *
+   * @param $entity_type
+   *
+   * @return void
+   */
+  function installEntityType($entity_type) {
+    if ($entity_type_definition = $this->entityTypeManager->getDefinition($entity_type)) {
+      $this->entityDefinitionManager->installEntityType($entity_type_definition);
+    }
+  }
+
+  /**
    * Function to install field storage definition
    *
    * @param $module_name
