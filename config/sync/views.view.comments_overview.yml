@@ -374,7 +374,7 @@ display:
         type: basic
         options:
           submit_button: Použiť
-          reset_button: false
+          reset_button: true
           reset_button_label: Reset
           exposed_sorts_label: 'Zoradiť podľa'
           expose_sort_order: true

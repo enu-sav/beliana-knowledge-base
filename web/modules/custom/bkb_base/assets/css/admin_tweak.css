@@ -20,10 +20,7 @@ article.bkb-comment .field--name-comment {
   border-bottom: solid 1px var(--gin-border-color-secondary);
 }
 article.bkb-group {
-  padding: 0 0 calc(var(--spacing) * 2) calc(var(--spacing) * 4);
-}
-article.bkb-group:last-of-type {
-  padding-bottom: 0;
+  padding: var(--spacing) calc(var(--spacing) * 4);
 }
 
 .view-comments-overview table {
