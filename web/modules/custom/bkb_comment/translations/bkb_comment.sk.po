@@ -38,7 +38,7 @@ msgstr "Zdroje"
 msgid "comment-entity-uid-label"
 msgstr "Autor"
 
-#: bkb_comment.module:101
+#: bkb_comment.module:66
 msgid "comment-form-add-more-label"
 msgstr "Pridať ďalší zdroj"
 
@@ -69,6 +69,10 @@ msgstr "Autor"
 #: Word.php:142
 msgid "comment-node-entity-uid-label"
 msgstr "Autor"
+
+#: bkb_comment.module:42
+msgid "comment-node-form-add-more-label"
+msgstr "Pridať ďalší komentár"
 
 #: bkb_comment.links.action.yml:2
 msgid "comment-node-action-add"

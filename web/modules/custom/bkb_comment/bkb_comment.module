@@ -39,20 +39,24 @@ function bkb_comment_form_alter(array &$form, FormStateInterface &$form_state, $
   switch ($form_id) {
     case 'source_comment_node_add_form':
     case 'source_comment_node_edit_form':
+      $form['comments']['widget']['add_more']['#value'] = t('comment-node-form-add-more-label');
+
       foreach ($form['comments']['widget'] as $key => &$item) {
         if (is_numeric($key)) {
           if ($form_id == 'source_comment_node_add_form') {
             $item['#field_title'] = t('comment-entity-label-label');
           }
           else {
-            $comment = $item['inline_entity_form']['#default_value'];
-            $item['#field_title'] = $comment->get('label')->value;
+            if ($comment = $item['inline_entity_form']['#default_value']) {
+              $item['#field_title'] = $comment->get('label')->value;
+            }
           }
         }
       }
       break;
   }
 }
+
 /**
  * Implements hook_field_widget_WIDGET_TYPE_form_alter().
  */
