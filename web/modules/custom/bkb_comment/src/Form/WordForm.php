@@ -18,6 +18,9 @@ final class WordForm extends ContentEntityForm {
   public function save(array $form, FormStateInterface $form_state): int {
     $result = parent::save($form, $form_state);
 
+    $excluded = [];
+    $new_source = FALSE;
+
     $message_args = ['%label' => $this->entity->toLink()->toString()];
     $logger_args = [
       '%label' => $this->entity->label(),
@@ -39,7 +42,30 @@ final class WordForm extends ContentEntityForm {
         throw new \LogicException('Could not save the entity.');
     }
 
-    $form_state->setRedirect('view.comments_overview.page');
+    foreach ($form['comments']['widget'] as $i => $comment) {
+      if (is_numeric($i)) {
+        foreach ($comment['inline_entity_form']['sources']['widget'] as $j => $source) {
+          if (is_numeric($j)) {
+            $default = $source['inline_entity_form']['source']['widget'][0]['target_id']['#default_value'];
+
+            if (is_null($default)) {
+              $new_source = TRUE;
+            }
+            else {
+              $excluded[] = $default->id();
+            }
+          }
+        }
+      }
+    }
+
+    if ($new_source) {
+      $form_state->setRedirect(
+        'entity.source.data.edit',
+        ['id' => $this->entity->id()],
+        ['query' => ['excluded' => implode(',', $excluded)]]
+      );
+    }
 
     return $result;
   }

@@ -44,27 +44,6 @@ final class CommentForm extends ContentEntityForm {
         throw new \LogicException('Could not save the entity.');
     }
 
-    foreach ($form['sources']['widget'] as $key => $widget) {
-      if (is_numeric($key)) {
-        $default = $widget['inline_entity_form']['source']['widget'][0]['target_id']['#default_value'];
-
-        if (is_null($default)) {
-          $new_source = TRUE;
-        }
-        else {
-          $excluded[] = $default->id();
-        }
-      }
-    }
-
-    if ($new_source) {
-      $form_state->setRedirect(
-        'entity.source.data.edit',
-        ['id' => $this->entity->id()],
-        ['query' => ['excluded' => implode(',', $excluded)]]
-      );
-    }
-
     return $result;
   }
 

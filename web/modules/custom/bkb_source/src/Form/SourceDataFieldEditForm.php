@@ -63,17 +63,23 @@ class SourceDataFieldEditForm extends FormBase {
    * {@inheritdoc}
    */
   public function buildForm(array $form, FormStateInterface $form_state, $id = NULL): array {
-    $comment = $this->entityTypeManager
-      ->getStorage('source_comment')
+    $word = $this->entityTypeManager
+      ->getStorage('source_comment_node')
       ->load($id);
-    $sourceGroups = $comment->get('sources')->referencedEntities();
+
+    $source_groups = [];
+    $comments = $word->get('comments')->referencedEntities();
+
+    foreach ($comments as $comment) {
+      $source_groups = array_merge($source_groups, $comment->get('sources')->referencedEntities());
+    }
 
     $query = \Drupal::request()->query->get('excluded');
     $excluded = $query ? explode(',', $query) : [];
 
     // Loop through each referenced entity and create a form element for it.
-    foreach ($sourceGroups as $sourceGroup) {
-      $referenced_entities = $sourceGroup->get('source')->referencedEntities();
+    foreach ($source_groups as $source_group) {
+      $referenced_entities = $source_group->get('source')->referencedEntities();
       foreach ($referenced_entities as $referenced_entity) {
         if (!empty($excluded) && in_array($referenced_entity->id(), $excluded)) {
           continue;
