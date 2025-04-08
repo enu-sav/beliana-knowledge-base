@@ -4,12 +4,15 @@ declare(strict_types=1);
 
 namespace Drupal\bkb_source\Entity;
 
+use Dompdf\Dompdf;
 use Drupal\bkb_base\BibTeXConverter;
 use Drupal\bkb_source\SourceInterface;
+use Drupal\Component\Utility\UrlHelper;
 use Drupal\Core\Entity\ContentEntityBase;
 use Drupal\Core\Entity\EntityStorageInterface;
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Field\BaseFieldDefinition;
+use Drupal\Core\File\FileExists;
 use Drupal\user\EntityOwnerTrait;
 use Drupal\Component\Utility\Html;
 
@@ -69,19 +72,28 @@ final class Source extends ContentEntityBase implements SourceInterface {
    */
   public function preSave(EntityStorageInterface $storage): void {
     parent::preSave($storage);
+
     if (!$this->getOwnerId()) {
-      // If no owner has been set explicitly, make the anonymous user the owner.
       $this->setOwnerId(0);
     }
 
-    if ($this->isNew()) {
-      $config = \Drupal::configFactory()->get('bkb_base.settings');
-      $response_text = \Drupal::service('bkb_base.ai_bibtex')
-        ->getBibtex($config->get('api_key'), $this->get('label')->value, $config->get('ai_prompt'));
+    $label = $this->get('label')->value;
 
-      if ($response_text) {
-        $this->set('data', $response_text);
-      }
+    // Store local copy of remote source
+    if (UrlHelper::isValid($label, TRUE)) {
+      $this->getSourcePdf($label);
+    }
+
+    if ($this->isNew()) {
+      // Temporary disabled to save credit, possible to fetch later
+
+      //      $config = \Drupal::configFactory()->get('bkb_base.settings');
+      //      $response_text = \Drupal::service('bkb_base.ai_bibtex')
+      //        ->getBibtex($config->get('api_key'), $label, $config->get('ai_prompt'));
+      //
+      //      if ($response_text) {
+      //        $this->set('data', $response_text);
+      //      }
     }
 
     // Create citation form the bibtex value
@@ -193,6 +205,43 @@ final class Source extends ContentEntityBase implements SourceInterface {
       ->setDisplayConfigurable('view', TRUE);
 
     return $fields;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  private function getSourcePdf($url) {
+    /** @var \Drupal\Core\File\FileSystem $file_system */
+    $file_system = \Drupal::service('file_system');
+    $content = file_get_contents($url);
+
+    if (!preg_match('/\.pdf($|\?)/i', parse_url($url, PHP_URL_PATH))) {
+      // Generate PDF
+      $dompdf = new Dompdf();
+      $dompdf->loadHtml($content);
+      $dompdf->setPaper('A4', 'portrait');
+      $dompdf->render();
+
+      $pdf_data = $dompdf->output();
+    }
+    else {
+      $pdf_data = $content;
+    }
+
+    $path = 'private://';
+    $filename = $this->uuid() . '.pdf';
+
+    $file_system->prepareDirectory($path);
+    $file_system->saveData($pdf_data, $file_system->realpath($path) . DIRECTORY_SEPARATOR . $filename, FileExists::Replace);
+
+    /** @var \Drupal\file\Entity\File $file */
+    $file = $this->entityTypeManager()->getStorage('file')->create([
+      'uri' => $path . $filename,
+    ]);
+    $file->setPermanent();
+    $file->save();
+
+    $this->set('attachment', ['target_id' => $file->id()]);
   }
 
 }

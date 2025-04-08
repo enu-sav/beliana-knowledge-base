@@ -107,7 +107,7 @@ class SourceDataFieldEditForm extends FormBase {
 
         $form['source']['source_' . $referenced_entity->id()]['label']['update'] = [
           '#type' => 'button',
-          '#value' => $this->t('Update'),
+          '#value' => $this->t('bkb-source-fetch-bibtex-button-label'),
           '#attributes' => [
             'data-id' => $referenced_entity->id(),
           ],

@@ -58,6 +58,10 @@ msgstr "Údaje z tohto zdroja boli použité v texte hesla"
 msgid "group-entity-uid-label"
 msgstr "Autor"
 
+#: SourceDataFieldEditForm.php:110
+msgid "bkb-source-fetch-bibtex-button-label"
+msgstr "Generovať bibtex údaje s AI"
+
 #: SourceDataFieldEditForm.php:45
 msgid "Edit data for @label"
 msgstr "Upraviť údaje pre @label"

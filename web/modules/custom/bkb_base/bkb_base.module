@@ -1,8 +1,24 @@
 <?php
 
+use Drupal\Core\StreamWrapper\StreamWrapperManager;
+
 /**
  * Implements hook_page_attachments().
  */
 function bkb_base_page_attachments(array &$attachments) {
   $attachments['#attached']['library'][] = 'bkb_base/admin-overrides';
+}
+
+/**
+ * Implements hook_file_download().
+ */
+function bkb_base_file_download($uri) {
+  $scheme = StreamWrapperManager::getScheme($uri);
+  if ($scheme == 'private' && \Drupal::currentUser()->isAuthenticated()) {
+    return [
+      'Content-disposition' => 'inline;',
+    ];
+  }
+
+  return NULL;
 }
