@@ -195,7 +195,10 @@ final class Word extends ContentEntityBase implements WordInterface {
       $alias = reset($aliases);
     }
 
-    $alias->set('alias', '/subor-komentarov/' . str_replace(' ', '-', strtolower($this->label())));
+    $transliterated = \Drupal::service('transliteration')->transliterate($this->label());
+    $cleaned = preg_replace('/\s+/', '-', trim(preg_replace('/[^a-z0-9 ]+/', '', strtolower($transliterated))));
+
+    $alias->set('alias', '/subor-komentarov/' . $cleaned);
     $alias->save();
   }
 
