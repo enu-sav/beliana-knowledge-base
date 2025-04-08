@@ -105,7 +105,6 @@ final class Group extends ContentEntityBase implements GroupInterface {
         'auto_create' => TRUE,
       ])
       ->setCardinality(1)
-      ->setRequired(TRUE)
       ->setDisplayOptions('form', [
         'type' => 'entity_reference_autocomplete',
         'weight' => 5,

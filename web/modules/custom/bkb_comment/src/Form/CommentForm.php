@@ -16,8 +16,6 @@ final class CommentForm extends ContentEntityForm {
    * {@inheritdoc}
    */
   public function save(array $form, FormStateInterface $form_state): int {
-    $excluded = [];
-    $new_source = FALSE;
     $result = parent::save($form, $form_state);
 
     $message_args = ['%label' => $this->entity->toLink()->toString()];

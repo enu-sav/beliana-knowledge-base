@@ -9,7 +9,9 @@ use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Url;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 
 /**
  * Provides a form for editing the data field of source entities referenced by
@@ -128,6 +130,14 @@ class SourceDataFieldEditForm extends FormBase {
       }
     }
 
+    if (!isset($form['source'])) {
+      $url = Url::fromRoute('view.comments_overview.page')->toString();
+      $response = new RedirectResponse($url);
+      $response->send();
+
+      return [];
+    }
+
     // Add a submit button.
     $form['actions'] = ['#type' => 'actions',];
 
@@ -164,7 +174,7 @@ class SourceDataFieldEditForm extends FormBase {
       }
     }
 
-    $form_state->setRedirect('view.source_comments.page');
+    $form_state->setRedirect('view.comments_overview.page');
   }
 
   /**

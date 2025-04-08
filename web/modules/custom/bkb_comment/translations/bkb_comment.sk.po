@@ -38,9 +38,33 @@ msgstr "Zdroje"
 msgid "comment-entity-uid-label"
 msgstr "Autor"
 
+#: bkb_comment.module:42
+msgid "comment-node-form-fieldset-label"
+msgstr "Komentáre"
+
 #: bkb_comment.module:66
 msgid "comment-form-add-more-label"
 msgstr "Pridať ďalší zdroj"
+
+#: EntityController.php:225
+msgid "Add @entity-type"
+msgstr "Pridať @entity-type"
+
+#: Word.php:20
+msgid "Word"
+msgstr "Súbor komentárov"
+
+#: Word.php:21
+msgid "Words"
+msgstr "Súbory komentárov"
+
+#: Word.php:22
+msgid "word"
+msgstr "súbor komentárov"
+
+#: Word.php:23
+msgid "words"
+msgstr "súbory komentárov"
 
 #: Word.php:84
 msgid "comment-node-entity-label-label"
@@ -60,7 +84,7 @@ msgstr "Vložte URL hesla skopírovaním z prehliadača"
 
 #: Word.php:121
 msgid "comment-node-entity-comments-label"
-msgstr "Komentáre"
+msgstr "Súbor komentárov"
 
 #: Word.php:142
 msgid "comment-node-entity-uid-label"
@@ -76,4 +100,4 @@ msgstr "Pridať ďalší komentár"
 
 #: bkb_comment.links.action.yml:2
 msgid "comment-node-action-add"
-msgstr "Pridať Komentované heslo"
+msgstr "Pridať súbor komentárov"

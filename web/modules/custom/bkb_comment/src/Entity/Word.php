@@ -73,6 +73,10 @@ final class Word extends ContentEntityBase implements WordInterface {
       $this->setOwnerId(0);
     }
 
+    // Set path alias
+    $this->setPathAlias();
+
+    // Get referenced comment entities
     $comments = $this->get('comments')->referencedEntities();
 
     if (empty($comments)) {
@@ -172,6 +176,27 @@ final class Word extends ContentEntityBase implements WordInterface {
       ->setDisplayConfigurable('view', TRUE);
 
     return $fields;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function setPathAlias() {
+    $aliases = $this->entityTypeManager()
+      ->getStorage('path_alias')
+      ->loadByProperties(['path' => '/word/' . $this->id()]);
+
+    if (empty($aliases)) {
+      $alias = $this->entityTypeManager()->getStorage('path_alias')->create([
+        'path' => '/word/' . $this->id(),
+      ]);
+    }
+    else {
+      $alias = reset($aliases);
+    }
+
+    $alias->set('alias', '/subor-komentarov/' . str_replace(' ', '-', strtolower($this->label())));
+    $alias->save();
   }
 
 }

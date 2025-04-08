@@ -80,3 +80,21 @@ function bkb_comment_update_10004() {
     $comment->save();
   }
 }
+
+/**
+ * Create path aliases for 'Word' entity
+ */
+function bkb_comment_update_10005() {
+  /** @var \Drupal\Core\Entity\EntityTypeManager $entity_manager */
+  $entity_manager = \Drupal::service('entity_type.manager');
+  $words = $entity_manager->getStorage('source_comment_node')->loadMultiple();
+
+  if (empty($words)) {
+    return;
+  }
+
+  /** @var \Drupal\bkb_comment\Entity\Word $word */
+  foreach ($words as $word) {
+    $word->setPathAlias();
+  }
+}

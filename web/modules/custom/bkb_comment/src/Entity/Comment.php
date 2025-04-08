@@ -145,7 +145,6 @@ final class Comment extends ContentEntityBase implements CommentInterface {
         'auto_create' => TRUE,
       ])
       ->setCardinality(BaseFieldDefinition::CARDINALITY_UNLIMITED)
-      ->setRequired(TRUE)
       ->setDisplayOptions('form', [
         'type' => 'inline_entity_form_complex',
         'weight' => 25,

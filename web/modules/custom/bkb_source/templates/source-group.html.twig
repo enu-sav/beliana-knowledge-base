@@ -23,13 +23,15 @@
   {% endif %}
 
   {% if content %}
-    <div class="source field--label-inline ">
-      <div class="field__label">
-        {{ 'group-entity-source-label-index'|t({'@index': content.index|render|striptags|trim}) }}
+    {% if content.source['#items'] %}
+      <div class="source field--label-inline ">
+        <div class="field__label">
+          {{ 'group-entity-source-label-index'|t({'@index': content.index|render|striptags|trim}) }}
+        </div>
+        {{ content.source }}
       </div>
-      {{ content.source }}
-    </div>
 
-    {{ content|without('source', 'index') }}
+      {{ content|without('source', 'index') }}
+    {% endif %}
   {% endif %}
 </article>
