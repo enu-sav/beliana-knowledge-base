@@ -1,0 +1,7 @@
+operations:
+  js:
+    assets/js/operations.js: { }
+  dependencies:
+    - core/jquery
+    - core/drupal
+    - core/once

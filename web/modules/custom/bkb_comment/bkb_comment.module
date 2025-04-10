@@ -55,6 +55,8 @@ function bkb_comment_form_alter(array &$form, FormStateInterface &$form_state, $
           }
         }
       }
+
+      $form['#attached']['library'][] = 'bkb_comment/operations';
       break;
   }
 }
