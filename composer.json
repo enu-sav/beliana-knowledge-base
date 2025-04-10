@@ -100,7 +100,7 @@
         "enable-patching": true,
         "patches": {
             "drupal/inline_entity_form": {
-                "3088901 - Add more than two items with simple inline entity form widget": "https://www.drupal.org/files/issues/2023-03-27/3088901-16.patch"
+                "3088901 - Add more than two items with simple inline entity form widget": "./patches/3088901-16-modified.patch"
             }
         }
     }
