@@ -15,6 +15,24 @@ final class WordForm extends ContentEntityForm {
   /**
    * {@inheritdoc}
    */
+  public function buildForm(array $form, FormStateInterface $form_state): array {
+    $form = parent::buildForm($form, $form_state);
+    $query = \Drupal::request()->query->all();
+
+    // Prepopulate values from url query
+    foreach ($query as $key => $value) {
+      $property = $key == 'url' ? 'uri' : 'value';
+      if (isset($form[$key]) && empty($form[$key]['widget'][0][$property]['#default_value'])) {
+        $form[$key]['widget'][0][$property]['#default_value'] = $value;
+      }
+    }
+
+    return $form;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public function save(array $form, FormStateInterface $form_state): int {
     $result = parent::save($form, $form_state);
 
