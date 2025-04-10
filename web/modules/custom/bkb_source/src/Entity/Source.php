@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Drupal\bkb_source\Entity;
 
 use Dompdf\Dompdf;
+use Dompdf\Options;
 use Drupal\bkb_base\BibTeXConverter;
 use Drupal\bkb_source\SourceInterface;
 use Drupal\Component\Utility\UrlHelper;
@@ -213,19 +214,11 @@ final class Source extends ContentEntityBase implements SourceInterface {
   private function getSourcePdf($url) {
     /** @var \Drupal\Core\File\FileSystem $file_system */
     $file_system = \Drupal::service('file_system');
-    $content = file_get_contents($url);
-
-    if (!preg_match('/\.pdf($|\?)/i', parse_url($url, PHP_URL_PATH))) {
-      // Generate PDF
-      $dompdf = new Dompdf();
-      $dompdf->loadHtml($content);
-      $dompdf->setPaper('A4', 'portrait');
-      $dompdf->render();
-
-      $pdf_data = $dompdf->output();
+    try {
+      $pdf_data = $this->generatePdf($url);
     }
-    else {
-      $pdf_data = $content;
+    catch (\Exception $e) {
+      return;
     }
 
     $path = 'private://';
@@ -242,6 +235,76 @@ final class Source extends ContentEntityBase implements SourceInterface {
     $file->save();
 
     $this->set('attachment', ['target_id' => $file->id()]);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  private function generatePdf($url) {
+    $content = file_get_contents($url);
+
+    if (!preg_match('/\.pdf($|\?)/i', parse_url($url, PHP_URL_PATH))) {
+      $base = $this->getUrlBase($url);
+
+      libxml_use_internal_errors(TRUE);
+      $dom = new \DOMDocument();
+      $dom->loadHTML($content, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
+      libxml_clear_errors();
+
+      // Load only print styles
+      $xpath = new \DOMXPath($dom);
+      $links = $xpath->query('//link[@rel="stylesheet"][@href]');
+      $styles = '';
+
+      foreach ($links as $link) {
+        $media = $link->getAttribute('media');
+        if ($media === '' || $media === 'all' || $media === 'print') {
+          $href = $link->getAttribute('href');
+          $styles .= file_get_contents($this->resolveUrl($base, $href));
+        }
+      }
+
+      $styleTag = $dom->createElement('style', $styles);
+      $head = $dom->getElementsByTagName('head')->item(0);
+      $head->appendChild($styleTag);
+
+      $html_cleaned = $dom->saveHTML();
+      $html_cleaned = str_replace('src="/', 'src="' . $base . '/', $html_cleaned);
+
+      // Generate PDF
+      $options = new Options();
+      $options->set('isRemoteEnabled', TRUE);
+
+      $dompdf = new Dompdf($options);
+      $dompdf->loadHtml($html_cleaned, 'UTF-8');
+      $dompdf->setBasePath($base);
+      $dompdf->setPaper('A4', 'portrait');
+      $dompdf->render();
+
+      return $dompdf->output();
+    }
+
+    return $content;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  private function getUrlBase($url) {
+    $parsed = parse_url($url);
+
+    return $parsed['scheme'] . '://' . $parsed['host'];
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  private function resolveUrl($base, $href) {
+    if (parse_url($href, PHP_URL_SCHEME) != '') {
+      return $href;
+    }
+
+    return $base . '/' . $href;
   }
 
 }
