@@ -45,3 +45,9 @@ resourceFields:
     publicName: uid
     enhancer:
       id: ''
+  citation:
+    disabled: false
+    fieldName: citation
+    publicName: citation
+    enhancer:
+      id: ''
