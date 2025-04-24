@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Drupal\bkb_comment\Entity;
 
 use Drupal\bkb_comment\CommentInterface;
+use Drupal\bkb_comment\Plugin\Field\FieldType\ComputedParentFieldItemList;
 use Drupal\Core\Entity\ContentEntityBase;
 use Drupal\Core\Entity\EntityStorageInterface;
 use Drupal\Core\Entity\EntityTypeInterface;
@@ -177,6 +178,12 @@ final class Comment extends ContentEntityBase implements CommentInterface {
         'weight' => 15,
       ])
       ->setDisplayConfigurable('view', TRUE);
+
+    $fields['parent'] = BaseFieldDefinition::create('integer')
+      ->setLabel(t('Word ID'))
+      ->setComputed(TRUE)
+      ->setClass(ComputedParentFieldItemList::class)
+      ->setReadOnly(TRUE);
 
     return $fields;
   }

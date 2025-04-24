@@ -113,8 +113,9 @@ class UserLoginSubscriber implements EventSubscriberInterface {
       user_login_finalize($user);
       $this->logger->info(t('User @username was synchronized and logged in.'), ['@username' => $username]);
 
-      // Redirect to home page
-      $response = new RedirectResponse('/');
+      // Redirect
+      $destination = $request->query->get('destination', '/');
+      $response = new RedirectResponse($destination);
       $response->send();
       exit;
 

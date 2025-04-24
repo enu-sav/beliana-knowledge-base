@@ -51,3 +51,9 @@ resourceFields:
     publicName: uid
     enhancer:
       id: ''
+  parent:
+    disabled: false
+    fieldName: parent
+    publicName: parent
+    enhancer:
+      id: ''
