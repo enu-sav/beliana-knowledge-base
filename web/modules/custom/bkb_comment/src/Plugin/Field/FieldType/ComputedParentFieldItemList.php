@@ -11,6 +11,11 @@ class ComputedParentFieldItemList extends FieldItemList {
 
   protected function computeValue() {
     $entity = $this->getEntity();
+
+    if ($entity->isNew()) {
+      return;
+    }
+
     $words = \Drupal::entityTypeManager()
       ->getStorage('source_comment_node')
       ->loadByProperties(['comments' => $entity->id()]);
