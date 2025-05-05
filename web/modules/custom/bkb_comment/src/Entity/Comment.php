@@ -73,7 +73,7 @@ final class Comment extends ContentEntityBase implements CommentInterface {
       $this->setOwnerId(0);
     }
 
-    if (empty($this->get('label')->value)) {
+    if (empty($this->get('label')->value) && !empty($this->get('comment')->value)) {
       $label = substr($this->get('comment')->value, 0, 60);
       $label .= strlen($this->get('comment')->value) > 60 ? '...' : '';
 

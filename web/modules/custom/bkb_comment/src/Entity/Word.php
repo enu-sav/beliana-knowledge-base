@@ -77,7 +77,9 @@ final class Word extends ContentEntityBase implements WordInterface {
     $this->setPathAlias();
 
     // Get referenced comment entities
+    $comment_ids = [];
     $comments = $this->get('comments')->referencedEntities();
+    $original_comments = $this->original->get('comments')->referencedEntities();
 
     if (empty($comments)) {
       return;
@@ -85,8 +87,20 @@ final class Word extends ContentEntityBase implements WordInterface {
 
     // Copy url to Comment entity due to JSONAPI filter limitations
     foreach ($comments as $comment) {
+      $comment_ids[] = $comment->id();
       $comment->set('url', $this->get('url')->getValue());
       $comment->save();
+    }
+
+    if (empty($original_comments)) {
+      return;
+    }
+
+    // Remove deleted comments entities
+    foreach ($original_comments as $original_comment) {
+      if (!in_array($original_comment->id(), $comment_ids)) {
+        $original_comment->delete();
+      }
     }
   }
 
