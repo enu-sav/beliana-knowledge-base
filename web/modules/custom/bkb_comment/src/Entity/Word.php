@@ -79,18 +79,21 @@ final class Word extends ContentEntityBase implements WordInterface {
     // Get referenced comment entities
     $comment_ids = [];
     $comments = $this->get('comments')->referencedEntities();
-    $original_comments = $this->original->get('comments')->referencedEntities();
 
-    if (empty($comments)) {
+    if (!empty($comments)) {
+      // Copy url to Comment entity due to JSONAPI filter limitations
+      foreach ($comments as $comment) {
+        $comment_ids[] = $comment->id();
+        $comment->set('url', $this->get('url')->getValue());
+        $comment->save();
+      }
+    }
+
+    if ($this->isNew()) {
       return;
     }
 
-    // Copy url to Comment entity due to JSONAPI filter limitations
-    foreach ($comments as $comment) {
-      $comment_ids[] = $comment->id();
-      $comment->set('url', $this->get('url')->getValue());
-      $comment->save();
-    }
+    $original_comments = $this->original->get('comments')->referencedEntities();
 
     if (empty($original_comments)) {
       return;
@@ -209,7 +212,8 @@ final class Word extends ContentEntityBase implements WordInterface {
       $alias = reset($aliases);
     }
 
-    $transliterated = \Drupal::service('transliteration')->transliterate($this->label());
+    $transliterated = \Drupal::service('transliteration')
+      ->transliterate($this->label());
     $cleaned = preg_replace('/\s+/', '-', trim(preg_replace('/[^a-z0-9 ]+/', '', strtolower($transliterated))));
 
     $alias->set('alias', '/subor-komentarov/' . $cleaned);
