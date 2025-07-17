@@ -139,7 +139,7 @@ class SourceDataFieldEditForm extends FormBase {
     }
 
     // Add a submit button.
-    $form['actions'] = ['#type' => 'actions',];
+    $form['actions'] = ['#type' => 'actions'];
 
     $form['actions']['submit'] = [
       '#type' => 'submit',

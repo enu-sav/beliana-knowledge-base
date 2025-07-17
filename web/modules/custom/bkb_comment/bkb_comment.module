@@ -126,6 +126,24 @@ function template_preprocess_source_comment_node(array &$variables): void {
 /**
  * Implements hook_user_cancel().
  */
+function bkb_comment_preprocess_page_title(&$variables) {
+  $request = \Drupal::request();
+
+  // Override page title
+  if ($request->attributes->get('_route') == 'entity.source_comment.add_form') {
+    if ($word = \Drupal::service('bkb_base.helper')
+      ->getWordFromRequest($request)) {
+      $variables['title'] .= ' k heslu ' . $word->label();
+    }
+    elseif ($title = $request->query->get('title')) {
+      $variables['title'] .= ' k heslu ' . $title;
+    }
+  }
+}
+
+/**
+ * Implements hook_user_cancel().
+ */
 function bkb_comment_user_cancel($edit, UserInterface $account, $method): void {
   switch ($method) {
     case 'user_cancel_reassign':

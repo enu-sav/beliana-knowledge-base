@@ -25,6 +25,50 @@ final class CommentForm extends ContentEntityForm {
     ];
     switch ($result) {
       case SAVED_NEW:
+        /** @var \Drupal\bkb_base\Helper $helper */
+        $helper = \Drupal::service('bkb_base.helper');
+
+        if ($word = $helper->getWordFromRequest($this->getRequest(), TRUE)) {
+          $comments = $word->get('comments')->referencedEntities();
+          $values = [];
+          $excluded = [];
+
+          foreach ($comments as $comment) {
+            $values[] = ['target_id' => $comment->id()];
+            $groups = $comment->get('sources')->referencedEntities();
+
+            // Collect excluded sources from other word comments
+            foreach ($groups as $group) {
+              $excluded = array_merge($excluded, array_map(function($source) {
+                return $source['target_id'];
+              }, $group->get('source')->getValue()));
+            }
+          }
+
+          // Set new comment as word reference
+          $values[] = [
+            'target_id' => $this->entity->id(),
+          ];
+
+          $word->set('comments', $values);
+          $word->save();
+
+          $form_state->setRedirectUrl($word->toUrl());
+
+          // Exclude existing sources from current comment
+          $excluded_sources = $helper->isSourceNew($form_state->getValue('sources'));
+
+          if ($excluded_sources !== FALSE) {
+            $excluded = array_unique(array_merge($excluded, $excluded_sources));
+
+            $form_state->setRedirect(
+              'entity.source.data.edit',
+              ['id' => $word->id()],
+              ['query' => ['excluded' => implode(',', $excluded)]]
+            );
+          }
+        }
+
         $this->messenger()
           ->addStatus($this->t('New comment %label has been created.', $message_args));
         $this->logger('bkb_comment')

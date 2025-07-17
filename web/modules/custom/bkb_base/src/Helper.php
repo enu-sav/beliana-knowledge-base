@@ -4,8 +4,10 @@ namespace Drupal\bkb_base;
 
 use Drupal\Core\Entity\EntityDefinitionUpdateManagerInterface;
 use Drupal\Core\Entity\EntityFieldManager;
+use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityTypeManager;
 use Drupal\Core\Field\FieldStorageDefinitionInterface;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Class Helper
@@ -78,6 +80,65 @@ class Helper {
             $field_definitions[$field_name]);
       }
     }
+  }
+
+  /**
+   * Function to get Word entity from request query params
+   *
+   * @param \Symfony\Component\HttpFoundation\Request $request
+   * @param bool $create
+   *
+   * @return EntityInterface|bool
+   */
+  public function getWordFromRequest(Request $request, bool $create = FALSE): EntityInterface|bool {
+    $storage = $this->entityTypeManager->getStorage('source_comment_node');
+    if ($word_id = $request->query->get('word')) {
+      return $storage->load($word_id);
+    }
+    else {
+      $title = $request->query->get('title');
+      $url = $request->query->get('url');
+
+      if ($create && ($title && $url)) {
+        $word = $storage->create([
+          'label' => $title,
+          'url' => $url,
+        ]);
+        $word->save();
+
+        return $word;
+      }
+    }
+
+    return FALSE;
+  }
+
+  /**
+   * Function to get check if Comment sources include new one and return list
+   * of existing
+   *
+   * @param array $sources
+   *
+   * @return array|bool
+   */
+  public function isSourceNew($sources): array|bool {
+    $new_source = FALSE;
+    $excluded = [];
+
+    foreach ($sources as $i => $source) {
+      if (is_numeric($i)) {
+        $target_id = $source['inline_entity_form']['source'][0]['target_id'];
+
+        if (is_numeric($target_id)) {
+          $excluded[] = $target_id;
+        }
+        else {
+          $new_source = TRUE;
+        }
+      }
+    }
+
+    return $new_source ? $excluded : FALSE;
   }
 
 }
