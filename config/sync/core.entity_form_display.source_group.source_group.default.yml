@@ -24,13 +24,6 @@ content:
       size: 60
       placeholder: ''
     third_party_settings: {  }
-  published:
-    type: boolean_checkbox
-    weight: 3
-    region: content
-    settings:
-      display_label: true
-    third_party_settings: {  }
   source:
     type: entity_reference_autocomplete
     weight: 1
@@ -41,12 +34,7 @@ content:
       size: 60
       placeholder: ''
     third_party_settings: {  }
-  used:
-    type: boolean_checkbox
-    weight: 4
-    region: content
-    settings:
-      display_label: true
-    third_party_settings: {  }
 hidden:
+  published: true
   uid: true
+  used: true

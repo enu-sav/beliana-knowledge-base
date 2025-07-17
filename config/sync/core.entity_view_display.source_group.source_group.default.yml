@@ -16,24 +16,6 @@ content:
     third_party_settings: {  }
     weight: 0
     region: content
-  pages:
-    type: string
-    label: inline
-    settings:
-      link_to_entity: false
-    third_party_settings: {  }
-    weight: 2
-    region: content
-  published:
-    type: boolean
-    label: inline
-    settings:
-      format: yes-no
-      format_custom_false: ''
-      format_custom_true: ''
-    third_party_settings: {  }
-    weight: 3
-    region: content
   source:
     type: entity_reference_label
     label: hidden
@@ -42,15 +24,8 @@ content:
     third_party_settings: {  }
     weight: 1
     region: content
-  used:
-    type: boolean
-    label: inline
-    settings:
-      format: yes-no
-      format_custom_false: ''
-      format_custom_true: ''
-    third_party_settings: {  }
-    weight: 4
-    region: content
 hidden:
+  pages: true
+  published: true
   uid: true
+  used: true
