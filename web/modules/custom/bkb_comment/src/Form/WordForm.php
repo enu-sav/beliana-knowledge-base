@@ -36,9 +36,6 @@ final class WordForm extends ContentEntityForm {
   public function save(array $form, FormStateInterface $form_state): int {
     $result = parent::save($form, $form_state);
 
-    $excluded = [];
-    $new_source = FALSE;
-
     $message_args = ['%label' => $this->entity->toLink()->toString()];
     $logger_args = [
       '%label' => $this->entity->label(),
@@ -47,37 +44,38 @@ final class WordForm extends ContentEntityForm {
 
     switch ($result) {
       case SAVED_NEW:
-        $this->messenger()->addStatus($this->t('New word %label has been created.', $message_args));
-        $this->logger('bkb_comment')->notice('New word %label has been created.', $logger_args);
+        $this->messenger()
+          ->addStatus($this->t('New word %label has been created.', $message_args));
+        $this->logger('bkb_comment')
+          ->notice('New word %label has been created.', $logger_args);
         break;
 
       case SAVED_UPDATED:
-        $this->messenger()->addStatus($this->t('The word %label has been updated.', $message_args));
-        $this->logger('bkb_comment')->notice('The word %label has been updated.', $logger_args);
+        $this->messenger()
+          ->addStatus($this->t('The word %label has been updated.', $message_args));
+        $this->logger('bkb_comment')
+          ->notice('The word %label has been updated.', $logger_args);
         break;
 
       default:
         throw new \LogicException('Could not save the entity.');
     }
 
-    foreach ($form['comments']['widget'] as $i => $comment) {
-      if (is_numeric($i)) {
-        foreach ($comment['inline_entity_form']['sources']['widget'] as $j => $source) {
-          if (is_numeric($j)) {
-            $default = $source['inline_entity_form']['source']['widget'][0]['target_id']['#default_value'];
+    /** @var \Drupal\bkb_base\Helper $helper */
+    $helper = \Drupal::service('bkb_base.helper');
+    $excluded = [];
+    $values = $form_state->getValues();
 
-            if (is_null($default)) {
-              $new_source = TRUE;
-            }
-            else {
-              $excluded[] = $default->id();
-            }
-          }
+    foreach ($values['comments'] as $i => $comment) {
+      if (is_numeric($i)) {
+        $excluded_sources = $helper->isSourceNew($comment['inline_entity_form']['sources']);
+        if ($excluded_sources !== FALSE) {
+          $excluded = array_unique(array_merge($excluded, $excluded_sources));
         }
       }
     }
 
-    if ($new_source) {
+    if (!empty($excluded)) {
       $form_state->setRedirect(
         'entity.source.data.edit',
         ['id' => $this->entity->id()],
