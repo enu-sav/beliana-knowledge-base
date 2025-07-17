@@ -82,32 +82,34 @@ final class Source extends ContentEntityBase implements SourceInterface {
 
     // Store local copy of remote source
     if (UrlHelper::isValid($label, TRUE)) {
-      $this->getSourcePdf($label);
+      if (strpos($label, 'digitalna-kniznica.beliana.sav.sk') === FALSE) {
+        $this->getSourcePdf($label);
+      }
     }
 
     /** Temporary disabled to save credit, possible to fetch later **/
-//    if ($this->isNew()) {
-//      $config = \Drupal::configFactory()->get('bkb_base.settings');
-//      $response_text = \Drupal::service('bkb_base.ai_bibtex')
-//        ->getBibtex($config->get('api_key'), $label, $config->get('ai_prompt'));
-//
-//      if ($response_text) {
-//        $this->set('data', $response_text);
-//      }
-//    }
-//
-//    // Create citation form the bibtex value
-//    if (!$this->get('data')->isEmpty()) {
-//      $escapedValue = Html::escape($this->get('data')->value);
-//
-//      // Create a new BibTeXConverter instance with the escaped value.
-//      $converter = new BibTeXConverter($escapedValue);
-//      $harvardCitations = $converter->convertToHarvard();
-//      $citation = reset($harvardCitations);
-//
-//      // Set the 'citation' field with the first Harvard citation.
-//      $this->set('citation', $citation);
-//    }
+    //    if ($this->isNew()) {
+    //      $config = \Drupal::configFactory()->get('bkb_base.settings');
+    //      $response_text = \Drupal::service('bkb_base.ai_bibtex')
+    //        ->getBibtex($config->get('api_key'), $label, $config->get('ai_prompt'));
+    //
+    //      if ($response_text) {
+    //        $this->set('data', $response_text);
+    //      }
+    //    }
+    //
+    //    // Create citation form the bibtex value
+    //    if (!$this->get('data')->isEmpty()) {
+    //      $escapedValue = Html::escape($this->get('data')->value);
+    //
+    //      // Create a new BibTeXConverter instance with the escaped value.
+    //      $converter = new BibTeXConverter($escapedValue);
+    //      $harvardCitations = $converter->convertToHarvard();
+    //      $citation = reset($harvardCitations);
+    //
+    //      // Set the 'citation' field with the first Harvard citation.
+    //      $this->set('citation', $citation);
+    //    }
   }
 
   /**
