@@ -35,15 +35,21 @@ use Drupal\user\EntityOwnerTrait;
  *       "edit" = "Drupal\bkb_comment\Form\CommentForm",
  *       "delete" = "Drupal\Core\Entity\ContentEntityDeleteForm",
  *       "delete-multiple-confirm" = "Drupal\Core\Entity\Form\DeleteMultipleForm",
+ *       "revision-delete" = \Drupal\Core\Entity\Form\RevisionDeleteForm::class,
+ *       "revision-revert" = \Drupal\Core\Entity\Form\RevisionRevertForm::class,
  *     },
  *     "route_provider" = {
  *       "html" = "Drupal\Core\Entity\Routing\AdminHtmlRouteProvider",
+ *       "revision" = \Drupal\Core\Entity\Routing\RevisionHtmlRouteProvider::class,
  *     },
  *   },
  *   base_table = "source_comment",
+ *   revision_table = "source_comment_revision",
  *   admin_permission = "administer source_comment",
+ *   show_revision_ui = TRUE,
  *   entity_keys = {
  *     "id" = "id",
+ *     "revision" = "revision_id",
  *     "label" = "label",
  *     "uuid" = "uuid",
  *     "owner" = "uid",
@@ -55,6 +61,10 @@ use Drupal\user\EntityOwnerTrait;
  *     "edit-form" = "/source-comment/{source_comment}/edit",
  *     "delete-form" = "/source-comment/{source_comment}/delete",
  *     "delete-multiple-form" = "/admin/content/source-comment/delete-multiple",
+ *     "revision" = "/source-comment/{source_comment}/revisions/{source_comment_revision}/view",
+ *     "revision-delete-form" = "/source-comment/{source_comment}/revisions/{source_comment_revision}/delete",
+ *     "revision-revert-form" = "/source-comment/{source_comment}/revisions/{source_comment_revision}/revert",
+ *     "version-history" = "/source-comment/{source_comment}/revisions",
  *   },
  *   field_ui_base_route = "entity.source_comment.settings",
  * )
@@ -69,13 +79,18 @@ final class Comment extends ContentEntityBase implements CommentInterface {
   public function preSave(EntityStorageInterface $storage): void {
     parent::preSave($storage);
 
+    if (!$this->isNew()) {
+      $this->setNewRevision();
+    }
+
     if (!$this->getOwnerId()) {
       $this->setOwnerId(0);
     }
 
-    if (empty($this->get('label')->value) && !empty($this->get('comment')->value)) {
-      $label = substr($this->get('comment')->value, 0, 60);
-      $label .= strlen($this->get('comment')->value) > 60 ? '...' : '';
+    $comment = $this->get('comment')->value;
+    if (!empty($comment)) {
+      $label = substr($comment, 0, 60);
+      $label .= strlen($comment) > 60 ? '...' : '';
 
       $this->set('label', $label);
     }
@@ -84,8 +99,21 @@ final class Comment extends ContentEntityBase implements CommentInterface {
   /**
    * {@inheritdoc}
    */
-  public static function baseFieldDefinitions(EntityTypeInterface $entity_type): array {
+  public static function preDelete(EntityStorageInterface $storage, array $entities) {
+    parent::preDelete($storage, $entities);
 
+    // Delete referenced source_groups
+    foreach ($entities as $entity) {
+      foreach ($entity->get('sources')->referencedEntities() as $group) {
+        $group->delete();
+      }
+    }
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public static function baseFieldDefinitions(EntityTypeInterface $entity_type): array {
     $fields = parent::baseFieldDefinitions($entity_type);
 
     $fields['label'] = BaseFieldDefinition::create('string')
@@ -102,7 +130,8 @@ final class Comment extends ContentEntityBase implements CommentInterface {
         'type' => 'string',
         'weight' => -5,
       ])
-      ->setDisplayConfigurable('view', TRUE);
+      ->setDisplayConfigurable('view', TRUE)
+      ->setRevisionable(TRUE);
 
     $fields['url'] = BaseFieldDefinition::create('link')
       ->setLabel(t('comment-entity-url-label'))
@@ -136,7 +165,8 @@ final class Comment extends ContentEntityBase implements CommentInterface {
         'label' => 'above',
         'weight' => 10,
       ])
-      ->setDisplayConfigurable('view', TRUE);
+      ->setDisplayConfigurable('view', TRUE)
+      ->setRevisionable(TRUE);
 
     $fields['sources'] = BaseFieldDefinition::create('entity_reference')
       ->setLabel(t('comment-entity-sources-label'))
@@ -156,7 +186,8 @@ final class Comment extends ContentEntityBase implements CommentInterface {
         'weight' => 25,
       ])
       ->setDisplayConfigurable('form', TRUE)
-      ->setDisplayConfigurable('view', TRUE);
+      ->setDisplayConfigurable('view', TRUE)
+      ->setRevisionable(TRUE);
 
     $fields['uid'] = BaseFieldDefinition::create('entity_reference')
       ->setLabel(t('comment-entity-uid-label'))

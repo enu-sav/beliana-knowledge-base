@@ -73,9 +73,6 @@ final class Word extends ContentEntityBase implements WordInterface {
       $this->setOwnerId(0);
     }
 
-    // Set path alias
-    $this->setPathAlias();
-
     // Get referenced comment entities
     $comment_ids = [];
     $comments = $this->get('comments')->referencedEntities();
@@ -103,6 +100,45 @@ final class Word extends ContentEntityBase implements WordInterface {
     foreach ($original_comments as $original_comment) {
       if (!in_array($original_comment->id(), $comment_ids)) {
         $original_comment->delete();
+      }
+    }
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function postSave(EntityStorageInterface $storage, $update = TRUE) {
+    parent::postSave($storage, $update);
+
+    // Set path alias
+    if (!$update) {
+      $this->setPathAlias();
+    }
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public static function preDelete(EntityStorageInterface $storage, array $entities) {
+    parent::preDelete($storage, $entities);
+
+    /** @var \Drupal\path_alias\PathAliasStorage $alias_storage */
+    $alias_storage = \Drupal::entityTypeManager()->getStorage('path_alias');
+
+    foreach ($entities as $entity) {
+      // Delete path alias
+      $alias_objects = $alias_storage->loadByProperties([
+        'path' => '/' . $entity->toUrl()
+            ->getInternalPath(),
+      ]);
+
+      foreach ($alias_objects as $alias_object) {
+        $alias_object->delete();
+      }
+
+      // Delete referenced comments
+      foreach ($entity->get('comments')->referencedEntities() as $comment) {
+        $comment->delete();
       }
     }
   }
