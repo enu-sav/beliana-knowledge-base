@@ -74,6 +74,7 @@ class UserLoginSubscriber implements EventSubscriberInterface {
       $role_map = [
         'administrátor' => 'administrator',
         'Redaktor' => 'redactor',
+        'Výstupný redaktor' => 'redactor',
       ];
 
       $allowed_roles = array_filter($user_data['user']['roles'], function ($role) use ($role_map) {

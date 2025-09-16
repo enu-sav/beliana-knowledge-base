@@ -30,6 +30,10 @@ final class CommentAccessControlHandler extends EntityAccessControlHandler {
       'view' => AccessResult::allowedIfHasPermission($account, 'view source_comment'),
       'update' => AccessResult::allowedIfHasPermission($account, 'edit source_comment'),
       'delete' => AccessResult::allowedIfHasPermission($account, 'delete source_comment'),
+      'view all revisions' => AccessResult::allowedIfHasPermission($account, 'view all source_comment revisions'),
+      'view revision' => AccessResult::allowedIfHasPermission($account, 'view source_comment revisions'),
+      'revert' => AccessResult::allowedIfHasPermission($account, 'revert source_comment revisions'),
+      'delete revision' => AccessResult::allowedIfHasPermission($account, 'delete source_comment revisions'),
       default => AccessResult::neutral(),
     };
   }

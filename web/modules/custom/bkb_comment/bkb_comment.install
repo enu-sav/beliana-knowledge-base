@@ -108,3 +108,15 @@ function bkb_comment_update_10006() {
       'parent',
     ]);
 }
+
+/**
+ * Add revision log fields to source_comment entity
+ */
+function bkb_comment_update_10007() {
+  \Drupal::service('bkb_base.helper')
+    ->installFieldStorageDefinition('bkb_comment', 'source_comment', [
+      'revision_timestamp',
+      'revision_uid',
+      'revision_log',
+    ]);
+}

@@ -9,9 +9,11 @@ use Drupal\bkb_comment\Plugin\Field\FieldType\ComputedParentFieldItemList;
 use Drupal\Core\Entity\ContentEntityBase;
 use Drupal\Core\Entity\EntityStorageInterface;
 use Drupal\Core\Entity\EntityTypeInterface;
+use Drupal\Core\Entity\RevisionLogInterface;
 use Drupal\Core\Field\BaseFieldDefinition;
 use Drupal\link\LinkItemInterface;
 use Drupal\user\EntityOwnerTrait;
+use Drupal\user\UserInterface;
 
 /**
  * Defines the comment entity class.
@@ -69,7 +71,7 @@ use Drupal\user\EntityOwnerTrait;
  *   field_ui_base_route = "entity.source_comment.settings",
  * )
  */
-final class Comment extends ContentEntityBase implements CommentInterface {
+final class Comment extends ContentEntityBase implements CommentInterface, RevisionLogInterface {
 
   use EntityOwnerTrait;
 
@@ -85,6 +87,12 @@ final class Comment extends ContentEntityBase implements CommentInterface {
 
     if (!$this->getOwnerId()) {
       $this->setOwnerId(0);
+    }
+
+    // Set revision timestamp and user for new revisions
+    if ($this->isNewRevision()) {
+      $this->setRevisionCreationTime(\Drupal::time()->getRequestTime());
+      $this->setRevisionUserId(\Drupal::currentUser()->id());
     }
 
     $comment = $this->get('comment')->value;
@@ -216,7 +224,91 @@ final class Comment extends ContentEntityBase implements CommentInterface {
       ->setClass(ComputedParentFieldItemList::class)
       ->setReadOnly(TRUE);
 
+    $fields['revision_timestamp'] = BaseFieldDefinition::create('created')
+      ->setLabel(t('Revision create time'))
+      ->setDescription(t('The time that the current revision was created.'))
+      ->setRevisionable(TRUE);
+
+    $fields['revision_uid'] = BaseFieldDefinition::create('entity_reference')
+      ->setLabel(t('Revision user'))
+      ->setDescription(t('The user ID of the author of the current revision.'))
+      ->setSetting('target_type', 'user')
+      ->setRevisionable(TRUE);
+
+    $fields['revision_log'] = BaseFieldDefinition::create('string_long')
+      ->setLabel(t('Revision log message'))
+      ->setDescription(t('Briefly describe the changes you have made.'))
+      ->setRevisionable(TRUE)
+      ->setDefaultValue('')
+      ->setDisplayOptions('form', [
+        'type' => 'string_textarea',
+        'weight' => 25,
+        'settings' => [
+          'rows' => 4,
+        ],
+      ]);
+
     return $fields;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getRevisionCreationTime(): int {
+    return (int) $this->get('revision_timestamp')->value;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function setRevisionCreationTime($timestamp): static {
+    $this->set('revision_timestamp', $timestamp);
+    return $this;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getRevisionUser(): ?UserInterface {
+    return $this->get('revision_uid')->entity;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function setRevisionUser(UserInterface $account): static {
+    $this->set('revision_uid', $account->id());
+    return $this;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function setRevisionUserId($uid): static {
+    $this->set('revision_uid', $uid);
+    return $this;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getRevisionUserId(): ?int {
+    return $this->get('revision_uid')->target_id;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getRevisionLogMessage(): ?string {
+    return $this->get('revision_log')->value;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function setRevisionLogMessage($revision_log_message): static {
+    $this->set('revision_log', $revision_log_message);
+    return $this;
   }
 
 }

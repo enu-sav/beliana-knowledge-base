@@ -13,3 +13,17 @@ entity.source_comment_node.settings:
     _title: 'Word'
   requirements:
     _permission: 'administer source_comment_node'
+
+entity.source_comment.version_history:
+  path: '/source-comment/{source_comment}/revisions'
+  defaults:
+    _controller: '\Drupal\bkb_comment\Controller\CommentVersionHistoryController'
+    _title: 'Revisions'
+  requirements:
+    _entity_access: 'source_comment.view all revisions'
+  options:
+    entity_type_id: source_comment
+    _admin_route: true
+    parameters:
+      source_comment:
+        type: 'entity:source_comment'

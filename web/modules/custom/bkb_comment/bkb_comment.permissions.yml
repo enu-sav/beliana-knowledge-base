@@ -9,6 +9,14 @@ delete source_comment:
   title: 'Delete comment'
 create source_comment:
   title: 'Create comment'
+view all source_comment revisions:
+  title: 'View all comment revisions'
+view source_comment revisions:
+  title: 'View comment revisions'
+revert source_comment revisions:
+  title: 'Revert comment revisions'
+delete source_comment revisions:
+  title: 'Delete comment revisions'
 
 administer source_comment_node:
   title: 'Administer words'
