@@ -105,17 +105,17 @@ class SourceDataFieldEditForm extends FormBase {
           '#default_value' => $referenced_entity->get('label')->value,
         ];
 
-        $form['source']['source_' . $referenced_entity->id()]['label']['update'] = [
-          '#type' => 'button',
-          '#value' => $this->t('bkb-source-fetch-bibtex-button-label'),
-          '#attributes' => [
-            'data-id' => $referenced_entity->id(),
-          ],
-          '#ajax' => [
-            'callback' => '::updateBibtex',
-            'wrapper' => 'bibtex-data-' . $referenced_entity->id(),
-          ],
-        ];
+//        $form['source']['source_' . $referenced_entity->id()]['label']['update'] = [
+//          '#type' => 'button',
+//          '#value' => $this->t('bkb-source-fetch-bibtex-button-label'),
+//          '#attributes' => [
+//            'data-id' => $referenced_entity->id(),
+//          ],
+//          '#ajax' => [
+//            'callback' => '::updateBibtex',
+//            'wrapper' => 'bibtex-data-' . $referenced_entity->id(),
+//          ],
+//        ];
 
         $form['source']['source_' . $referenced_entity->id()]['data'] = [
           '#type' => 'textarea',
