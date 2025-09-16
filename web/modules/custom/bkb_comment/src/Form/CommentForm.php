@@ -69,17 +69,17 @@ final class CommentForm extends ContentEntityForm {
           $form_state->setRedirectUrl($word->toUrl());
 
           // Exclude existing sources from current comment
-          $excluded_sources = $helper->isSourceNew($form_state->getValue('sources'));
-
-          if ($excluded_sources !== FALSE) {
-            $excluded = array_unique(array_merge($excluded, $excluded_sources));
-
-            $form_state->setRedirect(
-              'entity.source.data.edit',
-              ['id' => $word->id()],
-              ['query' => ['excluded' => implode(',', $excluded)]]
-            );
-          }
+//          $excluded_sources = $helper->isSourceNew($form_state->getValue('sources'));
+//
+//          if ($excluded_sources !== FALSE) {
+//            $excluded = array_unique(array_merge($excluded, $excluded_sources));
+//
+//            $form_state->setRedirect(
+//              'entity.source.data.edit',
+//              ['id' => $word->id()],
+//              ['query' => ['excluded' => implode(',', $excluded)]]
+//            );
+//          }
         }
 
         $this->messenger()
