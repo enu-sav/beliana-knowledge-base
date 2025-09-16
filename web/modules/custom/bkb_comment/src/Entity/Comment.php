@@ -239,14 +239,7 @@ final class Comment extends ContentEntityBase implements CommentInterface, Revis
       ->setLabel(t('Revision log message'))
       ->setDescription(t('Briefly describe the changes you have made.'))
       ->setRevisionable(TRUE)
-      ->setDefaultValue('')
-      ->setDisplayOptions('form', [
-        'type' => 'string_textarea',
-        'weight' => 25,
-        'settings' => [
-          'rows' => 4,
-        ],
-      ]);
+      ->setDefaultValue('');
 
     return $fields;
   }

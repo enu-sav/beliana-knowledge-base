@@ -18,8 +18,25 @@ final class CommentForm extends ContentEntityForm {
   public function buildForm(array $form, FormStateInterface $form_state) {
     $form = parent::buildForm($form, $form_state);
 
+    // Hide revision-related elements
     if (isset($form['revision'])) {
       $form['revision']['#access'] = FALSE;
+    }
+
+    if (isset($form['revision_information'])) {
+      $form['revision_information']['#access'] = FALSE;
+    }
+
+    if (isset($form['meta'])) {
+      $form['meta']['#access'] = FALSE;
+    }
+
+    // Hide individual revision fields if they appear
+    $revision_fields = ['revision_log', 'revision_timestamp', 'revision_uid'];
+    foreach ($revision_fields as $field) {
+      if (isset($form[$field])) {
+        $form[$field]['#access'] = FALSE;
+      }
     }
 
     return $form;
