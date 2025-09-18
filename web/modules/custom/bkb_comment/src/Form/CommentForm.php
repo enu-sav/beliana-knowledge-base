@@ -47,6 +47,7 @@ final class CommentForm extends ContentEntityForm {
    */
   public function save(array $form, FormStateInterface $form_state): int {
     $result = parent::save($form, $form_state);
+    $form_state->setRedirectUrl($this->entity->toUrl());
 
     $message_args = ['%label' => $this->entity->toLink()->toString()];
     $logger_args = [
@@ -82,8 +83,6 @@ final class CommentForm extends ContentEntityForm {
 
           $word->set('comments', $values);
           $word->save();
-
-          $form_state->setRedirectUrl($word->toUrl());
 
           // Exclude existing sources from current comment
 //          $excluded_sources = $helper->isSourceNew($form_state->getValue('sources'));

@@ -54,12 +54,12 @@ use Drupal\Component\Utility\Html;
  *     "owner" = "uid",
  *   },
  *   links = {
- *     "collection" = "/admin/content/source",
+ *     "collection" = "/admin/content/sources",
  *     "add-form" = "/source/add",
  *     "canonical" = "/source/{source}",
  *     "edit-form" = "/source/{source}",
  *     "delete-form" = "/source/{source}/delete",
- *     "delete-multiple-form" = "/admin/content/source/delete-multiple",
+ *     "delete-multiple-form" = "/admin/content/sources/delete-multiple",
  *   },
  *   field_ui_base_route = "entity.source.settings",
  * )
