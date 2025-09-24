@@ -206,6 +206,22 @@ final class Source extends ContentEntityBase implements SourceInterface {
       ])
       ->setDisplayConfigurable('view', TRUE);
 
+    $fields['source_url'] = BaseFieldDefinition::create('string')
+      ->setLabel(t('SourceURL'))
+      ->setReadOnly(False)
+      ->setSetting('max_length', 1024)
+      ->setDisplayOptions('form', [
+        'type' => 'string_textfield',
+        'weight' => 3,
+      ])
+      ->setDisplayConfigurable('form', TRUE)
+      ->setDisplayOptions('view', [
+        'label' => 'above',
+        'type' => 'string',
+        'weight' => 3,
+      ])
+      ->setDisplayConfigurable('view', TRUE);
+
     return $fields;
   }
 

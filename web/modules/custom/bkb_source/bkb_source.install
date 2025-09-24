@@ -60,3 +60,14 @@ function bkb_source_update_10004() {
     }
   }
 }
+
+/**
+ * Create "source_url" for source entity
+ */
+function bkb_source_update_10005() {
+  \Drupal::service('bkb_base.helper')
+    ->installFieldStorageDefinition('bkb_source', 'source', [
+      'source_url',
+    ]);
+}
+
