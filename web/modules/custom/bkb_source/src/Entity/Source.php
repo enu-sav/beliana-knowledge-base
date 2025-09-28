@@ -13,9 +13,13 @@ use Drupal\Core\Entity\ContentEntityBase;
 use Drupal\Core\Entity\EntityStorageInterface;
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Field\BaseFieldDefinition;
+use Drupal\Core\StringTranslation\StringTranslationTrait;
+use Drupal\Core\Entity\ContentEntityStorageInterface;
 use Drupal\Core\File\FileExists;
 use Drupal\user\EntityOwnerTrait;
 use Drupal\Component\Utility\Html;
+use Drupal\Core\Link;
+use Drupal\Core\Url;
 
 /**
  * Defines the source entity class.
@@ -67,6 +71,11 @@ use Drupal\Component\Utility\Html;
 final class Source extends ContentEntityBase implements SourceInterface {
 
   use EntityOwnerTrait;
+  use StringTranslationTrait;
+  #array to store messages to be issued in the postSave method 
+  #they should contain placeholder @link which will be replaced by the message 
+  #see usage below
+  protected array $messages = [];
 
   /**
    * {@inheritdoc}
@@ -80,10 +89,125 @@ final class Source extends ContentEntityBase implements SourceInterface {
 
     $label = $this->get('label')->value;
 
-    // Store local copy of remote source
+    // Store local copy of remote source and copy url to the source_url field
+    // 4 source types are distinguished: 
+    //      textual book desription
+    //      link to digitalna-kniznica.geliana.sav.sk
+    //      link to a pdf file
+    //      link to a html page
+    // For user's convenience URL is entered to the same field (label) as the textual book description
+    // Here, URL is copied to field source_url and article name is saved in the label field
     if (UrlHelper::isValid($label, TRUE)) {
-      if (strpos($label, 'digitalna-kniznica.beliana.sav.sk') === FALSE) {
-        $this->getSourcePdf($label);
+
+      if ($label != $this->get('source_url')->value) { #new URL specified
+        $msg_title_not_found = "Page title was not found for this @link automatically. Copy it from the @page_link and update the source.";
+
+        #  A special case of DK EnÚ
+        if (strpos($label, 'digitalna-kniznica.beliana.sav.sk') == TRUE) {
+          #Extract Title for the url
+          parse_str($label, $params);
+
+          // Check if the 'title' key exists in the array and get its value
+          if (isset($params['title']) and isset($params['cv']) ) {
+              $title = $params['title'];
+              $page = $params['cv'];
+              $page = str_replace("page_", "", $page);
+              $tpt = $this->t("%s , page %d"); 
+              $this->get('label')->value = sprintf((string)$tpt, $title, (int)$page);
+              $this->get('source_url')->value = $label;
+          } else {
+              echo $this->t("Error, contact the programmer.");
+          }
+
+        # pdf
+        } elseif (substr($label, -4) == ".pdf") {
+          $this->get('label')->value = $this->t("Page title was not found");
+          $page_link = Link::fromTextAndUrl($this->t("pdf"), Url::fromUri($label));
+          $msg = $this->t($msg_title_not_found, [
+                "@page_link" => $page_link->toString()
+          ]);
+          $this->messages[] = array (
+              "type" => "warning",
+              "url_text" => (string)$this->t("source"),
+              "text" => (string)$msg
+          );
+
+          $this->getSourcePdf($label);
+          $this->get('source_url')->value = $label;
+
+        #html
+        } else {
+          $response = $this->getPageTitle($label);
+#\dump($response); die();
+          if (in_array($response['code'], ['200']) ) {  #Everything OK
+            $this->get('label')->value = $response['value'];
+            $this->getSourcePdf($label);
+            $this->get('source_url')->value = $label;
+
+          } elseif (in_array($response['code'], ['403']) ) {  #Forbidden to download by a script
+            $msg_page_no_access = "Downloading of content of the @page_link failed owing to access restrictions.<br />Print its content to a pdf file and upload it manually to @link. Set also the source title.";
+            $this->get('label')->value = $this->t("Downloading failed");
+            $page_link = Link::fromTextAndUrl($this->t("article"), Url::fromUri($label, [
+                'attributes' => [
+                    'target' => '_blank',
+                    'rel' => 'noopener noreferrer',
+                ],
+            ]));
+            $msg = $this->t($msg_page_no_access, [
+                "@page_link" => $page_link->toString()
+            ]);
+
+            $this->messages[] = array(
+              "type" => "warning",
+              "url_text" => (string)$this->t("source"),
+              "text" => (string)$msg
+            );
+            $this->get('source_url')->value = $label;
+            return;
+
+          } elseif (in_array($response['code'], ['0']) ) {  #No response
+              $msg = $this->t("The URL given in the @link is incorrect, verify and fix it.");
+              $this->messages[] = array(
+                "type" => "warning",
+                "url_text" => (string)$this->t("source"),
+                "text" => (string)$msg
+              );
+              return;
+          } else {
+              $msg = $this->t("Unexpected error in @link, verify and fix it.");
+              $this->messages[] = array(
+                "type" => "error",
+                "url_text" => (string)$this->t("source"),
+                "text" => (string)$msg
+              );
+              return;
+          }
+        }
+      }
+    }
+
+    // add decriptive text (pdf, book. ...) to title, if missing
+    $auxlabel =  $this->get('label')->value;
+    if ($this->get('source_url')->isEmpty() ) { #book without url 
+       if (strpos($auxlabel, "(kniha)") === FALSE) {
+          $this->get('label')->value = sprintf("%s (%s)", $auxlabel,  "kniha");
+       }
+    } else { # some kind of URL
+      $auxurl = $this->get('source_url')->value; 
+      if (strpos($auxurl, 'digitalna-kniznica.beliana.sav.sk') === FALSE ) {
+          if (substr($auxurl, -4) == ".pdf" ) { #pdf
+             if (strpos((string)$auxlabel, "(pdf)") === FALSE) {
+                $this->get('label')->value = sprintf("%s (%s)", $auxlabel,  "pdf");
+             }
+          } else {  #html page
+             if (strpos((string)$auxlabel, "(web)") === FALSE) {
+                $this->get('label')->value = sprintf("%s (%s)", $auxlabel,  "web");
+             }
+          }
+      } else {  # DK EnÚ 
+         if (strpos((string)$auxlabel, "(DK EnÚ)") === FALSE) {
+            $this->get('label')->value = sprintf("%s (%s)", $auxlabel,  "DK EnÚ");
+         }
       }
     }
 
@@ -115,11 +239,33 @@ final class Source extends ContentEntityBase implements SourceInterface {
   /**
    * {@inheritdoc}
    */
+  public function postSave(\Drupal\Core\Entity\EntityStorageInterface $storage, $update = TRUE) {
+    parent::postSave($storage, $update);
+
+    // print messages collected in this->preSave()
+    foreach ($this->messages as $message) {
+      $link = Link::fromTextAndUrl($message["url_text"], $this->toUrl());
+      $msg = str_replace('@link', (string)$link->toString(), $message["text"]);
+#\dump($this->messages, $link, $msg); die();
+      if ($message['type'] == 'warning' ) {
+        \Drupal::messenger()->addWarning( $msg );
+      } elseif ($message['type'] == 'error' ) {
+        \Drupal::messenger()->addError( $msg );
+      } else {
+        \Drupal::messenger()->addStatus( $msg );
+      }
+    }
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public static function baseFieldDefinitions(EntityTypeInterface $entity_type): array {
     $fields = parent::baseFieldDefinitions($entity_type);
 
     $fields['label'] = BaseFieldDefinition::create('string')
       ->setLabel(t('Label'))
+      ->setDescription(t('source-entity-label-description'))
       ->setRequired(TRUE)
       ->setSetting('max_length', 255)
       ->setDisplayOptions('form', [
@@ -150,6 +296,7 @@ final class Source extends ContentEntityBase implements SourceInterface {
 
     $fields['attachment'] = BaseFieldDefinition::create('file')
       ->setLabel(t('Attachment'))
+      ->setDescription(t('source-entity-attachment-description'))
       ->setSettings([
         'file_extensions' => 'pdf',
         'uri_scheme' => 'private',
@@ -208,6 +355,7 @@ final class Source extends ContentEntityBase implements SourceInterface {
 
     $fields['source_url'] = BaseFieldDefinition::create('string')
       ->setLabel(t('SourceURL'))
+      ->setDescription(t('source-entity-source-url-description'))
       ->setReadOnly(False)
       ->setSetting('max_length', 1024)
       ->setDisplayOptions('form', [
@@ -265,4 +413,60 @@ final class Source extends ContentEntityBase implements SourceInterface {
     $this->set('attachment', ['target_id' => $file->id()]);
   }
 
+  /****************************************************
+   * {@inheritdoc}
+   */
+   private function getPageTitle($url) {
+   // Fetch the HTML content from the URL
+
+    $http_client = \Drupal::httpClient();
+    try {
+      $response = $http_client->get($url, [
+        'verify' => FALSE,
+        'timeout' => 10.0,
+      ]);
+      #\dump("OK",$response); die();
+
+      $html = $response->getBody()->getContents();
+    }
+    catch (\Exception $e) { #mostly codes 403 and 0
+      #\dump("FAIL",$e); die();
+      \Drupal::logger('bkb_source')
+        ->error('Error getting page title: ' . $e->getMessage());
+      return array(
+          "code" => $e->getCode(),
+          "value" => $e->getMessage() 
+      );
+    }
+
+    # Success, parse the content
+    // Create a new DOMDocument object
+    $doc = new \DOMDocument();
+
+    // Suppress warnings for malformed HTML
+    libxml_use_internal_errors(true);
+
+    // Load the HTML into the DOMDocument object
+    $doc->loadHTML($html);
+
+    // Clear parsing errors
+    libxml_clear_errors();
+
+    // Get the title element
+    $titleNode = $doc->getElementsByTagName('title')->item(0);
+
+    // Check if the title element exists
+    if ($titleNode) {
+       return array(
+         "code" => 200,
+         "value" => $titleNode->nodeValue
+       );
+    } else {
+       return array(
+         "code" => 200, // We return 200 here, 
+                        //'value' will be printed directly and content will be downloaded
+         "value" => $this->t("Page title was not found")
+       );
+    }
+   }
 }
