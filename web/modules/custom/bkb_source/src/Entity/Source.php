@@ -97,14 +97,12 @@ final class Source extends ContentEntityBase implements SourceInterface {
     //      link to a html page
     // For user's convenience URL is entered to the same field (label) as the textual book description
     // Here, URL is copied to field source_url and article name is saved in the label field
-#\dump($label);die();
     if (UrlHelper::isValid($label, TRUE)) {
 
       if ($label != $this->get('source_url')->value) { #new URL specified
         $msg_title_not_found = "Page title was not found for this @link automatically. Copy it from the @page_link and update the source.";
 
         #  A special case of DK EnÚ
-#\dump($label);die();
         if (strpos($label, 'digitalna-kniznica.beliana.sav.sk') == TRUE) {
           #Extract Title for the url
           parse_str($label, $params);
@@ -122,7 +120,7 @@ final class Source extends ContentEntityBase implements SourceInterface {
           }
 
         # pdf
-        } elseif (substr($label, -4) == ".pdf" or strpos($label, ".pdf?") ) {
+        } elseif ($this->isPdfUrl($label) ) {
           $this->get('label')->value = $this->t("Page title was not found");
           #$page_link = Link::fromTextAndUrl($this->t("pdf"), Url::fromUri($label));
           $page_link = Link::fromTextAndUrl($this->t("pdf"), Url::fromUri($label, [
@@ -146,7 +144,6 @@ final class Source extends ContentEntityBase implements SourceInterface {
         #html
         } else {
           $response = $this->getPageTitle($label);
-#\dump($response); die();
           if (in_array($response['code'], ['200']) ) {  #Everything OK
             $this->get('label')->value = $response['value'];
             $this->getSourcePdf($label);
@@ -384,7 +381,7 @@ final class Source extends ContentEntityBase implements SourceInterface {
   }
 
   /**
-   * {@inheritdoc}
+   * Download a web page using the download service. Download pdfs directly because the service spoils them (adds left panel) 
    */
   private function getSourcePdf($url) {
     /** @var \GuzzleHttp\Client $http_client */
@@ -393,9 +390,15 @@ final class Source extends ContentEntityBase implements SourceInterface {
     $file_system = \Drupal::service('file_system');
 
     try {
-      $response = $http_client->get('https://pdfcreator.beliana.sav.sk/generate?source=' . $url, [
+      if ($this->isPdfUrl($url) ){
+        $response = $http_client->get($url, [
         'verify' => FALSE,
-      ]);
+        ]);
+      } else {
+        $response = $http_client->get('https://pdfcreator.beliana.sav.sk/generate?source=' . $url, [
+          'verify' => FALSE,
+        ]);
+      }
 
       if ($response->getStatusCode() === 200) {
         $pdf_data = $response->getBody()->getContents();
@@ -478,5 +481,12 @@ final class Source extends ContentEntityBase implements SourceInterface {
          "value" => $this->t("Page title was not found")
        );
     }
+   }
+
+  /****************************************************
+   * {@inheritdoc}
+   */
+   private function isPdfUrl($url) {
+     return substr($url, -4) == ".pdf" or strpos($url, ".pdf?") != NULL;
    }
 }
