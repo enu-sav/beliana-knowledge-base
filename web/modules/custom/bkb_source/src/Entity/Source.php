@@ -122,7 +122,13 @@ final class Source extends ContentEntityBase implements SourceInterface {
         # pdf
         } elseif (substr($label, -4) == ".pdf") {
           $this->get('label')->value = $this->t("Page title was not found");
-          $page_link = Link::fromTextAndUrl($this->t("pdf"), Url::fromUri($label));
+          #$page_link = Link::fromTextAndUrl($this->t("pdf"), Url::fromUri($label));
+          $page_link = Link::fromTextAndUrl($this->t("pdf"), Url::fromUri($label, [
+              'attributes' => [
+                  'target' => '_blank',
+                  'rel' => 'noopener noreferrer',
+              ],
+          ]));
           $msg = $this->t($msg_title_not_found, [
                 "@page_link" => $page_link->toString()
           ]);
