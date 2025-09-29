@@ -97,12 +97,14 @@ final class Source extends ContentEntityBase implements SourceInterface {
     //      link to a html page
     // For user's convenience URL is entered to the same field (label) as the textual book description
     // Here, URL is copied to field source_url and article name is saved in the label field
+#\dump($label);die();
     if (UrlHelper::isValid($label, TRUE)) {
 
       if ($label != $this->get('source_url')->value) { #new URL specified
         $msg_title_not_found = "Page title was not found for this @link automatically. Copy it from the @page_link and update the source.";
 
         #  A special case of DK EnÚ
+#\dump($label);die();
         if (strpos($label, 'digitalna-kniznica.beliana.sav.sk') == TRUE) {
           #Extract Title for the url
           parse_str($label, $params);
@@ -120,7 +122,7 @@ final class Source extends ContentEntityBase implements SourceInterface {
           }
 
         # pdf
-        } elseif (substr($label, -4) == ".pdf") {
+        } elseif (substr($label, -4) == ".pdf" or strpos($label, ".pdf?") ) {
           $this->get('label')->value = $this->t("Page title was not found");
           #$page_link = Link::fromTextAndUrl($this->t("pdf"), Url::fromUri($label));
           $page_link = Link::fromTextAndUrl($this->t("pdf"), Url::fromUri($label, [
