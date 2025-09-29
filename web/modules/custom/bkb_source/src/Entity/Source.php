@@ -263,19 +263,21 @@ final class Source extends ContentEntityBase implements SourceInterface {
   public static function baseFieldDefinitions(EntityTypeInterface $entity_type): array {
     $fields = parent::baseFieldDefinitions($entity_type);
 
-    $fields['label'] = BaseFieldDefinition::create('string')
+    $fields['label'] = BaseFieldDefinition::create('string_long')
       ->setLabel(t('Label'))
       ->setDescription(t('source-entity-label-description'))
       ->setRequired(TRUE)
-      ->setSetting('max_length', 255)
       ->setDisplayOptions('form', [
-        'type' => 'string_textfield',
+        'type' => 'textarea',
         'weight' => -5,
+        'settings' => [
+          'rows' => 1,
+        ],
       ])
       ->setDisplayConfigurable('form', TRUE)
       ->setDisplayOptions('view', [
         'label' => 'above',
-        'type' => 'string',
+        'type' => 'basic_string',
         'weight' => -5,
       ])
       ->setDisplayConfigurable('view', TRUE);

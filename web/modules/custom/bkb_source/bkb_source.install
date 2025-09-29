@@ -71,3 +71,13 @@ function bkb_source_update_10005() {
     ]);
 }
 
+ * Change source label field from varchar to text while preserving data.
+ */
+function bkb_source_update_10005() {
+  \Drupal::service('bkb_base.helper')->changeFieldType('source', 'label', [
+    'type' => 'text',
+    'size' => 'medium',
+    'not null' => FALSE,
+    'description' => 'The label of the source.',
+  ]);
+}
