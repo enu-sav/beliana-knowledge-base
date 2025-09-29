@@ -141,4 +141,45 @@ class Helper {
     return $new_source ? $excluded : FALSE;
   }
 
+  /**
+   * Change field type from varchar to text while preserving data.
+   *
+   * @param string $entity_type
+   *   The entity type.
+   * @param string $field_name
+   *   The field name to change.
+   * @param array $field_spec
+   *   The new field specification.
+   *
+   * @return void
+   */
+  public function changeFieldType(string $entity_type, string $field_name, array $field_spec): void {
+    $database = \Drupal::database();
+
+    // Store existing field data in PHP variable.
+    $existing_data = $database->select($entity_type, 'e')
+      ->fields('e', ['id', $field_name])
+      ->execute()
+      ->fetchAllKeyed();
+
+    // Drop the original column.
+    $database->schema()->dropField($entity_type, $field_name);
+
+    // Add the new column.
+    $database->schema()->addField($entity_type, $field_name, $field_spec);
+
+    // Restore data from PHP variable.
+    foreach ($existing_data as $id => $field_value) {
+      if (!empty($field_value)) {
+        $database->update($entity_type)
+          ->fields([$field_name => $field_value])
+          ->condition('id', $id)
+          ->execute();
+      }
+    }
+
+    // Clear entity cache to ensure the new field definition is used.
+    $this->entityTypeManager->clearCachedDefinitions();
+  }
+
 }
