@@ -33,6 +33,7 @@
         "drupal/jsonapi_extras": "^3.26",
         "drupal/jsonapi_permission_access": "^1.0",
         "drupal/r4032login": "^2.2",
+        "drupal/remove_reset_password": "^1.0",
         "drush/drush": "^12.5",
         "vlucas/phpdotenv": "^5.6"
     },

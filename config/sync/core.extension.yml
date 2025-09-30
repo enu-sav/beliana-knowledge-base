@@ -49,6 +49,7 @@ module:
   path: 0
   path_alias: 0
   r4032login: 0
+  remove_reset_password: 0
   serialization: 0
   system: 0
   text: 0
