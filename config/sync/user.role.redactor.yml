@@ -24,6 +24,7 @@ permissions:
   - 'edit source_comment'
   - 'edit source_comment_node'
   - 'edit source_group'
+  - 'view all source_comment revisions'
   - 'view own unpublished content'
   - 'view source'
   - 'view source_comment'
