@@ -46,3 +46,8 @@ form.source-comment-node-form .ajax-new-content .field--name-source .form-item__
 form.bkb-base-source-data-edit .label-wrapper > .form-type--textfield {
   display: inline-block;
 }
+
+.gin-breadcrumb__item--back-to-site,
+.gin-breadcrumb__item--back-to-site + .gin-breadcrumb__item::before{
+  display: none !important;
+}

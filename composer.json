@@ -27,7 +27,7 @@
         "drupal/core-project-message": "^10.4",
         "drupal/core-recommended": "^10.4",
         "drupal/environment_indicator": "^4.0",
-        "drupal/gin": "^4.0",
+        "drupal/gin": "^4.1",
         "drupal/gin_toolbar": "^2.0",
         "drupal/inline_entity_form": "3.0-RC19",
         "drupal/jsonapi_extras": "^3.26",
@@ -100,6 +100,9 @@
         },
         "enable-patching": true,
         "patches": {
+            "drupal/gin": {
+                "3345842 - Allow removing the 'Back to site' link on admin-only sites": "https://git.drupalcode.org/project/gin/-/merge_requests/231.diff"
+            },
             "drupal/inline_entity_form": {
                 "3088901 - Add more than two items with simple inline entity form widget": "./patches/3088901-16-modified.patch"
             }
