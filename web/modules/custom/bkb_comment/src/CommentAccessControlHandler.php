@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Drupal\bkb_comment;
 
+use Drupal\bkb_base\OwnershipAccessTrait;
 use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Entity\EntityAccessControlHandler;
 use Drupal\Core\Entity\EntityInterface;
@@ -18,6 +19,8 @@ use Drupal\Core\Session\AccountInterface;
  */
 final class CommentAccessControlHandler extends EntityAccessControlHandler {
 
+  use OwnershipAccessTrait;
+
   /**
    * {@inheritdoc}
    */
@@ -28,8 +31,8 @@ final class CommentAccessControlHandler extends EntityAccessControlHandler {
 
     return match($operation) {
       'view' => AccessResult::allowedIfHasPermission($account, 'view source_comment'),
-      'update' => AccessResult::allowedIfHasPermission($account, 'edit source_comment'),
-      'delete' => AccessResult::allowedIfHasPermission($account, 'delete source_comment'),
+      'update' => $this->checkUpdateAccess($entity, $account),
+      'delete' => $this->checkDeleteAccess($entity, $account),
       'view all revisions' => AccessResult::allowedIfHasPermission($account, 'view all source_comment revisions'),
       'view revision' => AccessResult::allowedIfHasPermission($account, 'view source_comment revisions'),
       'revert' => AccessResult::allowedIfHasPermission($account, 'revert source_comment revisions'),
@@ -43,6 +46,21 @@ final class CommentAccessControlHandler extends EntityAccessControlHandler {
    */
   protected function checkCreateAccess(AccountInterface $account, array $context, $entity_bundle = NULL): AccessResult {
     return AccessResult::allowedIfHasPermissions($account, ['create source_comment', 'administer source_comment'], 'OR');
+  }
+
+  /**
+   * Checks update access for comment entities.
+   */
+  protected function checkUpdateAccess(EntityInterface $entity, AccountInterface $account): AccessResult {
+    // Anyone can edit comments (requirement: "Upraviť text komentára môže každý")
+    return AccessResult::allowedIfHasPermission($account, 'edit source_comment');
+  }
+
+  /**
+   * Checks delete access for comment entities.
+   */
+  protected function checkDeleteAccess(EntityInterface $entity, AccountInterface $account): AccessResult {
+    return $this->checkOwnershipBasedAccess($entity, $account, 'delete', 'source_comment');
   }
 
 }

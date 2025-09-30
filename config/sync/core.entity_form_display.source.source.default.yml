@@ -18,14 +18,6 @@ content:
     settings:
       progress_indicator: throbber
     third_party_settings: {  }
-  citation:
-    type: string_textfield
-    weight: 11
-    region: content
-    settings:
-      size: 60
-      placeholder: ''
-    third_party_settings: {  }
   data:
     type: text_textarea
     weight: 1

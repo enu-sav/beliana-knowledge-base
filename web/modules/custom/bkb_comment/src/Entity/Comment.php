@@ -78,21 +78,23 @@ final class Comment extends ContentEntityBase implements CommentInterface, Revis
   /**
    * {@inheritdoc}
    */
+  public function toUrl($rel = 'canonical', array $options = []) {
+    // Handle revision URLs with empty revision IDs
+    if (in_array($rel, ['revision', 'revision-delete-form', 'revision-revert-form']) && empty($this->getRevisionId())) {
+      // Return the canonical URL instead for entities without valid revision IDs
+      return parent::toUrl('canonical', $options);
+    }
+    return parent::toUrl($rel, $options);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public function preSave(EntityStorageInterface $storage): void {
     parent::preSave($storage);
 
-    if (!$this->isNew()) {
-      $this->setNewRevision();
-    }
-
     if (!$this->getOwnerId()) {
       $this->setOwnerId(0);
-    }
-
-    // Set revision timestamp and user for new revisions
-    if ($this->isNewRevision()) {
-      $this->setRevisionCreationTime(\Drupal::time()->getRequestTime());
-      $this->setRevisionUserId(\Drupal::currentUser()->id());
     }
 
     $comment = $this->get('comment')->value;

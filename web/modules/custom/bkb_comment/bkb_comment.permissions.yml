@@ -5,8 +5,12 @@ view source_comment:
   title: 'View comment'
 edit source_comment:
   title: 'Edit comment'
+edit own source_comment:
+  title: 'Edit own comment'
 delete source_comment:
   title: 'Delete comment'
+delete own source_comment:
+  title: 'Delete own comment'
 create source_comment:
   title: 'Create comment'
 view all source_comment revisions:
@@ -25,7 +29,11 @@ view source_comment_node:
   title: 'View word'
 edit source_comment_node:
   title: 'Edit word'
+edit own source_comment_node:
+  title: 'Edit own word'
 delete source_comment_node:
   title: 'Delete word'
+delete own source_comment_node:
+  title: 'Delete own word'
 create source_comment_node:
   title: 'Create word'

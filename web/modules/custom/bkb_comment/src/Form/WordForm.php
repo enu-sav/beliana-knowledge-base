@@ -27,6 +27,9 @@ final class WordForm extends ContentEntityForm {
       }
     }
 
+    $form['label']['widget'][0]['value']['#disabled'] = TRUE;
+    $form['url']['widget'][0]['uri']['#disabled'] = TRUE;
+
     return $form;
   }
 

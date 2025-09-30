@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Drupal\bkb_source;
 
+use Drupal\bkb_base\OwnershipAccessTrait;
 use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Entity\EntityAccessControlHandler;
 use Drupal\Core\Entity\EntityInterface;
@@ -18,6 +19,8 @@ use Drupal\Core\Session\AccountInterface;
  */
 final class GroupAccessControlHandler extends EntityAccessControlHandler {
 
+  use OwnershipAccessTrait;
+
   /**
    * {@inheritdoc}
    */
@@ -28,8 +31,8 @@ final class GroupAccessControlHandler extends EntityAccessControlHandler {
 
     return match($operation) {
       'view' => AccessResult::allowedIfHasPermission($account, 'view source_group'),
-      'update' => AccessResult::allowedIfHasPermission($account, 'edit source_group'),
-      'delete' => AccessResult::allowedIfHasPermission($account, 'delete source_group'),
+      'update' => $this->checkOwnershipBasedAccess($entity, $account, 'edit', 'source_group'),
+      'delete' => $this->checkOwnershipBasedAccess($entity, $account, 'delete', 'source_group'),
       default => AccessResult::neutral(),
     };
   }

@@ -5,8 +5,12 @@ view source:
   title: 'View sources'
 edit source:
   title: 'Edit sources'
+edit own source:
+  title: 'Edit own sources'
 delete source:
   title: 'Delete sources'
+delete own source:
+  title: 'Delete own sources'
 create source:
   title: 'Create sources'
 
@@ -17,7 +21,11 @@ view source_group:
   title: 'View groups'
 edit source_group:
   title: 'Edit groups'
+edit own source_group:
+  title: 'Edit own groups'
 delete source_group:
   title: 'Delete groups'
+delete own source_group:
+  title: 'Delete own groups'
 create source_group:
   title: 'Create groups'
