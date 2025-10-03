@@ -18,6 +18,7 @@ permissions:
   - 'create source_comment_node'
   - 'create source_group'
   - 'delete own source_comment'
+  - 'delete own source_comment_node'
   - 'edit own source'
   - 'edit own source_comment'
   - 'edit own source_comment_node'

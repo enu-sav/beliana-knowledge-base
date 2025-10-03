@@ -383,7 +383,7 @@ display:
       access:
         type: perm
         options:
-          perm: 'create source_comment'
+          perm: 'create source_comment_node'
       cache:
         type: tag
         options: {  }

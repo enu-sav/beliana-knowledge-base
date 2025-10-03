@@ -39,6 +39,9 @@ function bkb_comment_form_alter(array &$form, FormStateInterface &$form_state, $
   switch ($form_id) {
     case 'source_comment_node_add_form':
     case 'source_comment_node_edit_form':
+      /** @var \Drupal\bkb_base\Helper $helper */
+      $helper = \Drupal::service('bkb_base.helper');
+
       $form['comments']['widget']['#title'] = t('comment-node-form-fieldset-label');
       $form['comments']['widget']['add_more']['#value'] = t('comment-node-form-add-more-label');
 
@@ -49,14 +52,35 @@ function bkb_comment_form_alter(array &$form, FormStateInterface &$form_state, $
             $item['#open'] = TRUE;
           }
           else {
+            /** @var \Drupal\bkb_comment\Entity\Comment $comment */
             if ($comment = $item['inline_entity_form']['#default_value']) {
               $item['#field_title'] = $comment->get('label')->value;
+
+              // Hide comment delete button for comment non-authors
+              if (!$helper->userIsCommentAuthor($comment)) {
+                $item['_actions']['delete']['#access'] = FALSE;
+              }
             }
           }
         }
       }
 
       $form['#attached']['library'][] = 'bkb_comment/operations';
+      break;
+    case 'source_comment_edit_form':
+      if ($comment = \Drupal::request()->get('source_comment')) {
+        /** @var \Drupal\bkb_base\Helper $helper */
+        $helper = \Drupal::service('bkb_base.helper');
+
+        foreach ($form['sources']['widget'] as $key => &$item) {
+          if (is_numeric($key)) {
+            // Hide source delete button for comment non-authors
+            if (!$helper->userIsCommentAuthor($comment)) {
+              $item['_actions']['delete']['#access'] = FALSE;
+            }
+          }
+        }
+      }
       break;
   }
 }
@@ -67,7 +91,19 @@ function bkb_comment_form_alter(array &$form, FormStateInterface &$form_state, $
 function bkb_comment_inline_entity_form_entity_form_alter(array &$entity_form, FormStateInterface &$form_state) {
   switch ($entity_form['#entity_type']) {
     case 'source_comment':
+      /** @var \Drupal\bkb_base\Helper $helper */
+      $helper = \Drupal::service('bkb_base.helper');
+
       $entity_form['sources']['widget']['add_more']['#value'] = t('comment-form-add-more-label');
+
+      foreach ($entity_form['sources']['widget'] as $key => &$item) {
+        if (is_numeric($key)) {
+          // Hide source delete button for comment non-authors
+          if (!$helper->userIsCommentAuthor($entity_form['#entity'])) {
+            $item['_actions']['delete']['#access'] = FALSE;
+          }
+        }
+      }
       break;
   }
 }

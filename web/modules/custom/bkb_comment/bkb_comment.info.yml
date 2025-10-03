@@ -8,5 +8,6 @@ interface translation project: bkb_comment
 interface translation server pattern: modules/custom/%project/translations/%project.%language.po
 
 dependencies:
+  - drupal:bkb_base
   - drupal:bkb_source
   - drupal:views

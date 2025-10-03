@@ -26,12 +26,12 @@ content:
     weight: 1
     region: content
   label:
-    type: string
+    type: basic_string
     label: above
-    settings:
-      link_to_entity: false
+    settings: {  }
     third_party_settings: {  }
     weight: 0
     region: content
 hidden:
+  citation: true
   uid: true

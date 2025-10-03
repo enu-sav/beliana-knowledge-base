@@ -4,9 +4,6 @@ declare(strict_types=1);
 
 namespace Drupal\bkb_source\Entity;
 
-use Dompdf\Dompdf;
-use Dompdf\Options;
-use Drupal\bkb_base\BibTeXConverter;
 use Drupal\bkb_source\SourceInterface;
 use Drupal\Component\Utility\UrlHelper;
 use Drupal\Core\Entity\ContentEntityBase;
@@ -15,7 +12,6 @@ use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Field\BaseFieldDefinition;
 use Drupal\Core\File\FileExists;
 use Drupal\user\EntityOwnerTrait;
-use Drupal\Component\Utility\Html;
 
 /**
  * Defines the source entity class.

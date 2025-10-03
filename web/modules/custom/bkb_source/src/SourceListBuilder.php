@@ -31,7 +31,7 @@ final class SourceListBuilder extends EntityListBuilder {
     $row['label'] = $entity->label();
     $username_options = [
       'label' => 'hidden',
-      'settings' => ['link' => $entity->get('uid')->entity->isAuthenticated()],
+      'settings' => ['link' => $entity->get('uid')->entity && $entity->get('uid')->entity->isAuthenticated()],
     ];
     $row['uid']['data'] = $entity->get('uid')->view($username_options);
     return $row + parent::buildRow($entity);
