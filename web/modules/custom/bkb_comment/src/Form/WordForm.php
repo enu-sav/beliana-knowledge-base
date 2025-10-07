@@ -35,8 +35,7 @@ final class WordForm extends ContentEntityForm {
    */
   public function save(array $form, FormStateInterface $form_state): int {
     $result = parent::save($form, $form_state);
-    #$form_state->setRedirect('view.comments_overview.page');
-    $form_state->setRedirectUrl($this->entity->toUrl('canonical'));
+    $form_state->setRedirect('view.comments_overview.page');
 
     $message_args = ['%label' => $this->entity->toLink()->toString()];
     $logger_args = [
@@ -64,28 +63,26 @@ final class WordForm extends ContentEntityForm {
     }
 
     /** @var \Drupal\bkb_base\Helper $helper */
-    /* if not commented out, it returns to a funny source editing form */
-    //$helper = \Drupal::service('bkb_base.helper');
-    //$excluded = [];
-    //$values = $form_state->getValues();
+    $helper = \Drupal::service('bkb_base.helper');
+    $excluded = [];
+    $values = $form_state->getValues();
 
-    //foreach ($values['comments'] as $i => $comment) {
-      //if (is_numeric($i)) {
-        //$excluded_sources = $helper->isSourceNew($comment['inline_entity_form']['sources']);
-        //if ($excluded_sources !== FALSE) {
-          //$excluded = array_unique(array_merge($excluded, $excluded_sources));
-        //}
-      //}
-    //}
+    foreach ($values['comments'] as $i => $comment) {
+      if (is_numeric($i)) {
+        $excluded_sources = $helper->isSourceNew($comment['inline_entity_form']['sources']);
+        if ($excluded_sources !== FALSE) {
+          $excluded = array_unique(array_merge($excluded, $excluded_sources));
+        }
+      }
+    }
 
-    //if (!empty($excluded)) {
-      //$form_state->setRedirect(
-        //'entity.source.data.edit',
-        //['id' => $this->entity->id()],
-        //['query' => ['excluded' => implode(',', $excluded)]]
-      //);
-    //}
-
+    if (!empty($excluded)) {
+      $form_state->setRedirect(
+        'entity.source.data.edit',
+        ['id' => $this->entity->id()],
+        ['query' => ['excluded' => implode(',', $excluded)]]
+      );
+    }
 
     return $result;
   }
