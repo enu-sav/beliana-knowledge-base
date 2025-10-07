@@ -35,7 +35,7 @@ use Drupal\user\EntityOwnerTrait;
  *       "delete-multiple-confirm" = "Drupal\Core\Entity\Form\DeleteMultipleForm",
  *     },
  *     "route_provider" = {
- *       "html" = "Drupal\bkb_source\Routing\GroupHtmlRouteProvider",
+ *       "html" = "Drupal\Core\Entity\Routing\AdminHtmlRouteProvider",
  *     },
  *   },
  *   base_table = "source_group",
@@ -50,7 +50,7 @@ use Drupal\user\EntityOwnerTrait;
  *     "collection" = "/admin/content/source-group",
  *     "add-form" = "/group/add",
  *     "canonical" = "/group/{source_group}",
- *     "edit-form" = "/group/{source_group}",
+ *     "edit-form" = "/group/{source_group}/edit",
  *     "delete-form" = "/group/{source_group}/delete",
  *     "delete-multiple-form" = "/admin/content/source-group/delete-multiple",
  *   },

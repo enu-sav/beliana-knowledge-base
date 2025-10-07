@@ -39,7 +39,7 @@ final class SourceForm extends ContentEntityForm {
         throw new \LogicException('Could not save the entity.');
     }
 
-    $form_state->setRedirectUrl($this->entity->toUrl('collection'));
+    $form_state->setRedirectUrl($this->entity->toUrl());
 
     return $result;
   }

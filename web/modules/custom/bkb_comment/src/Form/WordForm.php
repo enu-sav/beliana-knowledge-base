@@ -38,7 +38,7 @@ final class WordForm extends ContentEntityForm {
    */
   public function save(array $form, FormStateInterface $form_state): int {
     $result = parent::save($form, $form_state);
-    $form_state->setRedirect('view.comments_overview.page');
+    $form_state->setRedirectUrl($this->entity->toUrl());
 
     $message_args = ['%label' => $this->entity->toLink()->toString()];
     $logger_args = [

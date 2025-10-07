@@ -8,8 +8,28 @@ use Drupal\Core\Form\FormStateInterface;
  */
 function bkb_source_theme(): array {
   return [
+    'source' => ['render element' => 'elements'],
     'source_group' => ['render element' => 'elements'],
   ];
+}
+
+/**
+ * Prepares variables for source templates.
+ *
+ * Default template: source.html.twig.
+ *
+ * @param array $variables
+ *   An associative array containing:
+ *   - elements: An associative array containing the source information and any
+ *     fields attached to the entity.
+ *   - attributes: HTML attributes for the containing element.
+ */
+function template_preprocess_source(array &$variables): void {
+  $variables['view_mode'] = $variables['elements']['#view_mode'];
+  $variables['source'] = $variables['elements']['#source'];
+  foreach (Element::children($variables['elements']) as $key) {
+    $variables['content'][$key] = $variables['elements'][$key];
+  }
 }
 
 /**

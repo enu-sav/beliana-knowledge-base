@@ -27,6 +27,7 @@ use Drupal\user\EntityOwnerTrait;
  *     plural = "@count sources",
  *   ),
  *   handlers = {
+ *     "view_builder" = "Drupal\Core\Entity\EntityViewBuilder",
  *     "list_builder" = "Drupal\bkb_source\SourceListBuilder",
  *     "views_data" = "Drupal\views\EntityViewsData",
  *     "access" = "Drupal\bkb_source\SourceAccessControlHandler",
@@ -38,7 +39,7 @@ use Drupal\user\EntityOwnerTrait;
  *   "Drupal\Core\Entity\Form\DeleteMultipleForm",
  *     },
  *     "route_provider" = {
- *       "html" = "Drupal\bkb_source\Routing\SourceHtmlRouteProvider",
+ *       "html" = "Drupal\Core\Entity\Routing\DefaultHtmlRouteProvider",
  *     },
  *   },
  *   base_table = "source",
@@ -53,7 +54,7 @@ use Drupal\user\EntityOwnerTrait;
  *     "collection" = "/admin/content/sources",
  *     "add-form" = "/source/add",
  *     "canonical" = "/source/{source}",
- *     "edit-form" = "/source/{source}",
+ *     "edit-form" = "/source/{source}/edit",
  *     "delete-form" = "/source/{source}/delete",
  *     "delete-multiple-form" = "/admin/content/sources/delete-multiple",
  *   },
