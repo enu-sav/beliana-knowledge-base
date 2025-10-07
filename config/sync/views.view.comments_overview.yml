@@ -421,26 +421,26 @@ display:
           exposed: false
       arguments: {  }
       filters:
-        comment:
-          id: comment
+        label_2:
+          id: label_2
           table: source_comment
-          field: comment
+          field: label
           relationship: comments_target_id
           group_type: group
           admin_label: ''
           entity_type: source_comment
-          entity_field: comment
+          entity_field: label
           plugin_id: string
           operator: contains
           value: ''
           group: 1
           exposed: true
           expose:
-            operator_id: comment_op
+            operator_id: label_2_op
             label: 'Text komentára'
             description: ''
             use_operator: false
-            operator: comment_op
+            operator: label_2_op
             operator_limit_selection: false
             operator_list: {  }
             identifier: comment
