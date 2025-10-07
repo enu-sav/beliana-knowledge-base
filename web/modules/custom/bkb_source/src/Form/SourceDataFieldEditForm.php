@@ -69,6 +69,8 @@ class SourceDataFieldEditForm extends FormBase {
       ->getStorage('source_comment_node')
       ->load($id);
 
+    $form_state->set('source_comment_node', $id);
+
     $source_groups = [];
     $comments = $word->get('comments')->referencedEntities();
 
@@ -174,7 +176,7 @@ class SourceDataFieldEditForm extends FormBase {
       }
     }
 
-    $form_state->setRedirect('view.comments_overview.page');
+    $form_state->setRedirect('entity.source_comment_node.canonical', ['source_comment_node' => $form_state->get('source_comment_node')]);
   }
 
   /**

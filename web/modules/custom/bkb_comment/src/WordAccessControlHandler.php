@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Drupal\bkb_comment;
 
+use Drupal\bkb_base\OwnershipAccessTrait;
 use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Entity\EntityAccessControlHandler;
 use Drupal\Core\Entity\EntityInterface;
@@ -18,6 +19,8 @@ use Drupal\Core\Session\AccountInterface;
  */
 final class WordAccessControlHandler extends EntityAccessControlHandler {
 
+  use OwnershipAccessTrait;
+
   /**
    * {@inheritdoc}
    */
@@ -28,8 +31,8 @@ final class WordAccessControlHandler extends EntityAccessControlHandler {
 
     return match($operation) {
       'view' => AccessResult::allowedIfHasPermission($account, 'view source_comment_node'),
-      'update' => AccessResult::allowedIfHasPermission($account, 'edit source_comment_node'),
-      'delete' => AccessResult::allowedIfHasPermission($account, 'delete source_comment_node'),
+      'update' => $this->checkUpdateAccess($entity, $account),
+      'delete' => $this->checkDeleteAccess($entity, $account),
       default => AccessResult::neutral(),
     };
   }
@@ -39,6 +42,20 @@ final class WordAccessControlHandler extends EntityAccessControlHandler {
    */
   protected function checkCreateAccess(AccountInterface $account, array $context, $entity_bundle = NULL): AccessResult {
     return AccessResult::allowedIfHasPermissions($account, ['create source_comment_node', 'administer source_comment_node'], 'OR');
+  }
+
+  /**
+   * Checks update access for word entities.
+   */
+  protected function checkUpdateAccess(EntityInterface $entity, AccountInterface $account): AccessResult {
+    return $this->checkOwnershipBasedAccess($entity, $account, 'edit', 'source_comment_node');
+  }
+
+  /**
+   * Checks delete access for word entities.
+   */
+  protected function checkDeleteAccess(EntityInterface $entity, AccountInterface $account): AccessResult {
+    return $this->checkOwnershipBasedAccess($entity, $account, 'delete', 'source_comment_node');
   }
 
 }

@@ -10,6 +10,15 @@ entity.source.collection:
   route_name: entity.source.collection
   parent: system.admin_content
 
+bkb_source.sources_content_menu:
+  title: Zdroje
+  route_name: view.sources_overview.page
+  menu_name: content
+  weight: 98
+  options:
+    attributes:
+      data-icon-class: book
+
 entity.source_group.settings:
   title: 'Group'
   description: 'Configure a Group entity type.'

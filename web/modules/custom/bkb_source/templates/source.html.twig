@@ -1,0 +1,31 @@
+{#
+/**
+ * @file
+ * Default theme implementation to present a source entity.
+ *
+ * This template is used when viewing a canonical source page,
+ *
+ * Available variables:
+ * - content: A list of content items. Use 'content' to print all content, or
+ *   print a subset such as 'content.label'.
+ * - attributes: HTML attributes for the container element.
+ * - source: The source entity.
+ *
+ * @see template_preprocess_source()
+ */
+#}
+
+{% set attributes = attributes.addClass('bkb-source') %}
+{% set full_label = source.label.value %}
+{% set trimmed_label = full_label|length > 128 ? full_label|slice(0, 128) ~ '...' : full_label %}
+
+<article{{ attributes }}>
+  {% if content %}
+    <div class="field field--name-label field--type-string-long field--label-above">
+      <div class="field__label">{{ 'Label'|t }}</div>
+      <div class="field__item">{{ full_label }}</div>
+    </div>
+
+    {{ content|without('label') }}
+  {% endif %}
+</article>

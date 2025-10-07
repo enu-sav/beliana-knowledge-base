@@ -1,5 +1,5 @@
 bkb_base.settings:
   title: BKB Settings
-  parent: system.admin
+  parent: system.admin_config
   route_name: bkb_base.settings
-  weight: -10
+  weight: -99

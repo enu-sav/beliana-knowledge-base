@@ -4,9 +4,6 @@ declare(strict_types=1);
 
 namespace Drupal\bkb_source\Entity;
 
-use Dompdf\Dompdf;
-use Dompdf\Options;
-use Drupal\bkb_base\BibTeXConverter;
 use Drupal\bkb_source\SourceInterface;
 use Drupal\Component\Utility\UrlHelper;
 use Drupal\Core\Entity\ContentEntityBase;
@@ -35,6 +32,7 @@ use Drupal\Core\Url;
  *     plural = "@count sources",
  *   ),
  *   handlers = {
+ *     "view_builder" = "Drupal\Core\Entity\EntityViewBuilder",
  *     "list_builder" = "Drupal\bkb_source\SourceListBuilder",
  *     "views_data" = "Drupal\views\EntityViewsData",
  *     "access" = "Drupal\bkb_source\SourceAccessControlHandler",
@@ -46,7 +44,7 @@ use Drupal\Core\Url;
  *   "Drupal\Core\Entity\Form\DeleteMultipleForm",
  *     },
  *     "route_provider" = {
- *       "html" = "Drupal\bkb_source\Routing\SourceHtmlRouteProvider",
+ *       "html" = "Drupal\Core\Entity\Routing\DefaultHtmlRouteProvider",
  *     },
  *   },
  *   base_table = "source",
@@ -61,7 +59,7 @@ use Drupal\Core\Url;
  *     "collection" = "/admin/content/sources",
  *     "add-form" = "/source/add",
  *     "canonical" = "/source/{source}",
- *     "edit-form" = "/source/{source}",
+ *     "edit-form" = "/source/{source}/edit",
  *     "delete-form" = "/source/{source}/delete",
  *     "delete-multiple-form" = "/admin/content/sources/delete-multiple",
  *   },

@@ -1,0 +1,45 @@
+<?php
+
+use Drupal\Core\Form\FormStateInterface;
+
+/**
+ * Implements hook_form_FORM_ID_alter() for user_login_form.
+ */
+function bkb_user_sync_form_user_login_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  array_unshift($form['#validate'], 'bkb_user_sync_user_login_validate');
+}
+
+/**
+ * Custom validation handler for user login.
+ */
+function bkb_user_sync_user_login_validate($form, FormStateInterface $form_state) {
+  $username = $form_state->getValue('name');
+  $password = $form_state->getValue('pass');
+
+  if (empty($username) || empty($password)) {
+    return;
+  }
+
+  /** @var \Drupal\bkb_user_sync\Service\UserSyncService $sync_service */
+  $sync_service = \Drupal::service('bkb_user_sync.user_sync');
+  $logger = \Drupal::logger('bkb_user_sync');
+
+  try {
+    // Try to authenticate with D7
+    $user_data = $sync_service->verifyD7Credentials($username, $password);
+
+    if ($user_data) {
+      $user = $sync_service->syncUser($username, $user_data, $password);
+
+      if (!$user) {
+        $form_state->setErrorByName('name', t('Your account does not have the required permissions.'));
+        return;
+      }
+    }
+  }
+  catch (\Exception $e) {
+    $logger->error('D7 sync error: @error', [
+      '@error' => $e->getMessage(),
+    ]);
+  }
+}

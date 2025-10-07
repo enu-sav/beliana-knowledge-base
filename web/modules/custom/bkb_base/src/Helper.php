@@ -7,6 +7,7 @@ use Drupal\Core\Entity\EntityFieldManager;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityTypeManager;
 use Drupal\Core\Field\FieldStorageDefinitionInterface;
+use Drupal\Core\Session\AccountInterface;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
@@ -30,17 +31,21 @@ class Helper {
    */
   private EntityFieldManager $entityFieldManager;
 
+  private AccountInterface $currentUser;
+
   /**
    * Constructor for Helper.
    *
    * @param \Drupal\Core\Entity\EntityTypeManager $entity_type_manager
    * @param \Drupal\Core\Entity\EntityDefinitionUpdateManagerInterface $entity_definition_manager
    * @param \Drupal\Core\Entity\EntityFieldManager $entity_field_manager
+   * @param \Drupal\Core\Session\AccountInterface $current_user
    */
-  public function __construct(EntityTypeManager $entity_type_manager, EntityDefinitionUpdateManagerInterface $entity_definition_manager, EntityFieldManager $entity_field_manager) {
+  public function __construct(EntityTypeManager $entity_type_manager, EntityDefinitionUpdateManagerInterface $entity_definition_manager, EntityFieldManager $entity_field_manager, AccountInterface $current_user) {
     $this->entityTypeManager = $entity_type_manager;
     $this->entityDefinitionManager = $entity_definition_manager;
     $this->entityFieldManager = $entity_field_manager;
+    $this->currentUser = $current_user;
   }
 
   /**
@@ -180,6 +185,15 @@ class Helper {
 
     // Clear entity cache to ensure the new field definition is used.
     $this->entityTypeManager->clearCachedDefinitions();
+  }
+
+  /**
+   * @param \Drupal\bkb_comment\Entity\Comment $comment
+   *
+   * @return bool
+   */
+  public function userIsCommentAuthor($comment){
+    return $comment->getOwnerId() === $this->currentUser->id() || $this->currentUser->hasPermission('administer source_comment');
   }
 
 }

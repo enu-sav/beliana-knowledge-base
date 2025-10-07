@@ -9,3 +9,12 @@ entity.source_comment_node.settings:
   description: 'Configure a Word entity type.'
   route_name:  entity.source_comment_node.settings
   parent: system.admin_structure
+
+bkb_comment.comments_content_menu:
+  title: Komentáre
+  route_name: view.comments_overview.page
+  menu_name: content
+  weight: 99
+  options:
+    attributes:
+      data-icon-class: comment

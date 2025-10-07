@@ -18,14 +18,6 @@ content:
     third_party_settings: {  }
     weight: 2
     region: content
-  citation:
-    type: string
-    label: above
-    settings:
-      link_to_entity: false
-    third_party_settings: {  }
-    weight: 11
-    region: content
   data:
     type: basic_string
     label: above
@@ -34,12 +26,12 @@ content:
     weight: 1
     region: content
   label:
-    type: string
-    label: above
-    settings:
-      link_to_entity: false
+    type: basic_string
+    label: hidden
+    settings: {  }
     third_party_settings: {  }
     weight: 0
     region: content
 hidden:
+  citation: true
   uid: true

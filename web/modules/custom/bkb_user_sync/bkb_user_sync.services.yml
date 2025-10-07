@@ -1,6 +1,7 @@
 services:
-  bkb_user_sync.user_login_subscriber:
-    class: 'Drupal\bkb_user_sync\EventSubscriber\UserLoginSubscriber'
-    arguments: ['@logger.factory', '@entity_type.manager', '@http_client']
-    tags:
-      - { name: event_subscriber }
+  bkb_user_sync.user_sync:
+    class: Drupal\bkb_user_sync\Service\UserSyncService
+    arguments:
+      - '@logger.factory'
+      - '@entity_type.manager'
+      - '@http_client'
