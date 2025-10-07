@@ -342,9 +342,8 @@ display:
         title: Zdroje
         description: ''
         weight: 98
-        expanded: false
-        menu_name: content
-        parent: navigation.content
+        menu_name: admin
+        parent: system.admin_content
         context: '0'
     cache_metadata:
       max-age: -1

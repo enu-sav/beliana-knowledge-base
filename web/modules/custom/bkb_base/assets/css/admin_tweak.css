@@ -51,3 +51,35 @@ form.bkb-base-source-data-edit .label-wrapper > .form-type--textfield {
 .gin-breadcrumb__item--back-to-site + .gin-breadcrumb__item::before{
   display: none !important;
 }
+
+/**
+ * Custom navigation icons for BKB
+ */
+
+/* Book icon for Zdroje */
+.toolbar-button--icon--book::before {
+  -webkit-mask-image: url('../icons/book.svg') !important;
+  mask-image: url('../icons/book.svg') !important;
+  -webkit-mask-size: contain !important;
+  mask-size: contain !important;
+  -webkit-mask-repeat: no-repeat !important;
+  mask-repeat: no-repeat !important;
+  -webkit-mask-position: center !important;
+  mask-position: center !important;
+  background-color: currentColor !important;
+  background-image: none !important;
+}
+
+/* Comment icon for Komentáre */
+.toolbar-button--icon--comment::before {
+  -webkit-mask-image: url('../icons/comment.svg') !important;
+  mask-image: url('../icons/comment.svg') !important;
+  -webkit-mask-size: contain !important;
+  mask-size: contain !important;
+  -webkit-mask-repeat: no-repeat !important;
+  mask-repeat: no-repeat !important;
+  -webkit-mask-position: center !important;
+  mask-position: center !important;
+  background-color: currentColor !important;
+  background-image: none !important;
+}
