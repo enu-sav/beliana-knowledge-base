@@ -80,11 +80,11 @@ final class WordForm extends ContentEntityForm {
     }
 
     if (!empty($excluded)) {
-      $form_state->setRedirect(
-        'entity.source.data.edit',
-        ['id' => $this->entity->id()],
-        ['query' => ['excluded' => implode(',', $excluded)]]
-      );
+//      $form_state->setRedirect(
+//        'entity.source.data.edit',
+//        ['id' => $this->entity->id()],
+//        ['query' => ['excluded' => implode(',', $excluded)]]
+//      );
     }
 
     return $result;
