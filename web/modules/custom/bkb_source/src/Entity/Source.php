@@ -100,6 +100,10 @@ final class Source extends ContentEntityBase implements SourceInterface {
       if ($label != $this->get('source_url')->value) { #new URL specified
         $msg_title_not_found = "Page title was not found for this @link automatically. Copy it from the @page_link and update the source.";
 
+        $cleanPdfUrl = $this->getPdfUrl($label);
+        if ($cleanPdfUrl) {
+            $label = $cleanPdfUrl;
+        }
         #  A special case of DK EnÚ
         if (strpos($label, 'digitalna-kniznica.beliana.sav.sk') == TRUE) {
           #Extract Title for the url
@@ -132,7 +136,7 @@ final class Source extends ContentEntityBase implements SourceInterface {
           ]);
           $this->messages[] = array (
               "type" => "warning",
-              "url_text" => (string)$this->t("source"),
+              "url_text" => (string)$this->t("pdf_link"),
               "text" => (string)$msg
           );
 
@@ -162,7 +166,7 @@ final class Source extends ContentEntityBase implements SourceInterface {
 
             $this->messages[] = array(
               "type" => "warning",
-              "url_text" => (string)$this->t("source"),
+              "url_text" => (string)$this->t("url_link"),
               "text" => (string)$msg
             );
             $this->get('source_url')->value = $label;
@@ -198,7 +202,7 @@ final class Source extends ContentEntityBase implements SourceInterface {
     } else { # some kind of URL
       $auxurl = $this->get('source_url')->value; 
       if (strpos($auxurl, 'digitalna-kniznica.beliana.sav.sk') === FALSE ) {
-          if (substr($auxurl, -4) == ".pdf" ) { #pdf
+          if ($this->isPdfUrl($auxurl) ) { #pdf
              if (strpos((string)$auxlabel, "(pdf)") === FALSE) {
                 $this->get('label')->value = sprintf("%s (%s)", $auxlabel,  "pdf");
              }
@@ -485,6 +489,46 @@ final class Source extends ContentEntityBase implements SourceInterface {
    * {@inheritdoc}
    */
    private function isPdfUrl($url) {
-     return substr($url, -4) == ".pdf" or strpos($url, ".pdf?") != NULL;
+     parse_str($url, $params);
+#\dump($params); \die();
+     if (isset($params['url']) and substr($params['url'], -4) == ".pdf") {
+        #url like google search link
+        return TRUE;
+     } elseif (substr($url, -4) == ".pdf" or    #these seem to be pdfs
+         strpos($url, ".pdf?") != NULL or
+         strpos($url, ".pdf&") != NULL  
+       ) {
+        return TRUE;
+     } else {
+         return FALSE;
+     }
+   }
+
+  /****************************************************
+   * {@inheritdoc}
+   */
+   private function getPdfUrl($url) {
+     parse_str($url, $params);
+#\dump($params); \die();
+     if (isset($params['url']) and substr($params['url'], -4) == ".pdf") {
+        #url like google search link
+        return $params['url'];
+     } elseif (substr($url, -4) == ".pdf" or    #these seem to be pdfs
+         strpos($url, ".pdf?") != NULL  or
+         strpos($url, ".pdf&") != NULL  
+       ) {
+        return $url;
+     } else {
+         return NULL;
+     }
    }
 }
+
+#https://dl.icdst.org/pdfs/files3/a8cfedd8fd4e1717ecabd62c25a36b16.pdf
+#https://www.sciencedirect.com/science/article/pii/S0926224598000308/pdf?crasolve=1&r=8ca9ca718cdd5bb0&ts=1727590023991&rtype=https&vrr=UKN&redir=UKN&redir_fr=UKN&redir_arc=UKN&vhash=UKN&host=d3d3LnNjaWVuY2VkaXJlY3QuY29t&tsoh=d3d3LnNjaWVuY2VkaXJlY3QuY29t&rh=d3d3LnNjaWVuY2VkaXJlY3QuY29t&re=X2JsYW5rXw%3D%3D&ns_h=d3d3LnNjaWVuY2VkaXJlY3QuY29t&ns_e=X2JsYW5rXw%3D%3D&rh_fd=rrr)n%5Ed%60i%5E%60_dm%60%5Eo)%5Ejh&tsoh_fd=rrr)n%5Ed%60i%5E%60_dm%60%5Eo)%5Ejh&iv=dd439770c3aa50381e5fa0a20ebad78c&token=61383863396434393863356166373930613066303731386234343464323730663733333864356334323561353963396130643063383762306239653064373065663266653833636361323939306337653833656462393964303736373430336239653734613834356533306238313334623031643739643238623a376339343266626465396638616334656530346661356462&text=687e8721c24605ec6891f6a01e31696276d0d69deb0cb12c7a421e93667f8bf8e09a162e14466b48673dbc662b427cba102bbe515df9666bfe3222c425ceda8087c07e357df50be03b6e383457be9cd41c7614ea498f0eefdfe26f71196ccc52ce2eeabb3b0c808c2ee7e984ba098cfee9c264e1eba4f5499c1c9b6a396965efc7b08bb6b0d199aa69109cef4737f7892b86daac6349a76f85610fe1339ef61d1bb3be885d9b7e4abf86417f8dfdf258e53c18ba9828f69fe08d7c1f60113a80e39ad05b1bba08d876bfeefa845aed5fb30c7307cc88b0e7c34cf8cc76d9dd3c7407a3a89d828675cf40f43092c6e3d52436211db994440cd80ed0249bc78efdefcd0312c1aaeb86314d03a42ba179c1d7463f59b1ef38a33944e56eccd5f89bbba58aa22558d5f8b315f82ace51d859&original=3f6d64353d3132393865353230323964633836323732396634333335613034366631613938267069643d312d73322e302d53303932363232343539383030303330382d6d61696e2e706466265f76616c636b3d31
+#https://askubuntu.com/questions/221962/how-can-i-extract-a-page-range-a-part-of-a-pdf
+#https://stirlingpdf.io/ocr-pdf?lang=sk_SK
+#http://cloud-1.edupage.org/cloud/Kruznica_uhly_v_kruznici.pdf?z%3ACpJrHxIX4RGhTwzGX2ek9JGOCBdNnzVVQQAJ42W5mU%2BipN0X2WWmBxy9%2ByO0otmY
+#https://www.google.com/search?q=linear+functional+pdf&client=ubuntu-sn&hs=QGs&sca_esv=f3ee8fd9fd7caba2&channel=fs&sxsrf=AE3TifNMlSvi5uvtUrZiFunCd-guDGQUZg%3A1759924401584&ei=sVDmaOWvI--Oxc8PjaSw6A8&ved=0ahUKEwilzKamxZSQAxVvR_EDHQ0SDP0Q4dUDCBA&uact=5&oq=linear+functional+pdf&gs_lp=Egxnd3Mtd2l6LXNlcnAiFWxpbmVhciBmdW5jdGlvbmFsIHBkZjIHEAAYgAQYDTIGEAAYFhgeMgYQABgWGB4yBhAAGBYYHjIGEAAYFhgeMgYQABgWGB4yBhAAGBYYHjIGEAAYFhgeMgYQABgWGB4yBhAAGBYYHkiZQVCdOVjVP3AAeAKQAQCYAbEBoAHsBKoBAzAuNLgBA8gBAPgBAZgCBaACwAXCAgQQABhHwgIFEC4YgATCAgUQABiABMICCBAAGIAEGKIEwgIUEC4YgAQYlwUY3AQY3gQY4ATYAQGYAwCIBgGQBgi6BgYIARABGBSSBwMxLjSgB9YksgcDMC40uAe2BcIHBzItMS4zLjHIBz0&sclient=gws-wiz-serp
+#
+#https://food.ec.europa.eu/document/download/b9e6176b-31ba-40fc-8870-af9240a2f1d7_en?filename=sci-com_ssc_out30_en.pdf&utm_source=chatgpt.com
