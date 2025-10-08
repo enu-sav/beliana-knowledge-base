@@ -87,6 +87,23 @@ final class Source extends ContentEntityBase implements SourceInterface {
 
     $label = $this->get('label')->value;
 
+    # fail when using local links
+    if (substr($label, 0, 6) == "file:/" ) {
+      $args = [
+        "%label" => $this->t("Label"),
+        "%attachment" => $this->t("Attachment") 
+      ];
+      $msg = $this->t("Link to a local file in field <em>%label</em> is not in @link allowed. If you want to upload a local file, use its field <em>%attachment</em>.", $args);
+
+      $this->messages[] = array(
+        "type" => "error",
+        "url_text" => (string)$this->t("source_genitiv"),
+        "text" => (string)$msg
+      );
+      return;
+    }
+
+
     // Store local copy of remote source and copy url to the source_url field
     // 4 source types are distinguished: 
     //      textual book desription
@@ -98,7 +115,6 @@ final class Source extends ContentEntityBase implements SourceInterface {
     if (UrlHelper::isValid($label, TRUE)) {
 
       if ($label != $this->get('source_url')->value) { #new URL specified
-        $msg_title_not_found = "Page title was not found for this @link automatically. Copy it from the @page_link and update the source.";
 
         $cleanPdfUrl = $this->getPdfUrl($label);
         if ($cleanPdfUrl) {
@@ -123,6 +139,7 @@ final class Source extends ContentEntityBase implements SourceInterface {
 
         # pdf
         } elseif ($this->isPdfUrl($label) ) {
+          # Pdfs do not have titles
           $this->get('label')->value = $this->t("Page title was not found");
           #$page_link = Link::fromTextAndUrl($this->t("pdf"), Url::fromUri($label));
           $page_link = Link::fromTextAndUrl($this->t("pdf"), Url::fromUri($label, [
