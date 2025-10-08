@@ -139,7 +139,6 @@ final class Source extends ContentEntityBase implements SourceInterface {
 
         # pdf
         } elseif ($this->isPdfUrl($label) ) {
-          # Pdfs do not have titles
           $this->get('label')->value = $this->t("Page title was not found");
           #$page_link = Link::fromTextAndUrl($this->t("pdf"), Url::fromUri($label));
           $page_link = Link::fromTextAndUrl($this->t("pdf"), Url::fromUri($label, [
@@ -148,12 +147,18 @@ final class Source extends ContentEntityBase implements SourceInterface {
                   'rel' => 'noopener noreferrer',
               ],
           ]));
+      $args = [
+        "%label" => $this->t("Label"),
+        "%attachment" => $this->t("Attachment") 
+      ];
+          $msg_title_not_found = "Title of the document was not found. Copy it from the %page_link and update field %label of the @link.";
           $msg = $this->t($msg_title_not_found, [
-                "@page_link" => $page_link->toString()
+                "%page_link" => $page_link->toString(),
+                "%label" => $this->t("Label")
           ]);
           $this->messages[] = array (
               "type" => "warning",
-              "url_text" => (string)$this->t("pdf_link"),
+              "url_text" => (string)$this->t("source_genitiv"),
               "text" => (string)$msg
           );
 
