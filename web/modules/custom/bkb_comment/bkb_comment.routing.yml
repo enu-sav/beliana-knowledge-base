@@ -33,5 +33,5 @@ bkb_comment.api.find_by_url:
   defaults:
     _controller: '\Drupal\bkb_comment\Controller\CommentApiController::findByUrl'
   requirements:
-    _permission: 'access content'
+    _access: 'TRUE'
   methods: [GET]
