@@ -174,7 +174,7 @@ final class Source extends ContentEntityBase implements SourceInterface {
             $this->get('source_url')->value = $label;
 
           } elseif (in_array($response['code'], ['403']) ) {  #Forbidden to download by a script
-            $msg_page_no_access = "Downloading of content of the @page_link failed owing to access restrictions.<br />Print its content to a pdf file and upload it manually to @link. Set also the source title.";
+            $msg_page_no_access = "Downloading of content of the %page_link failed owing to access restrictions.<br />Print its content to a pdf file and upload it manually to @link in the %attachment field. Set also the document title in the %label field";
             $this->get('label')->value = $this->t("Downloading failed");
             $page_link = Link::fromTextAndUrl($this->t("article"), Url::fromUri($label, [
                 'attributes' => [
@@ -183,12 +183,14 @@ final class Source extends ContentEntityBase implements SourceInterface {
                 ],
             ]));
             $msg = $this->t($msg_page_no_access, [
-                "@page_link" => $page_link->toString()
+                "%label" => $this->t("Label"),
+                "%attachment" => $this->t("Attachment"),
+                "%page_link" => $page_link->toString()
             ]);
 
             $this->messages[] = array(
               "type" => "warning",
-              "url_text" => (string)$this->t("url_link"),
+              "url_text" => (string)$this->t("source_genitiv"),
               "text" => (string)$msg
             );
             $this->get('source_url')->value = $label;
@@ -217,14 +219,18 @@ final class Source extends ContentEntityBase implements SourceInterface {
 
     // add decriptive text (pdf, book. ...) to title, if missing
     $auxlabel =  $this->get('label')->value;
-    if ($this->get('source_url')->isEmpty() ) { #book without url 
+    if ($this->get('source_url')->isEmpty() and $this->get('attachment')->isEmpty() ) { #book without url 
        if (strpos($auxlabel, "(kniha)") === FALSE) {
           $this->get('label')->value = sprintf("%s (%s)", $auxlabel,  "kniha");
+       }
+    } elseif ($this->get('source_url')->isEmpty() and $this->get('attachment') ) { #pdf (manually uploaded)
+       if (strpos((string)$auxlabel, "(pdf)") === FALSE) {
+          $this->get('label')->value = sprintf("%s (%s)", $auxlabel,  "pdf");
        }
     } else { # some kind of URL
       $auxurl = $this->get('source_url')->value; 
       if (strpos($auxurl, 'digitalna-kniznica.beliana.sav.sk') === FALSE ) {
-          if ($this->isPdfUrl($auxurl) ) { #pdf
+          if ($this->isPdfUrl($auxurl) ) { #pdf (downloaded)
              if (strpos((string)$auxlabel, "(pdf)") === FALSE) {
                 $this->get('label')->value = sprintf("%s (%s)", $auxlabel,  "pdf");
              }
