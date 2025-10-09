@@ -186,6 +186,7 @@ class CommentApiController extends ControllerBase {
         'type' => 'comment',
         'id' => (string) $comment->id(),
         'attributes' => [
+          'drupal_internal__id' => (int) $comment->id(),
           'comment' => $comment->get('comment')->value,
           'url' => $comment_url,
           'parent' => $word ? (int) $word->id() : NULL,
