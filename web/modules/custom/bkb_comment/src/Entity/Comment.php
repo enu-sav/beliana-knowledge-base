@@ -6,12 +6,12 @@ namespace Drupal\bkb_comment\Entity;
 
 use Drupal\bkb_comment\CommentInterface;
 use Drupal\bkb_comment\Plugin\Field\FieldType\ComputedParentFieldItemList;
+use Drupal\bkb_comment\Plugin\Field\FieldType\ComputedUrlFieldItemList;
 use Drupal\Core\Entity\ContentEntityBase;
 use Drupal\Core\Entity\EntityStorageInterface;
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Entity\RevisionLogInterface;
 use Drupal\Core\Field\BaseFieldDefinition;
-use Drupal\link\LinkItemInterface;
 use Drupal\user\EntityOwnerTrait;
 use Drupal\user\UserInterface;
 
@@ -143,23 +143,17 @@ final class Comment extends ContentEntityBase implements CommentInterface, Revis
       ->setDisplayConfigurable('view', TRUE)
       ->setRevisionable(TRUE);
 
-    $fields['url'] = BaseFieldDefinition::create('link')
+    $fields['url'] = BaseFieldDefinition::create('string')
       ->setLabel(t('comment-entity-url-label'))
       ->setDescription(t('comment-entity-url-description'))
-      ->setSettings([
-        'link_type' => LinkItemInterface::LINK_EXTERNAL,
-        'title' => DRUPAL_DISABLED,
-      ])
-      ->setDisplayOptions('form', [
-        'type' => 'link_default',
-        'weight' => 30,
-      ])
+      ->setComputed(TRUE)
+      ->setClass(ComputedUrlFieldItemList::class)
+      ->setReadOnly(TRUE)
       ->setDisplayOptions('view', [
         'label' => 'above',
-        'type' => 'link_default',
+        'type' => 'string',
         'weight' => 30,
       ])
-      ->setDisplayConfigurable('form', TRUE)
       ->setDisplayConfigurable('view', TRUE);
 
     $fields['comment'] = BaseFieldDefinition::create('string_long')

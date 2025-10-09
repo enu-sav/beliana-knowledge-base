@@ -120,3 +120,146 @@ function bkb_comment_update_10007() {
       'revision_log',
     ]);
 }
+
+/**
+ * Create "web_type" for source_comment_node entity
+ */
+function bkb_comment_update_10008() {
+  \Drupal::service('bkb_base.helper')
+    ->installFieldStorageDefinition('bkb_comment', 'source_comment_node', [
+      'web_type',
+    ]);
+}
+
+/**
+ * Convert url field from link to string for Word entity, make it computed for Comment entity
+ */
+function bkb_comment_update_10009(&$sandbox) {
+  $helper = \Drupal::service('bkb_base.helper');
+  $config = \Drupal::config('bkb_base.settings');
+  $database = \Drupal::database();
+
+  // Get configured URLs with defaults
+  $rs_url = $config->get('rs_url') ?? 'https://dev.beliana.sav.sk';
+  $webrs_url = $config->get('webrs_url') ?? 'https://webrs-dev.beliana.sav.sk';
+
+  // Create URL processing callback
+  $process_url = function($url_value) use ($helper, $rs_url, $webrs_url) {
+    return $helper->processUrlForWebType($url_value, $rs_url, $webrs_url);
+  };
+
+  // Convert Word entity (has web_type field) only if link field exists
+  if ($database->schema()->fieldExists('source_comment_node', 'url__uri')) {
+    $helper->convertLinkFieldToString('source_comment_node', TRUE, $process_url);
+  }
+  // If url is already string, parse and set web_type if needed
+  elseif ($database->schema()->fieldExists('source_comment_node', 'url')) {
+    $words = $database->select('source_comment_node', 'w')
+      ->fields('w', ['id', 'url', 'web_type'])
+      ->execute()
+      ->fetchAll();
+
+    foreach ($words as $word) {
+      if (empty($word->web_type) && !empty($word->url)) {
+        $processed = $helper->processUrlForWebType($word->url, $rs_url, $webrs_url);
+
+        // Only update if we detected a web_type and the URL changed (became a path)
+        if ($processed['web_type'] && $processed['url'] !== $word->url) {
+          $database->update('source_comment_node')
+            ->fields([
+              'url' => $processed['url'],
+              'web_type' => $processed['web_type'],
+            ])
+            ->condition('id', $word->id)
+            ->execute();
+        }
+      }
+    }
+  }
+
+  // Drop URL field from Comment entity (will be computed from parent Word)
+  // Drop from main table
+  if ($database->schema()->fieldExists('source_comment', 'url__uri')) {
+    $database->schema()->dropField('source_comment', 'url__uri');
+    $database->schema()->dropField('source_comment', 'url__title');
+    $database->schema()->dropField('source_comment', 'url__options');
+  }
+  if ($database->schema()->fieldExists('source_comment', 'url')) {
+    $database->schema()->dropField('source_comment', 'url');
+  }
+
+  // Drop from revision table
+  if ($database->schema()->fieldExists('source_comment_revision', 'url__uri')) {
+    $database->schema()->dropField('source_comment_revision', 'url__uri');
+    $database->schema()->dropField('source_comment_revision', 'url__title');
+    $database->schema()->dropField('source_comment_revision', 'url__options');
+  }
+  if ($database->schema()->fieldExists('source_comment_revision', 'url')) {
+    $database->schema()->dropField('source_comment_revision', 'url');
+  }
+
+  // Update field storage definitions
+  $update_manager = \Drupal::entityDefinitionUpdateManager();
+
+  try {
+    $helper->updateFieldStorageDefinition('source_comment_node', 'url');
+  } catch (\Exception $e) {
+    \Drupal::logger('bkb_comment')->error('Failed to update Word url field: @message', ['@message' => $e->getMessage()]);
+  }
+
+  try {
+    $helper->updateFieldStorageDefinition('source_comment', 'url');
+  } catch (\Exception $e) {
+    \Drupal::logger('bkb_comment')->error('Failed to update Comment url field: @message', ['@message' => $e->getMessage()]);
+  }
+
+  // Clear caches
+  drupal_flush_all_caches();
+
+  return t('Successfully converted url field: Word entity uses string, Comment entity uses computed field from parent.');
+}
+
+/**
+ * Apply entity field storage definition updates for url field
+ */
+function bkb_comment_update_10010() {
+  $entity_type_manager = \Drupal::entityTypeManager();
+  $entity_field_manager = \Drupal::service('entity_field.manager');
+  $key_value_installed = \Drupal::keyValue('entity.definitions.installed');
+
+  // Clear caches first
+  $entity_type_manager->clearCachedDefinitions();
+  $entity_field_manager->clearCachedFieldDefinitions();
+
+  // Get current field definitions from code
+  $word_fields = $entity_field_manager->getFieldStorageDefinitions('source_comment_node');
+  $comment_fields = $entity_field_manager->getFieldStorageDefinitions('source_comment');
+
+  // Update Word entity field storage definition
+  $word_installed = $key_value_installed->get('source_comment_node.field_storage_definitions', []);
+  if (isset($word_fields['url'])) {
+    $word_installed['url'] = $word_fields['url'];
+    $key_value_installed->set('source_comment_node.field_storage_definitions', $word_installed);
+  }
+
+  // Update Comment entity field storage definition
+  $comment_installed = $key_value_installed->get('source_comment.field_storage_definitions', []);
+  if (isset($comment_fields['url'])) {
+    $comment_installed['url'] = $comment_fields['url'];
+    $key_value_installed->set('source_comment.field_storage_definitions', $comment_installed);
+  }
+
+  // For Comment entity, get ALL field definitions from code and save them
+  // This ensures computed fields are properly registered
+  $key_value_installed->set('source_comment.field_storage_definitions', $comment_fields);
+
+  // Delete old schema data
+  $key_value_schema = \Drupal::keyValue('entity.storage_schema.sql');
+  $key_value_schema->delete('source_comment_node.field_schema_data.url');
+  $key_value_schema->delete('source_comment.field_schema_data.url');
+
+  // Clear all caches
+  drupal_flush_all_caches();
+
+  return t('Updated field storage definitions for url field.');
+}

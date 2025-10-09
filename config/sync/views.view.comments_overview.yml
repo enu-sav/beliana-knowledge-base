@@ -4,7 +4,7 @@ status: true
 dependencies:
   module:
     - bkb_comment
-    - link
+    - options
     - user
 id: comments_overview
 label: Komentáre
@@ -152,18 +152,18 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
-        url__uri:
-          id: url__uri
+        web_type:
+          id: web_type
           table: source_comment_node
-          field: url__uri
+          field: web_type
           relationship: none
           group_type: group
           admin_label: ''
           entity_type: source_comment_node
-          entity_field: url
+          entity_field: web_type
           plugin_id: field
-          label: 'URL hesla'
-          exclude: false
+          label: ''
+          exclude: true
           alter:
             alter_text: false
             text: ''
@@ -195,7 +195,7 @@ display:
           element_class: ''
           element_label_type: ''
           element_label_class: ''
-          element_label_colon: true
+          element_label_colon: false
           element_wrapper_type: ''
           element_wrapper_class: ''
           element_default_classes: true
@@ -203,15 +203,10 @@ display:
           hide_empty: false
           empty_zero: false
           hide_alter_empty: true
-          click_sort_column: uri
-          type: link
-          settings:
-            trim_length: null
-            url_only: false
-            url_plain: false
-            rel: '0'
-            target: _blank
-          group_column: ''
+          click_sort_column: value
+          type: list_default
+          settings: {  }
+          group_column: value
           group_columns: {  }
           group_rows: true
           delta_limit: 0
@@ -221,6 +216,16 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
+        word_url_link:
+          id: word_url_link
+          table: source_comment_node
+          field: word_url_link
+          relationship: none
+          group_type: group
+          admin_label: ''
+          plugin_id: word_url_link
+          label: 'URL hesla'
+          exclude: false
         sources_target_id:
           id: sources_target_id
           table: source_comment__sources
@@ -421,6 +426,55 @@ display:
           exposed: false
       arguments: {  }
       filters:
+        web_type:
+          id: web_type
+          table: source_comment_node
+          field: web_type
+          relationship: none
+          group_type: group
+          admin_label: ''
+          entity_type: source_comment_node
+          entity_field: web_type
+          plugin_id: string
+          operator: '='
+          value: ''
+          group: 1
+          exposed: true
+          expose:
+            operator_id: web_type_op
+            label: 'Typ webu'
+            description: null
+            use_operator: false
+            operator: web_type_op
+            operator_limit_selection: false
+            operator_list: {  }
+            identifier: web_type
+            required: false
+            remember: false
+            multiple: false
+            remember_roles:
+              authenticated: authenticated
+            placeholder: null
+          is_grouped: true
+          group_info:
+            label: 'Typ webu'
+            description: ''
+            identifier: web_type
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items:
+              1:
+                title: RS
+                operator: '='
+                value: rs
+              2:
+                title: WEBRS
+                operator: '='
+                value: webrs
         label_2:
           id: label_2
           table: source_comment
@@ -511,6 +565,10 @@ display:
             default_group: All
             default_group_multiple: {  }
             group_items: {  }
+      filter_groups:
+        operator: AND
+        groups:
+          1: AND
       style:
         type: table
         options:
@@ -520,7 +578,8 @@ display:
           columns:
             label: label
             label_1: label_1
-            url__uri: url__uri
+            web_type: web_type
+            url: url
             sources_target_id: sources_target_id
             uid: uid
           default: '-1'
@@ -539,7 +598,14 @@ display:
               separator: ''
               empty_column: false
               responsive: ''
-            url__uri:
+            web_type:
+              sortable: true
+              default_sort_order: asc
+              align: ''
+              separator: ''
+              empty_column: false
+              responsive: priority-low
+            url:
               sortable: true
               default_sort_order: asc
               align: ''

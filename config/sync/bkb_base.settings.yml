@@ -1,2 +1,4 @@
 api_key: perplexity
 ai_prompt: 'Give me bibtex record (no additional text, just the record, include ISBN) for [source:title]'
+rs_url: 'https://dev.beliana.sav.sk'
+webrs_url: 'https://webrs-dev.beliana.sav.sk'
