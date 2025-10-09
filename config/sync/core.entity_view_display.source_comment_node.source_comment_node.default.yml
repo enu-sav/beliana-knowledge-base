@@ -4,7 +4,6 @@ status: true
 dependencies:
   module:
     - bkb_comment
-    - options
 id: source_comment_node.source_comment_node.default
 targetEntityType: source_comment_node
 bundle: source_comment_node
@@ -17,7 +16,7 @@ content:
       view_mode: default
       link: true
     third_party_settings: {  }
-    weight: 3
+    weight: 2
     region: content
   label:
     type: string
@@ -32,14 +31,8 @@ content:
     label: inline
     settings: {  }
     third_party_settings: {  }
-    weight: 2
-    region: content
-  web_type:
-    type: list_default
-    label: inline
-    settings: {  }
-    third_party_settings: {  }
     weight: 1
     region: content
 hidden:
   uid: true
+  web_type: true
