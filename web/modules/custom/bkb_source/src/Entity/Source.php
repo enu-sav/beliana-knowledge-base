@@ -411,7 +411,7 @@ final class Source extends ContentEntityBase implements SourceInterface {
   }
 
   /**
-   * Download a web page using the download service. Download pdfs directly because the service spoils them (adds left panel) 
+   * Download a web page using the download service. Download pdfs directly because the service spoils them (adds left panel)
    */
   private function getSourcePdf($url) {
     /** @var \GuzzleHttp\Client $http_client */
@@ -419,19 +419,32 @@ final class Source extends ContentEntityBase implements SourceInterface {
     /** @var \Drupal\Core\File\FileSystem $file_system */
     $file_system = \Drupal::service('file_system');
 
+    $path = 'private://';
+    $filename = $this->uuid() . '.pdf';
+    $destination = $path . $filename;
+
+    // Ensure directory exists.
+    $directory = $path;
+    $file_system->prepareDirectory($directory, \Drupal\Core\File\FileSystemInterface::CREATE_DIRECTORY);
+
     try {
+      // Use 'sink' to stream directly to destination, avoiding temp files.
       if ($this->isPdfUrl($url) ){
         $response = $http_client->get($url, [
-        'verify' => FALSE,
+          'verify' => FALSE,
+          'sink' => $file_system->realpath($destination),
         ]);
       } else {
         $response = $http_client->get('https://pdfcreator.beliana.sav.sk/generate?source=' . $url, [
           'verify' => FALSE,
+          'sink' => $file_system->realpath($destination),
         ]);
       }
 
-      if ($response->getStatusCode() === 200) {
-        $pdf_data = $response->getBody()->getContents();
+      if ($response->getStatusCode() !== 200) {
+        \Drupal::logger('bkb_source')
+          ->error('Failed to download PDF: HTTP ' . $response->getStatusCode());
+        return;
       }
     }
     catch (\Exception $e) {
@@ -440,15 +453,9 @@ final class Source extends ContentEntityBase implements SourceInterface {
       return;
     }
 
-    $path = 'private://';
-    $filename = $this->uuid() . '.pdf';
-
-    $file_system->prepareDirectory($path);
-    $file_system->saveData($pdf_data, $file_system->realpath($path) . DIRECTORY_SEPARATOR . $filename, FileExists::Replace);
-
     /** @var \Drupal\file\Entity\File $file */
     $file = $this->entityTypeManager()->getStorage('file')->create([
-      'uri' => $path . $filename,
+      'uri' => $destination,
     ]);
     $file->setPermanent();
     $file->save();
