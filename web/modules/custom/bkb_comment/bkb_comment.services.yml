@@ -1,0 +1,6 @@
+services:
+  bkb_comment.twig.config:
+    class: Drupal\bkb_comment\TwigExtension\ConfigExtension
+    arguments: ['@config.factory']
+    tags:
+      - { name: twig.extension }

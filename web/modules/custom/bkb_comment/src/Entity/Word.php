@@ -9,7 +9,6 @@ use Drupal\Core\Entity\ContentEntityBase;
 use Drupal\Core\Entity\EntityStorageInterface;
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Field\BaseFieldDefinition;
-use Drupal\link\LinkItemInterface;
 use Drupal\user\EntityOwnerTrait;
 
 /**
@@ -78,11 +77,8 @@ final class Word extends ContentEntityBase implements WordInterface {
     $comments = $this->get('comments')->referencedEntities();
 
     if (!empty($comments)) {
-      // Copy url to Comment entity due to JSONAPI filter limitations
       foreach ($comments as $comment) {
         $comment_ids[] = $comment->id();
-        $comment->set('url', $this->get('url')->getValue());
-        $comment->save();
       }
     }
 
@@ -166,21 +162,39 @@ final class Word extends ContentEntityBase implements WordInterface {
       ])
       ->setDisplayConfigurable('view', TRUE);
 
-    $fields['url'] = BaseFieldDefinition::create('link')
+    $fields['web_type'] = BaseFieldDefinition::create('list_string')
+      ->setLabel(t('Typ webu'))
+      ->setSettings([
+        'allowed_values' => [
+          'rs' => 'RS',
+          'webrs' => 'WEBRS',
+        ],
+      ])
+      ->setRequired(FALSE)
+      ->setDisplayOptions('form', [
+        'type' => 'options_select',
+        'weight' => 20,
+      ])
+      ->setDisplayOptions('view', [
+        'label' => 'above',
+        'type' => 'list_default',
+        'weight' => 20,
+      ])
+      ->setDisplayConfigurable('form', TRUE)
+      ->setDisplayConfigurable('view', TRUE);
+
+    $fields['url'] = BaseFieldDefinition::create('string')
       ->setLabel(t('comment-node-entity-url-label'))
       ->setDescription(t('comment-node-entity-url-description'))
-      ->setSettings([
-        'link_type' => LinkItemInterface::LINK_EXTERNAL,
-        'title' => DRUPAL_DISABLED,
-      ])
+      ->setSetting('max_length', 2048)
       ->setRequired(TRUE)
       ->setDisplayOptions('form', [
-        'type' => 'link_default',
+        'type' => 'string_textfield',
         'weight' => 30,
       ])
       ->setDisplayOptions('view', [
         'label' => 'above',
-        'type' => 'link_default',
+        'type' => 'string',
         'weight' => 30,
       ])
       ->setDisplayConfigurable('form', TRUE)

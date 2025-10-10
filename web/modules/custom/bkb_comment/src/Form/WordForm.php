@@ -21,14 +21,39 @@ final class WordForm extends ContentEntityForm {
 
     // Prepopulate values from url query
     foreach ($query as $key => $value) {
-      $property = $key == 'url' ? 'uri' : 'value';
-      if (isset($form[$key]) && empty($form[$key]['widget'][0][$property]['#default_value'])) {
-        $form[$key]['widget'][0][$property]['#default_value'] = $value;
+      if (isset($form[$key]) && empty($form[$key]['widget'][0]['value']['#default_value'])) {
+        $form[$key]['widget'][0]['value']['#default_value'] = $value;
+        $form[$key]['widget'][0]['value']['#disabled'] = TRUE;
+      }
+    }
+
+    // Add URL prefix based on web_type
+    if (!empty($form['url'])) {
+      $web_type_value = $this->entity->get('web_type')->value ?? $query['web_type'] ?? NULL;
+
+      if ($web_type_value) {
+        $config = \Drupal::config('bkb_base.settings');
+        $prefix = $config->get($web_type_value . '_url');
+
+        if ($prefix) {
+          $form['url']['widget'][0]['value']['#field_prefix'] = rtrim($prefix, '/');
+        }
       }
     }
 
     $form['label']['widget'][0]['value']['#disabled'] = TRUE;
-    $form['url']['widget'][0]['uri']['#disabled'] = TRUE;
+    $form['url']['widget'][0]['value']['#disabled'] = TRUE;
+    $form['web_type']['#access'] = FALSE;
+
+    // Hide descriptions when editing existing entity
+    if (!$this->entity->isNew()) {
+      if (!empty($form['label']['widget'][0]['value']['#description'])) {
+        $form['label']['widget'][0]['value']['#description'] = '';
+      }
+      if (!empty($form['url']['widget'][0]['value']['#description'])) {
+        $form['url']['widget'][0]['value']['#description'] = '';
+      }
+    }
 
     return $form;
   }
@@ -80,11 +105,11 @@ final class WordForm extends ContentEntityForm {
     }
 
     if (!empty($excluded)) {
-//      $form_state->setRedirect(
-//        'entity.source.data.edit',
-//        ['id' => $this->entity->id()],
-//        ['query' => ['excluded' => implode(',', $excluded)]]
-//      );
+      //      $form_state->setRedirect(
+      //        'entity.source.data.edit',
+      //        ['id' => $this->entity->id()],
+      //        ['query' => ['excluded' => implode(',', $excluded)]]
+      //      );
     }
 
     return $result;

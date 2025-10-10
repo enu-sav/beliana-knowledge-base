@@ -2,6 +2,7 @@
 
 namespace Drupal\bkb_base;
 
+use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Entity\EntityDefinitionUpdateManagerInterface;
 use Drupal\Core\Entity\EntityFieldManager;
 use Drupal\Core\Entity\EntityInterface;
@@ -31,7 +32,15 @@ class Helper {
    */
   private EntityFieldManager $entityFieldManager;
 
+  /**
+   * @var \Drupal\Core\Session\AccountInterface $currentUser
+   */
   private AccountInterface $currentUser;
+
+  /**
+   * @var \Drupal\Core\Config\ConfigFactoryInterface $configFactory
+   */
+  private ConfigFactoryInterface $configFactory;
 
   /**
    * Constructor for Helper.
@@ -40,12 +49,14 @@ class Helper {
    * @param \Drupal\Core\Entity\EntityDefinitionUpdateManagerInterface $entity_definition_manager
    * @param \Drupal\Core\Entity\EntityFieldManager $entity_field_manager
    * @param \Drupal\Core\Session\AccountInterface $current_user
+   * @param \Drupal\Core\Config\ConfigFactoryInterface $config_factory
    */
-  public function __construct(EntityTypeManager $entity_type_manager, EntityDefinitionUpdateManagerInterface $entity_definition_manager, EntityFieldManager $entity_field_manager, AccountInterface $current_user) {
+  public function __construct(EntityTypeManager $entity_type_manager, EntityDefinitionUpdateManagerInterface $entity_definition_manager, EntityFieldManager $entity_field_manager, AccountInterface $current_user, ConfigFactoryInterface $config_factory) {
     $this->entityTypeManager = $entity_type_manager;
     $this->entityDefinitionManager = $entity_definition_manager;
     $this->entityFieldManager = $entity_field_manager;
     $this->currentUser = $current_user;
+    $this->configFactory = $config_factory;
   }
 
   /**
@@ -105,10 +116,21 @@ class Helper {
       $url = $request->query->get('url');
 
       if ($create && ($title && $url)) {
-        $word = $storage->create([
+        // Process URL to extract path and web_type
+        $config = $this->configFactory->get('bkb_base.settings');
+        $processed = $this->processUrlForWebType($url, $config->get('rs_url'), $config->get('webrs_url'));
+
+        $word_data = [
           'label' => $title,
-          'url' => $url,
-        ]);
+          'url' => $processed['url'],
+        ];
+
+        // Set web_type if detected
+        if (!empty($processed['web_type'])) {
+          $word_data['web_type'] = $processed['web_type'];
+        }
+
+        $word = $storage->create($word_data);
         $word->save();
 
         return $word;
@@ -192,8 +214,152 @@ class Helper {
    *
    * @return bool
    */
-  public function userIsCommentAuthor($comment){
+  public function userIsCommentAuthor($comment) {
     return $comment->getOwnerId() === $this->currentUser->id() || $this->currentUser->hasPermission('administer source_comment');
+  }
+
+  /**
+   * Process URL to extract path and determine web_type.
+   *
+   * @param string|null $url_value
+   *   The URL value to process.
+   * @param string|null $rs_url
+   *   The RS base URL from config.
+   * @param string|null $webrs_url
+   *   The WEBRS base URL from config.
+   *
+   * @return array
+   *   Array with 'url' and 'web_type' keys.
+   */
+  public function processUrlForWebType(?string $url_value, ?string $rs_url, ?string $webrs_url): array {
+    if (empty($url_value)) {
+      return ['url' => NULL, 'web_type' => NULL];
+    }
+
+    $parsed = parse_url($url_value);
+    if (!$parsed || !isset($parsed['scheme']) || !isset($parsed['host'])) {
+      return ['url' => $url_value, 'web_type' => NULL];
+    }
+
+    $path = ($parsed['path'] ?? '') .
+      (isset($parsed['query']) ? '?' . $parsed['query'] : '') .
+      (isset($parsed['fragment']) ? '#' . $parsed['fragment'] : '');
+
+    // Check if domain matches RS or WEBRS
+    if ($rs_url && strpos($url_value, $rs_url) === 0) {
+      return ['url' => $path, 'web_type' => 'rs'];
+    }
+
+    if ($webrs_url && strpos($url_value, $webrs_url) === 0) {
+      return ['url' => $path, 'web_type' => 'webrs'];
+    }
+
+    return ['url' => $url_value, 'web_type' => NULL];
+  }
+
+  /**
+   * Convert link field to string field in a table.
+   *
+   * @param string $table_name
+   *   The table name.
+   * @param bool $has_web_type
+   *   Whether the table has a web_type field.
+   * @param callable $process_url_callback
+   *   Callback function to process URLs.
+   *
+   * @return void
+   */
+  public function convertLinkFieldToString(string $table_name, bool $has_web_type, callable $process_url_callback): void {
+    $database = \Drupal::database();
+
+    // Get existing data
+    $fields_to_select = ['id', 'url__uri'];
+    if ($has_web_type) {
+      $fields_to_select[] = 'web_type';
+    }
+
+    $query = $database->select($table_name, 't')
+      ->fields('t', $fields_to_select);
+
+    // Add revision_id for revision tables
+    if (strpos($table_name, '_revision') !== FALSE) {
+      $query->addField('t', 'revision_id');
+    }
+
+    $data = $query->execute()->fetchAll();
+
+    // Drop old link field columns
+    $database->schema()->dropField($table_name, 'url__uri');
+    $database->schema()->dropField($table_name, 'url__title');
+    $database->schema()->dropField($table_name, 'url__options');
+
+    // Add new string field column
+    $database->schema()->addField($table_name, 'url', [
+      'type' => 'varchar',
+      'length' => 2048,
+      'not null' => FALSE,
+    ]);
+
+    // Migrate data
+    foreach ($data as $row) {
+      $processed = $process_url_callback($row->url__uri);
+      $fields = ['url' => $processed['url']];
+
+      // Update web_type only for Word entity if detected and not already set
+      if ($has_web_type && $processed['web_type'] && empty($row->web_type)) {
+        $fields['web_type'] = $processed['web_type'];
+      }
+
+      $update = $database->update($table_name)->fields($fields);
+
+      // Add conditions based on table type
+      if (isset($row->revision_id)) {
+        $update->condition('id', $row->id)
+          ->condition('revision_id', $row->revision_id);
+      }
+      else {
+        $update->condition('id', $row->id);
+      }
+
+      $update->execute();
+    }
+  }
+
+  /**
+   * Update field storage definition for an entity type.
+   *
+   * @param string $entity_type_id
+   *   The entity type ID.
+   * @param string $field_name
+   *   The field name to update.
+   *
+   * @return void
+   */
+  public function updateFieldStorageDefinition(string $entity_type_id, string $field_name): void {
+    $this->entityTypeManager->clearCachedDefinitions();
+
+    $definition = $this->entityTypeManager->getDefinition($entity_type_id);
+    if (!$definition) {
+      \Drupal::logger('bkb_base')
+        ->error('Entity type @type not found', ['@type' => $entity_type_id]);
+      return;
+    }
+
+    $storage_definitions = $definition->getClass()::baseFieldDefinitions($definition);
+
+    if (!isset($storage_definitions[$field_name])) {
+      \Drupal::logger('bkb_base')->error('Field @field not found in @type', [
+        '@field' => $field_name,
+        '@type' => $entity_type_id,
+      ]);
+      return;
+    }
+
+    \Drupal::service('field_storage_definition.listener')
+      ->onFieldStorageDefinitionUpdate(
+        $storage_definitions[$field_name],
+        $storage_definitions[$field_name]
+      );
   }
 
 }

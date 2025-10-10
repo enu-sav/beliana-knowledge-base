@@ -4,4 +4,4 @@ services:
     arguments: ['@ai.provider', '@config.factory', '@key.repository']
   bkb_base.helper:
     class: Drupal\bkb_base\Helper
-    arguments: [ '@entity_type.manager', '@entity.definition_update_manager', '@entity_field.manager', '@current_user' ]
+    arguments: [ '@entity_type.manager', '@entity.definition_update_manager', '@entity_field.manager', '@current_user', '@config.factory' ]

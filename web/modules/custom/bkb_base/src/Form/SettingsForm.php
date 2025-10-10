@@ -51,6 +51,18 @@ class SettingsForm extends ConfigFormBase {
       '#default_value' => $config->get('ai_prompt') ?? 'Give me bibtex record (no additional text, just the record) for [source:title]',
     ];
 
+    $form['rs_url'] = [
+      '#type' => 'textfield',
+      '#title' => $this->t('RS URL'),
+      '#default_value' => $config->get('rs_url') ?? '',
+    ];
+
+    $form['webrs_url'] = [
+      '#type' => 'textfield',
+      '#title' => $this->t('WEBRS URL'),
+      '#default_value' => $config->get('webrs_url') ?? '',
+    ];
+
     return parent::buildForm($form, $form_state);
   }
 
@@ -69,8 +81,12 @@ class SettingsForm extends ConfigFormBase {
     $this->config('bkb_base.settings')
       ->set('api_key', $form_state->getValue('api_key'))
       ->set('ai_prompt', $form_state->getValue('ai_prompt'))
+      ->set('rs_url', $form_state->getValue('rs_url'))
+      ->set('webrs_url', $form_state->getValue('webrs_url'))
       ->save();
 
+    // Clear all caches to ensure config changes are reflected everywhere
+    drupal_flush_all_caches();
 
     $formValues = $form_state->getValues();
     foreach ($formValues as $name => $value) {

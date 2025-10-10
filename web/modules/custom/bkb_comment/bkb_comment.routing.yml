@@ -27,3 +27,11 @@ entity.source_comment.version_history:
     parameters:
       source_comment:
         type: 'entity:source_comment'
+
+bkb_comment.api.find_by_url:
+  path: '/jsonapi/comment/by-url'
+  defaults:
+    _controller: '\Drupal\bkb_comment\Controller\CommentApiController::findByUrl'
+  requirements:
+    _access: 'TRUE'
+  methods: [GET]

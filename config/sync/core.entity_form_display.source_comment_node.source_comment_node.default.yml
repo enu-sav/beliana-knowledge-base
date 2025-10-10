@@ -5,7 +5,6 @@ dependencies:
   module:
     - bkb_comment
     - inline_entity_form
-    - link
 id: source_comment_node.source_comment_node.default
 targetEntityType: source_comment_node
 bundle: source_comment_node
@@ -13,7 +12,7 @@ mode: default
 content:
   comments:
     type: inline_entity_form_simple
-    weight: 2
+    weight: 3
     region: content
     settings:
       form_mode: default
@@ -33,12 +32,18 @@ content:
       placeholder: ''
     third_party_settings: {  }
   url:
-    type: link_default
-    weight: 1
+    type: string_textfield
+    weight: 2
     region: content
     settings:
-      placeholder_url: ''
-      placeholder_title: ''
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  web_type:
+    type: options_select
+    weight: 1
+    region: content
+    settings: {  }
     third_party_settings: {  }
 hidden:
   uid: true
