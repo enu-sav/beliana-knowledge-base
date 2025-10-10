@@ -112,33 +112,34 @@ final class Source extends ContentEntityBase implements SourceInterface {
     //      link to a html page
     // For user's convenience URL is entered to the same field (label) as the textual book description
     // Here, URL is copied to field source_url and article name is saved in the label field
-    if (UrlHelper::isValid($label, TRUE)) {
+    #  A special case of DK EnÚ
+    if (strpos($label, 'digitalna-kniznica.beliana.sav.sk') == TRUE) {
+      #Extract Title for the url
+      parse_str($label, $params);
+
+      // Check if the 'title' key exists in the array and get its value
+      if (isset($params['title']) and isset($params['cv']) ) {
+          $title = $params['title'];
+          $page = $params['cv'];
+          $page = str_replace("page_", "", $page);
+          $tpt = $this->t("%s , page %d"); 
+          $this->get('label')->value = sprintf((string)$tpt, $title, (int)$page);
+          $this->get('source_url')->value = $label;
+      } else {
+          echo $this->t("Error, contact the programmer.");
+      }
+    } elseif (UrlHelper::isValid($label, TRUE)) {   #provided valid URL
 
       if ($label != $this->get('source_url')->value) { #new URL specified
 
+        # extract link to pdf from links provided by google search
         $cleanPdfUrl = $this->getPdfUrl($label);
         if ($cleanPdfUrl) {
             $label = $cleanPdfUrl;
         }
-        #  A special case of DK EnÚ
-        if (strpos($label, 'digitalna-kniznica.beliana.sav.sk') == TRUE) {
-          #Extract Title for the url
-          parse_str($label, $params);
-
-          // Check if the 'title' key exists in the array and get its value
-          if (isset($params['title']) and isset($params['cv']) ) {
-              $title = $params['title'];
-              $page = $params['cv'];
-              $page = str_replace("page_", "", $page);
-              $tpt = $this->t("%s , page %d"); 
-              $this->get('label')->value = sprintf((string)$tpt, $title, (int)$page);
-              $this->get('source_url')->value = $label;
-          } else {
-              echo $this->t("Error, contact the programmer.");
-          }
 
         # pdf
-        } elseif ($this->isPdfUrl($label) ) {
+        if ($this->isPdfUrl($label) ) {
           $this->get('label')->value = $this->t("Page title was not found");
           #$page_link = Link::fromTextAndUrl($this->t("pdf"), Url::fromUri($label));
           $page_link = Link::fromTextAndUrl($this->t("pdf"), Url::fromUri($label, [
@@ -216,6 +217,7 @@ final class Source extends ContentEntityBase implements SourceInterface {
         }
       }
     }
+    # no valid url was given, it must be a paper book reference. We do not process it
 
     // add decriptive text (pdf, book. ...) to title, if missing
     $auxlabel =  $this->get('label')->value;
