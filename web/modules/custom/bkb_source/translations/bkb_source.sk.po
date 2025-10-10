@@ -9,63 +9,145 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2025-03-01 07:39+0100\n"
+"POT-Creation-Date: 2025-10-09 16:02+0200\n"
 "PO-Revision-Date: 2025-03-01 07:39+0100\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Slovak <EMAIL@ADDRESS>\n"
+"Language: sk\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=utf-8\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
-#: Group.php:83
-msgid "group-entity-source-label"
-msgstr "Zdroj"
+msgid "Attachment"
+msgstr "Lokálna kópia stránky (ako pdf)  alebo pdf súboru "
 
-#: Group.php:83
-msgid "group-entity-source-label-index"
-msgstr "Zdroj [@index]"
+msgid "Data"
+msgstr "Bibliografický záznam (BibTeX)"
 
-#: Group.php:84
-msgid "group-entity-source-description"
-msgstr "<p>Existujúci zdroj nájdete tak, že zadáte časť názvu, autora a pod. Ak zdroj ešte neexistuje, tak zadajte údaje, podľa ktorých možno získať bibliografické údaje zdroja, napr.</p><p>pre knihu: autor názov rok vydania, alebo autor isbn, alebo názov isbn<br>pre URL stránku alebo pdf súbor: názov, URL<br>pre odborný článok: autor, doi alebo názov, doi</p><p>V prípade uvedenia autora stačí prvý autor, názov môže byť skrátený. Nájdený bibliografický záznam následne skontrolujte</p>"
+msgid "Filter by view name, machine name, description, or display path"
+msgstr "Filtrovať podľa názvu zobrazenia, strojového názvu, popisu alebo cesty"
 
-#: Group.php:110
-msgid "group-entity-pages-label"
-msgstr "Strany"
+msgid "Sources"
+msgstr "Zdroje"
 
-#: Group.php:111
-msgid "group-entity-pages-description"
-msgstr "V prípade knihy uveďte stranu alebo zoznam strán, napr 3 alebo 3, 7 alebo 3-5"
+msgid "Add comment"
+msgstr "Pridať komentár"
 
-#: Group.php:126
-msgid "group-entity-published-label"
-msgstr "Zverejniť"
+msgid "Add source"
+msgstr "Pridať zdroj"
 
-#: Group.php:127
-msgid "group-entity-published-description"
-msgstr "Zdroj uviesť v zozname referencií pri publikovaní na webe"
+msgid "The source %label has been updated."
+msgstr "Zdroj %label bol aktualizovaný."
 
-#: Group.php:142
-msgid "group-entity-used-label"
-msgstr "Použité"
+msgid "The word %label has been updated."
+msgstr "Komentár %label bol aktualizovaný."
 
-#: Group.php:143
-msgid "group-entity-used-description"
-msgstr "Údaje z tohto zdroja boli použité v texte hesla"
+#, fuzzy
+msgid "source-entity-attachment-description"
+msgstr ""
+"V prípade knihy uveďte stranu alebo zoznam strán, napr 3 alebo 3, 7 alebo 3-5"
 
-#: Group.php:159
-msgid "group-entity-uid-label"
-msgstr "Autor"
+#, fuzzy
+msgid "source-entity-label-description"
+msgstr ""
+"V prípade knihy uveďte stranu alebo zoznam strán, napr 3 alebo 3, 7 alebo 3-5"
 
-#: SourceDataFieldEditForm.php:110
-msgid "bkb-source-fetch-bibtex-button-label"
-msgstr "Generovať bibtex údaje s AI"
+#, fuzzy
+msgid "source-entity-source-url-description"
+msgstr ""
+"<p>Existujúci zdroj nájdete tak, že zadáte časť názvu, autora a pod. Ak "
+"zdroj ešte neexistuje, tak zadajte údaje, podľa ktorých možno získať "
+"bibliografické údaje zdroja, napr.</p><p>pre knihu: autor názov rok vydania, "
+"alebo autor isbn, alebo názov isbn<br>pre URL stránku alebo pdf súbor: "
+"názov, URL<br>pre odborný článok: autor, doi alebo názov, doi</p><p>V "
+"prípade uvedenia autora stačí prvý autor, názov môže byť skrátený. Nájdený "
+"bibliografický záznam následne skontrolujte</p>"
 
-#: SourceDataFieldEditForm.php:45
-msgid "Edit data for @label"
-msgstr "Upraviť údaje pre @label"
+msgid "SourceURL"
+msgstr "Adresa externého zdroja"
 
-#: bkb_source.routing.yml:21
-msgid "Edit Referenced Entities"
-msgstr "Upraviť údaje zdroja"
+msgid ""
+"Page title was not found for this @link automatically. Copy it from the "
+"@page_link and update the source."
+msgstr ""
+"Názov nebol automaticky nájdený. Skopírujte ho z @page_link a názov v zdroji "
+"(@link) aktualizujte."
+
+msgid "Page title was not found"
+msgstr "Názov zdroja nebol automaticky nájdený"
+
+msgid "article"
+msgstr "stránky"
+
+msgid ""
+"Link to a local file is not in @link allowed. If you want to upload a local "
+"file, use its field "
+msgstr ""
+"Odkaz na lokálny súbor nie je v @link povolený. Pdf súbor vložte do jeho "
+"poľa "
+
+msgid "source_lokal"
+msgstr "zdroji"
+
+msgid ""
+"Link to a local file in field <em>%label</em> is not in @link allowed. If "
+"you want to upload a local file, use its field <em>%attachment</em>."
+msgstr ""
+"Odkaz na lokálny súbor nie je v poli <em>%label</em> @link povolený. Ak "
+"chcete pripojiť lokálny súbor, použite jeho pole <em>%attachment</em>. "
+
+msgid "source_genitiv"
+msgstr "zdroja"
+
+msgid ""
+"Title of the document was not found. Copy it from the %page_link and update "
+"field %label of the @link."
+msgstr ""
+"Názov dokumentu nebol nájdený. Skopírujte ho z %page_link a aktualizujte "
+"pole %label @link. "
+
+msgid "Downloading failed"
+msgstr "Archivácia stránky zlyhala"
+
+msgid ""
+"Downloading of content of the %page_link failed owing to access restrictions."
+"<br />Print its content to a pdf file and upload it manually to @link in the "
+"%attachment field. Set also the document title in the %label field"
+msgstr ""
+"Archivácia obsahu %page_link zlyhala kvôli obmedzeným prístupovým právam."
+"<br />Uložte je obsah do pdf súboru a ručne ho vložte do poľa %attachment "
+"@link. Nastavte tiež správny názov v poli %label."
+
+#~ msgid "group-entity-source-label"
+#~ msgstr "Zdroj"
+
+#~ msgid "group-entity-source-label-index"
+#~ msgstr "Zdroj [@index]"
+
+#~ msgid "group-entity-pages-label"
+#~ msgstr "Strany"
+
+#~ msgid "group-entity-published-label"
+#~ msgstr "Zverejniť"
+
+#~ msgid "group-entity-published-description"
+#~ msgstr "Zdroj uviesť v zozname referencií pri publikovaní na webe"
+
+#~ msgid "group-entity-used-label"
+#~ msgstr "Použité"
+
+#~ msgid "group-entity-used-description"
+#~ msgstr "Údaje z tohto zdroja boli použité v texte hesla"
+
+#~ msgid "group-entity-uid-label"
+#~ msgstr "Autor"
+
+#~ msgid "bkb-source-fetch-bibtex-button-label"
+#~ msgstr "Generovať bibtex údaje s AI"
+
+#~ msgid "Edit data for @label"
+#~ msgstr "Upraviť údaje pre @label"
+
+#~ msgid "Edit Referenced Entities"
+#~ msgstr "Upraviť údaje zdroja"
