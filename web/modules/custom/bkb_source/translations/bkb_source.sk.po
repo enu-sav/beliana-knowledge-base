@@ -119,11 +119,11 @@ msgstr ""
 "<br />Uložte je obsah do pdf súboru a ručne ho vložte do poľa %attachment "
 "@link. Nastavte tiež správny názov v poli %label."
 
-#~ msgid "group-entity-source-label"
-#~ msgstr "Zdroj"
+msgid "group-entity-source-label"
+msgstr "Zdroj"
 
-#~ msgid "group-entity-source-label-index"
-#~ msgstr "Zdroj [@index]"
+msgid "group-entity-source-label-index"
+msgstr "Zdroj [@index]"
 
 #~ msgid "group-entity-pages-label"
 #~ msgstr "Strany"
