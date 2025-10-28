@@ -2,7 +2,6 @@
 
 namespace Drupal\bkb_base;
 
-use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Entity\EntityDefinitionUpdateManagerInterface;
 use Drupal\Core\Entity\EntityFieldManager;
 use Drupal\Core\Entity\EntityInterface;
@@ -38,25 +37,18 @@ class Helper {
   private AccountInterface $currentUser;
 
   /**
-   * @var \Drupal\Core\Config\ConfigFactoryInterface $configFactory
-   */
-  private ConfigFactoryInterface $configFactory;
-
-  /**
    * Constructor for Helper.
    *
    * @param \Drupal\Core\Entity\EntityTypeManager $entity_type_manager
    * @param \Drupal\Core\Entity\EntityDefinitionUpdateManagerInterface $entity_definition_manager
    * @param \Drupal\Core\Entity\EntityFieldManager $entity_field_manager
    * @param \Drupal\Core\Session\AccountInterface $current_user
-   * @param \Drupal\Core\Config\ConfigFactoryInterface $config_factory
    */
-  public function __construct(EntityTypeManager $entity_type_manager, EntityDefinitionUpdateManagerInterface $entity_definition_manager, EntityFieldManager $entity_field_manager, AccountInterface $current_user, ConfigFactoryInterface $config_factory) {
+  public function __construct(EntityTypeManager $entity_type_manager, EntityDefinitionUpdateManagerInterface $entity_definition_manager, EntityFieldManager $entity_field_manager, AccountInterface $current_user) {
     $this->entityTypeManager = $entity_type_manager;
     $this->entityDefinitionManager = $entity_definition_manager;
     $this->entityFieldManager = $entity_field_manager;
     $this->currentUser = $current_user;
-    $this->configFactory = $config_factory;
   }
 
   /**
@@ -117,8 +109,7 @@ class Helper {
 
       if ($create && ($title && $url)) {
         // Process URL to extract path and web_type
-        $config = $this->configFactory->get('bkb_base.settings');
-        $processed = $this->processUrlForWebType($url, $config->get('rs_url'), $config->get('webrs_url'));
+        $processed = $this->processUrlForWebType($url, getenv('RS_SITE'), getenv('WEBRS_SITE'));
 
         $word_data = [
           'label' => $title,

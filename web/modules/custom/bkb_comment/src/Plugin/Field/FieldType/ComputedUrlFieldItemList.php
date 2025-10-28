@@ -34,8 +34,7 @@ class ComputedUrlFieldItemList extends FieldItemList {
 
     // If URL is a path and we have web_type, construct full URL
     if (!empty($web_type) && strpos($url, '/') === 0) {
-      $config = \Drupal::config('bkb_base.settings');
-      $base_url = $config->get($web_type . '_url');
+      $base_url = getenv(strtoupper($web_type) . '_SITE');
 
       if ($base_url) {
         $url = rtrim($base_url, '/') . $url;

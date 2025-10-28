@@ -22,23 +22,13 @@ class CommentApiController extends ControllerBase {
   protected $entityTypeManager;
 
   /**
-   * The config factory.
-   *
-   * @var \Drupal\Core\Config\ConfigFactoryInterface
-   */
-  protected $configFactory;
-
-  /**
    * Constructs a CommentApiController object.
    *
    * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
    *   The entity type manager.
-   * @param \Drupal\Core\Config\ConfigFactoryInterface $config_factory
-   *   The config factory.
    */
-  public function __construct(EntityTypeManagerInterface $entity_type_manager, ConfigFactoryInterface $config_factory) {
+  public function __construct(EntityTypeManagerInterface $entity_type_manager) {
     $this->entityTypeManager = $entity_type_manager;
-    $this->configFactory = $config_factory;
   }
 
   /**
@@ -46,8 +36,7 @@ class CommentApiController extends ControllerBase {
    */
   public static function create(ContainerInterface $container) {
     return new static(
-      $container->get('entity_type.manager'),
-      $container->get('config.factory')
+      $container->get('entity_type.manager')
     );
   }
 
@@ -75,13 +64,11 @@ class CommentApiController extends ControllerBase {
       ], 400);
     }
 
-    $config = $this->configFactory->get('bkb_base.settings');
-    $rs_url = $config->get('rs_url');
-    $webrs_url = $config->get('webrs_url');
+    $rs_url = getenv('RS_SITE');
+    $webrs_url = getenv('WEBRS_SITE');
 
     // Parse the URL to extract path and determine web_type
     $parsed_url = parse_url($url);
-    $path = NULL;
     $web_type = NULL;
 
     // Check if it's a full URL
@@ -169,10 +156,10 @@ class CommentApiController extends ControllerBase {
       $comment_url = '';
       if ($word) {
         $url_value = $word->get('url')->value;
-        $word_web_type = $word->get('web_type')->value;
+        $web_type = $word->get('web_type')->value;
 
-        if (!empty($word_web_type) && strpos($url_value, '/') === 0) {
-          $base_url = $config->get($word_web_type . '_url');
+        if (!empty($web_type) && strpos($url_value, '/') === 0) {
+          $base_url = getenv(strtoupper($web_type) . '_SITE');
           if ($base_url) {
             $comment_url = rtrim($base_url, '/') . $url_value;
           }

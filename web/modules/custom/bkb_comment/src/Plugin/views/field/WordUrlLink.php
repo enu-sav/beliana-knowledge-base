@@ -2,7 +2,6 @@
 
 namespace Drupal\bkb_comment\Plugin\views\field;
 
-use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\views\Plugin\views\field\FieldPluginBase;
 use Drupal\views\ResultRow;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -17,13 +16,6 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 class WordUrlLink extends FieldPluginBase {
 
   /**
-   * The config factory.
-   *
-   * @var \Drupal\Core\Config\ConfigFactoryInterface
-   */
-  protected $configFactory;
-
-  /**
    * Constructs a WordUrlLink object.
    *
    * @param array $configuration
@@ -32,12 +24,9 @@ class WordUrlLink extends FieldPluginBase {
    *   The plugin_id for the plugin instance.
    * @param mixed $plugin_definition
    *   The plugin implementation definition.
-   * @param \Drupal\Core\Config\ConfigFactoryInterface $config_factory
-   *   The config factory.
    */
-  public function __construct(array $configuration, $plugin_id, $plugin_definition, ConfigFactoryInterface $config_factory) {
+  public function __construct(array $configuration, $plugin_id, $plugin_definition) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
-    $this->configFactory = $config_factory;
   }
 
   /**
@@ -47,8 +36,7 @@ class WordUrlLink extends FieldPluginBase {
     return new static(
       $configuration,
       $plugin_id,
-      $plugin_definition,
-      $container->get('config.factory')
+      $plugin_definition
     );
   }
 
@@ -74,12 +62,11 @@ class WordUrlLink extends FieldPluginBase {
       return '';
     }
 
-    $config = $this->configFactory->get('bkb_base.settings');
     $full_url = $url;
 
     // Build full URL based on web_type
     if (!empty($web_type) && strpos($url, '/') === 0) {
-      $base_url = $config->get($web_type . '_url');
+      $base_url = getenv(strtoupper($web_type) . '_SITE');
 
       if ($base_url) {
         $prefix = '[' . strtoupper($web_type) . '] ';

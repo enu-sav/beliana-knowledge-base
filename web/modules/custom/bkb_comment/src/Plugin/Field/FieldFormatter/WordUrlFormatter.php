@@ -24,13 +24,6 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 class WordUrlFormatter extends FormatterBase implements ContainerFactoryPluginInterface {
 
   /**
-   * The config factory.
-   *
-   * @var \Drupal\Core\Config\ConfigFactoryInterface
-   */
-  protected $configFactory;
-
-  /**
    * Constructs a WordUrlFormatter object.
    *
    * @param string $plugin_id
@@ -47,12 +40,9 @@ class WordUrlFormatter extends FormatterBase implements ContainerFactoryPluginIn
    *   The view mode.
    * @param array $third_party_settings
    *   Any third party settings.
-   * @param \Drupal\Core\Config\ConfigFactoryInterface $config_factory
-   *   The config factory.
    */
-  public function __construct($plugin_id, $plugin_definition, FieldDefinitionInterface $field_definition, array $settings, $label, $view_mode, array $third_party_settings, ConfigFactoryInterface $config_factory) {
+  public function __construct($plugin_id, $plugin_definition, FieldDefinitionInterface $field_definition, array $settings, $label, $view_mode, array $third_party_settings) {
     parent::__construct($plugin_id, $plugin_definition, $field_definition, $settings, $label, $view_mode, $third_party_settings);
-    $this->configFactory = $config_factory;
   }
 
   /**
@@ -66,8 +56,7 @@ class WordUrlFormatter extends FormatterBase implements ContainerFactoryPluginIn
       $configuration['settings'],
       $configuration['label'],
       $configuration['view_mode'],
-      $configuration['third_party_settings'],
-      $container->get('config.factory')
+      $configuration['third_party_settings']
     );
   }
 
@@ -77,7 +66,6 @@ class WordUrlFormatter extends FormatterBase implements ContainerFactoryPluginIn
   public function viewElements(FieldItemListInterface $items, $langcode) {
     $elements = [];
     $entity = $items->getEntity();
-    $config = $this->configFactory->get('bkb_base.settings');
 
     foreach ($items as $delta => $item) {
       $url = $item->value;
@@ -91,7 +79,7 @@ class WordUrlFormatter extends FormatterBase implements ContainerFactoryPluginIn
 
       // Build full URL based on web_type
       if (!empty($web_type) && strpos($url, '/') === 0) {
-        $base_url = $config->get($web_type . '_url');
+        $base_url = getenv(strtoupper($web_type) . '_SITE');
         if ($base_url) {
           $full_url = rtrim($base_url, '/') . $url;
         }

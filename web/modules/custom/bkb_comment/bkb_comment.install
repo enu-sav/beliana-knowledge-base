@@ -136,12 +136,11 @@ function bkb_comment_update_10008() {
  */
 function bkb_comment_update_10009(&$sandbox) {
   $helper = \Drupal::service('bkb_base.helper');
-  $config = \Drupal::config('bkb_base.settings');
   $database = \Drupal::database();
 
   // Get configured URLs with defaults
-  $rs_url = $config->get('rs_url') ?? 'https://dev.beliana.sav.sk';
-  $webrs_url = $config->get('webrs_url') ?? 'https://webrs-dev.beliana.sav.sk';
+  $rs_url = getenv('RS_SITE') ?? 'https://dev.beliana.sav.sk';
+  $webrs_url = getenv('WEBRS_SITE') ?? 'https://webrs-dev.beliana.sav.sk';
 
   // Create URL processing callback
   $process_url = function($url_value) use ($helper, $rs_url, $webrs_url) {

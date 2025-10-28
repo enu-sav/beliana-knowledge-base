@@ -29,11 +29,10 @@ final class WordForm extends ContentEntityForm {
 
     // Add URL prefix based on web_type
     if (!empty($form['url'])) {
-      $web_type_value = $this->entity->get('web_type')->value ?? $query['web_type'] ?? NULL;
+      $web_type = $this->entity->get('web_type')->value ?? $query['web_type'] ?? NULL;
 
-      if ($web_type_value) {
-        $config = \Drupal::config('bkb_base.settings');
-        $prefix = $config->get($web_type_value . '_url');
+      if ($web_type) {
+        $prefix = getenv(strtoupper($web_type) . '_SITE');
 
         if ($prefix) {
           $form['url']['widget'][0]['value']['#field_prefix'] = rtrim($prefix, '/');
