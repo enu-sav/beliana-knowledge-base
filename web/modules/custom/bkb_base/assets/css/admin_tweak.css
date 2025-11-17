@@ -44,6 +44,9 @@ form.source-comment-node-form .field--name-index,
 form.source-comment-node-form .field--name-source .form-item__description {
   display: none;
 }
+form.source-comment-add-form .field--name-sources table tr:last-of-type .field--name-source .form-item__description,
+form.source-comment-node-add-form .field--name-sources table tr:last-of-type .field--name-source .form-item__description,
+form.source-comment-form .ajax-new-content .field--name-source .form-item__description,
 form.source-comment-node-form .ajax-new-content .field--name-source .form-item__description {
   display: block;
 }
