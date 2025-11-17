@@ -80,7 +80,11 @@ final class Comment extends ContentEntityBase implements CommentInterface, Revis
    */
   public function toUrl($rel = 'canonical', array $options = []) {
     // Handle revision URLs with empty revision IDs
-    if (in_array($rel, ['revision', 'revision-delete-form', 'revision-revert-form']) && empty($this->getRevisionId())) {
+    if (in_array($rel, [
+        'revision',
+        'revision-delete-form',
+        'revision-revert-form',
+      ]) && empty($this->getRevisionId())) {
       // Return the canonical URL instead for entities without valid revision IDs
       return parent::toUrl('canonical', $options);
     }
@@ -170,7 +174,8 @@ final class Comment extends ContentEntityBase implements CommentInterface, Revis
         'weight' => 10,
       ])
       ->setDisplayConfigurable('view', TRUE)
-      ->setRevisionable(TRUE);
+      ->setRevisionable(TRUE)
+      ->setRequired(TRUE);
 
     $fields['sources'] = BaseFieldDefinition::create('entity_reference')
       ->setLabel(t('comment-entity-sources-label'))
