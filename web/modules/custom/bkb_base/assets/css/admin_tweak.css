@@ -23,6 +23,11 @@ article.bkb-group {
   padding: var(--spacing) calc(var(--spacing) * 4);
 }
 
+form.source-comment-form .tabledrag-toggle-weight-wrapper,
+form.source-comment-node-form .tabledrag-toggle-weight-wrapper {
+  display: none;
+}
+
 .view-comments-overview table {
   table-layout: fixed;
 }
@@ -48,7 +53,7 @@ form.bkb-base-source-data-edit .label-wrapper > .form-type--textfield {
 }
 
 .gin-breadcrumb__item--back-to-site,
-.gin-breadcrumb__item--back-to-site + .gin-breadcrumb__item::before{
+.gin-breadcrumb__item--back-to-site + .gin-breadcrumb__item::before {
   display: none !important;
 }
 
