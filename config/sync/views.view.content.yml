@@ -2,6 +2,8 @@ uuid: 60fa7303-8e0a-4a93-9f43-80d817659797
 langcode: sk
 status: true
 dependencies:
+  config:
+    - user.role.administrator
   module:
     - node
     - user
@@ -333,9 +335,10 @@ display:
           sort_asc_label: Vzostupne
           sort_desc_label: Zostupne
       access:
-        type: perm
+        type: role
         options:
-          perm: 'access content overview'
+          role:
+            administrator: administrator
       cache:
         type: tag
       empty:
@@ -657,7 +660,7 @@ display:
         - url.query_args
         - user
         - 'user.node_grants:view'
-        - user.permissions
+        - user.roles
       tags: {  }
   page_1:
     id: page_1
@@ -689,5 +692,5 @@ display:
         - url.query_args
         - user
         - 'user.node_grants:view'
-        - user.permissions
+        - user.roles
       tags: {  }
