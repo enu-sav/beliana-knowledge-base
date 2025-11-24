@@ -25,15 +25,8 @@ content:
       rows: 5
       placeholder: ''
     third_party_settings: {  }
-  source_url:
-    type: string_textfield
-    weight: 2
-    region: content
-    settings:
-      size: 60
-      placeholder: ''
-    third_party_settings: {  }
 hidden:
   citation: true
   data: true
+  source_url: true
   uid: true
