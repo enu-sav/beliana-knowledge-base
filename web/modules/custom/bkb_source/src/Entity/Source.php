@@ -138,8 +138,20 @@ final class Source extends ContentEntityBase implements SourceInterface {
             $label = $cleanPdfUrl;
         }
 
+        #archive.org cannot be downoaded
+        if (strpos($label, 'archive.org') == TRUE) {
+          $msg_archive_org = "An archive.org page cannot be downloaded. Return back to %page_link, open the pdf (bottom right), copy its URL and replace content if the field %label of the @link.";
+          $msg = $this->t($msg_archive_org, [
+                "%page_link" =>  $this->get('label')->value,
+                "%label" => $this->t("Label")
+          ]);
+          $this->messages[] = array (
+              "type" => "warning",
+              "url_text" => (string)$this->t("source_genitiv"),
+              "text" => (string)$msg
+          );
         # pdf
-        if ($this->isPdfUrl($label) ) {
+        } elseif ($this->isPdfUrl($label) ) {
           $this->get('label')->value = $this->t("Page title was not found");
           #$page_link = Link::fromTextAndUrl($this->t("pdf"), Url::fromUri($label));
           $page_link = Link::fromTextAndUrl($this->t("pdf"), Url::fromUri($label, [
