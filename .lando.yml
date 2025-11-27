@@ -9,6 +9,12 @@ config:
   config:
     php: .lando/php.ini
 
+services:
+  mailhog:
+    type: mailhog
+    hogfrom:
+      - appserver
+
 proxy:
   appserver:
     - bkb.beliana.lndo.site

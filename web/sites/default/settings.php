@@ -936,3 +936,14 @@ $settings['translation_path'] = getenv('TRANSLATION_PATH') ?? '/translations';
  *  Config folder
  */
 $settings['config_sync_directory'] = '../config/sync';
+
+/**
+ * Exclude development modules from config sync.
+ *
+ * These modules will be ignored during config import/export,
+ * allowing them to be enabled in dev environments without
+ * affecting production.
+ */
+$settings['config_exclude_modules'] = [
+  'devel',
+];
